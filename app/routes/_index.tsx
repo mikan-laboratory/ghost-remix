@@ -1,41 +1,26 @@
-import type { MetaFunction } from "@remix-run/node";
+import { List, ListItem, Stack } from '@chakra-ui/react';
+import type { MetaFunction } from '@remix-run/node';
+import { useLoaderData } from '@remix-run/react';
+import { getPosts } from '~/content-api/getPosts';
 
 export const meta: MetaFunction = () => {
-  return [
-    { title: "New Remix App" },
-    { name: "description", content: "Welcome to Remix!" },
-  ];
+  return [{ title: 'New Remix App' }, { name: 'description', content: 'Welcome to Remix!' }];
+};
+
+export const loader = async () => {
+  return getPosts();
 };
 
 export default function Index() {
+  const posts = useLoaderData<typeof loader>();
+
   return (
-    <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
-      <h1>Welcome to Remix</h1>
-      <ul>
-        <li>
-          <a
-            target="_blank"
-            href="https://remix.run/tutorials/blog"
-            rel="noreferrer"
-          >
-            15m Quickstart Blog Tutorial
-          </a>
-        </li>
-        <li>
-          <a
-            target="_blank"
-            href="https://remix.run/tutorials/jokes"
-            rel="noreferrer"
-          >
-            Deep Dive Jokes App Tutorial
-          </a>
-        </li>
-        <li>
-          <a target="_blank" href="https://remix.run/docs" rel="noreferrer">
-            Remix Docs
-          </a>
-        </li>
-      </ul>
-    </div>
+    <Stack>
+      <List>
+        {posts.map((post) => (
+          <ListItem key={post.slug}>{post.title}</ListItem>
+        ))}
+      </List>
+    </Stack>
   );
 }
