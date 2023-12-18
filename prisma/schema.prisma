@@ -1,0 +1,1093 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model actions {
+  id            String   @id
+  resource_id   String?
+  resource_type String
+  actor_id      String
+  actor_type    String
+  event         String
+  context       String?
+  created_at    DateTime
+}
+
+model api_keys {
+  id                String    @id
+  type              String
+  secret            String    @unique(map: "api_keys_secret_unique")
+  role_id           String?
+  integration_id    String?
+  user_id           String?
+  last_seen_at      DateTime?
+  last_seen_version String?
+  created_at        DateTime
+  created_by        String
+  updated_at        DateTime?
+  updated_by        String?
+}
+
+model benefits {
+  id                String              @id
+  name              String
+  slug              String              @unique(map: "benefits_slug_unique")
+  created_at        DateTime
+  updated_at        DateTime?
+  products_benefits products_benefits[]
+}
+
+model brute {
+  key          String @id
+  firstRequest BigInt
+  lastRequest  BigInt
+  lifetime     BigInt
+  count        Int
+}
+
+model collections {
+  id                String              @id
+  title             String
+  slug              String              @unique(map: "collections_slug_unique")
+  description       String?
+  type              String
+  filter            String?
+  feature_image     String?
+  created_at        DateTime
+  updated_at        DateTime?
+  collections_posts collections_posts[]
+}
+
+model collections_posts {
+  id            String      @id
+  collection_id String
+  post_id       String
+  sort_order    Int         @default(0)
+  posts         posts       @relation(fields: [post_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  collections   collections @relation(fields: [collection_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model comment_likes {
+  id         String   @id
+  comment_id String
+  member_id  String
+  created_at DateTime
+  updated_at DateTime
+  members    members  @relation(fields: [member_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  comments   comments @relation(fields: [comment_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model comment_reports {
+  id         String   @id
+  comment_id String
+  member_id  String?
+  created_at DateTime
+  updated_at DateTime
+  members    members? @relation(fields: [member_id], references: [id], onUpdate: NoAction)
+  comments   comments @relation(fields: [comment_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model comments {
+  id              String            @id
+  post_id         String
+  member_id       String?
+  parent_id       String?
+  status          String            @default("published")
+  html            String?
+  edited_at       DateTime?
+  created_at      DateTime
+  updated_at      DateTime
+  comment_likes   comment_likes[]
+  comment_reports comment_reports[]
+  comments        comments?         @relation("commentsTocomments", fields: [parent_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  other_comments  comments[]        @relation("commentsTocomments")
+  members         members?          @relation(fields: [member_id], references: [id], onUpdate: NoAction)
+  posts           posts             @relation(fields: [post_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model custom_theme_settings {
+  id    String  @id
+  theme String
+  key   String
+  type  String
+  value String?
+}
+
+model donation_payment_events {
+  id               String   @id
+  name             String?
+  email            String
+  member_id        String?
+  amount           Int
+  currency         String
+  attribution_id   String?
+  attribution_type String?
+  attribution_url  String?
+  referrer_source  String?
+  referrer_medium  String?
+  referrer_url     String?
+  created_at       DateTime
+  members          members? @relation(fields: [member_id], references: [id], onUpdate: NoAction)
+}
+
+model email_batches {
+  id                String             @id
+  email_id          String
+  provider_id       String?
+  status            String             @default("pending")
+  member_segment    String?
+  error_status_code Int?
+  error_message     String?
+  error_data        String?
+  created_at        DateTime
+  updated_at        DateTime
+  emails            emails             @relation(fields: [email_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  email_recipients  email_recipients[]
+}
+
+model email_recipient_failures {
+  id                 String           @id
+  email_id           String
+  member_id          String?
+  email_recipient_id String
+  code               Int
+  enhanced_code      String?
+  message            String
+  severity           String           @default("permanent")
+  failed_at          DateTime
+  event_id           String?
+  email_recipients   email_recipients @relation(fields: [email_recipient_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  emails             emails           @relation(fields: [email_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model email_recipients {
+  id                       String                     @id
+  email_id                 String
+  member_id                String
+  batch_id                 String
+  processed_at             DateTime?
+  delivered_at             DateTime?
+  opened_at                DateTime?
+  failed_at                DateTime?
+  member_uuid              String
+  member_email             String
+  member_name              String?
+  email_recipient_failures email_recipient_failures[]
+  email_batches            email_batches              @relation(fields: [batch_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  emails                   emails                     @relation(fields: [email_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([email_id, member_email], map: "email_recipients_email_id_member_email_index")
+  @@index([failed_at], map: "email_recipients_failed_at_index")
+  @@index([opened_at], map: "email_recipients_opened_at_index")
+  @@index([delivered_at], map: "email_recipients_delivered_at_index")
+  @@index([member_id], map: "email_recipients_member_id_index")
+}
+
+model email_spam_complaint_events {
+  id            String   @id
+  member_id     String
+  email_id      String
+  email_address String
+  created_at    DateTime
+  emails        emails   @relation(fields: [email_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  members       members  @relation(fields: [member_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([email_id, member_id], map: "email_spam_complaint_events_email_id_member_id_unique")
+}
+
+model emails {
+  id                          String                        @id
+  post_id                     String                        @unique(map: "emails_post_id_unique")
+  uuid                        String
+  status                      String                        @default("pending")
+  recipient_filter            String
+  error                       String?
+  error_data                  String?
+  email_count                 Int                           @default(0)
+  delivered_count             Int                           @default(0)
+  opened_count                Int                           @default(0)
+  failed_count                Int                           @default(0)
+  subject                     String?
+  from                        String?
+  reply_to                    String?
+  html                        String?
+  plaintext                   String?
+  source                      String?
+  source_type                 String                        @default("html")
+  track_opens                 Boolean                       @default(false)
+  track_clicks                Boolean                       @default(false)
+  feedback_enabled            Boolean                       @default(false)
+  submitted_at                DateTime
+  newsletter_id               String?
+  created_at                  DateTime
+  created_by                  String
+  updated_at                  DateTime?
+  updated_by                  String?
+  email_batches               email_batches[]
+  email_recipient_failures    email_recipient_failures[]
+  email_recipients            email_recipients[]
+  email_spam_complaint_events email_spam_complaint_events[]
+  newsletters                 newsletters?                  @relation(fields: [newsletter_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  suppressions                suppressions[]
+
+  @@index([post_id], map: "emails_post_id_index")
+}
+
+model integrations {
+  id          String     @id
+  type        String     @default("custom")
+  name        String
+  slug        String     @unique(map: "integrations_slug_unique")
+  icon_image  String?
+  description String?
+  created_at  DateTime
+  created_by  String
+  updated_at  DateTime?
+  updated_by  String?
+  webhooks    webhooks[]
+}
+
+model invites {
+  id         String    @id
+  role_id    String
+  status     String    @default("pending")
+  token      String    @unique(map: "invites_token_unique")
+  email      String    @unique(map: "invites_email_unique")
+  expires    BigInt
+  created_at DateTime
+  created_by String
+  updated_at DateTime?
+  updated_by String?
+}
+
+model jobs {
+  id          String    @id
+  name        String    @unique(map: "jobs_name_unique")
+  status      String    @default("queued")
+  started_at  DateTime?
+  finished_at DateTime?
+  created_at  DateTime
+  updated_at  DateTime?
+}
+
+model labels {
+  id             String           @id
+  name           String           @unique(map: "labels_name_unique")
+  slug           String           @unique(map: "labels_slug_unique")
+  created_at     DateTime
+  created_by     String
+  updated_at     DateTime?
+  updated_by     String?
+  members_labels members_labels[]
+}
+
+model members {
+  id                                  String                                @id
+  uuid                                String?                               @unique(map: "members_uuid_unique")
+  transient_id                        String                                @unique(map: "members_transient_id_unique")
+  email                               String                                @unique(map: "members_email_unique")
+  status                              String                                @default("free")
+  name                                String?
+  expertise                           String?
+  note                                String?
+  geolocation                         String?
+  enable_comment_notifications        Boolean                               @default(true)
+  email_count                         Int                                   @default(0)
+  email_opened_count                  Int                                   @default(0)
+  email_open_rate                     Int?
+  email_disabled                      Boolean                               @default(false)
+  last_seen_at                        DateTime?
+  last_commented_at                   DateTime?
+  created_at                          DateTime
+  created_by                          String
+  updated_at                          DateTime?
+  updated_by                          String?
+  comment_likes                       comment_likes[]
+  comment_reports                     comment_reports[]
+  comments                            comments[]
+  donation_payment_events             donation_payment_events[]
+  email_spam_complaint_events         email_spam_complaint_events[]
+  members_cancel_events               members_cancel_events[]
+  members_click_events                members_click_events[]
+  members_created_events              members_created_events[]
+  members_email_change_events         members_email_change_events[]
+  members_feedback                    members_feedback[]
+  members_labels                      members_labels[]
+  members_login_events                members_login_events[]
+  members_newsletters                 members_newsletters[]
+  members_paid_subscription_events    members_paid_subscription_events[]
+  members_payment_events              members_payment_events[]
+  members_product_events              members_product_events[]
+  members_products                    members_products[]
+  members_status_events               members_status_events[]
+  members_stripe_customers            members_stripe_customers[]
+  members_subscribe_events            members_subscribe_events[]
+  members_subscription_created_events members_subscription_created_events[]
+  offer_redemptions                   offer_redemptions[]
+  recommendation_click_events         recommendation_click_events[]
+  recommendation_subscribe_events     recommendation_subscribe_events[]
+  subscriptions                       subscriptions[]
+
+  @@index([email_open_rate], map: "members_email_open_rate_index")
+}
+
+model members_cancel_events {
+  id         String   @id
+  member_id  String
+  from_plan  String
+  created_at DateTime
+  members    members  @relation(fields: [member_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model members_click_events {
+  id          String    @id
+  member_id   String
+  redirect_id String
+  created_at  DateTime
+  redirects   redirects @relation(fields: [redirect_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  members     members   @relation(fields: [member_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model members_created_events {
+  id               String   @id
+  created_at       DateTime
+  member_id        String
+  attribution_id   String?
+  attribution_type String?
+  attribution_url  String?
+  referrer_source  String?
+  referrer_medium  String?
+  referrer_url     String?
+  source           String
+  batch_id         String?
+  members          members  @relation(fields: [member_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([attribution_id], map: "members_created_events_attribution_id_index")
+}
+
+model members_email_change_events {
+  id         String   @id
+  member_id  String
+  to_email   String
+  from_email String
+  created_at DateTime
+  members    members  @relation(fields: [member_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model members_feedback {
+  id         String    @id
+  score      Int       @default(0)
+  member_id  String
+  post_id    String
+  created_at DateTime
+  updated_at DateTime?
+  posts      posts     @relation(fields: [post_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  members    members   @relation(fields: [member_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model members_labels {
+  id         String  @id
+  member_id  String
+  label_id   String
+  sort_order Int     @default(0)
+  labels     labels  @relation(fields: [label_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  members    members @relation(fields: [member_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model members_login_events {
+  id         String   @id
+  member_id  String
+  created_at DateTime
+  members    members  @relation(fields: [member_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model members_newsletters {
+  id            String      @id
+  member_id     String
+  newsletter_id String
+  newsletters   newsletters @relation(fields: [newsletter_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  members       members     @relation(fields: [member_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([newsletter_id, member_id], map: "members_newsletters_newsletter_id_member_id_index")
+}
+
+model members_paid_subscription_events {
+  id              String   @id
+  type            String?
+  member_id       String
+  subscription_id String?
+  from_plan       String?
+  to_plan         String?
+  currency        String
+  source          String
+  mrr_delta       Int
+  created_at      DateTime
+  members         members  @relation(fields: [member_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model members_payment_events {
+  id         String   @id
+  member_id  String
+  amount     Int
+  currency   String
+  source     String
+  created_at DateTime
+  members    members  @relation(fields: [member_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model members_product_events {
+  id         String   @id
+  member_id  String
+  product_id String
+  action     String?
+  created_at DateTime
+  products   products @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  members    members  @relation(fields: [member_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model members_products {
+  id         String    @id
+  member_id  String
+  product_id String
+  sort_order Int       @default(0)
+  expiry_at  DateTime?
+  products   products  @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  members    members   @relation(fields: [member_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model members_status_events {
+  id          String   @id
+  member_id   String
+  from_status String?
+  to_status   String?
+  created_at  DateTime
+  members     members  @relation(fields: [member_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model members_stripe_customers {
+  id                                     String                                   @id
+  member_id                              String
+  customer_id                            String                                   @unique(map: "members_stripe_customers_customer_id_unique")
+  name                                   String?
+  email                                  String?
+  created_at                             DateTime
+  created_by                             String
+  updated_at                             DateTime?
+  updated_by                             String?
+  members                                members                                  @relation(fields: [member_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  members_stripe_customers_subscriptions members_stripe_customers_subscriptions[]
+}
+
+model members_stripe_customers_subscriptions {
+  id                                  String                                @id
+  customer_id                         String
+  ghost_subscription_id               String?
+  subscription_id                     String                                @unique(map: "members_stripe_customers_subscriptions_subscription_id_unique")
+  stripe_price_id                     String                                @default("")
+  status                              String
+  cancel_at_period_end                Boolean                               @default(false)
+  cancellation_reason                 String?
+  current_period_end                  DateTime
+  start_date                          DateTime
+  default_payment_card_last4          String?
+  created_at                          DateTime
+  created_by                          String
+  updated_at                          DateTime?
+  updated_by                          String?
+  mrr                                 Int                                   @default(0)
+  offer_id                            String?
+  trial_start_at                      DateTime?
+  trial_end_at                        DateTime?
+  plan_id                             String
+  plan_nickname                       String
+  plan_interval                       String
+  plan_amount                         Int
+  plan_currency                       String
+  offers                              offers?                               @relation(fields: [offer_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  subscriptions                       subscriptions?                        @relation(fields: [ghost_subscription_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  members_stripe_customers            members_stripe_customers              @relation(fields: [customer_id], references: [customer_id], onDelete: Cascade, onUpdate: NoAction)
+  members_subscription_created_events members_subscription_created_events[]
+  offer_redemptions                   offer_redemptions[]
+
+  @@index([stripe_price_id], map: "members_stripe_customers_subscriptions_stripe_price_id_index")
+}
+
+model members_subscribe_events {
+  id            String       @id
+  member_id     String
+  subscribed    Boolean      @default(true)
+  created_at    DateTime
+  source        String?
+  newsletter_id String?
+  newsletters   newsletters? @relation(fields: [newsletter_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  members       members      @relation(fields: [member_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model members_subscription_created_events {
+  id                                     String                                 @id
+  created_at                             DateTime
+  member_id                              String
+  subscription_id                        String
+  attribution_id                         String?
+  attribution_type                       String?
+  attribution_url                        String?
+  referrer_source                        String?
+  referrer_medium                        String?
+  referrer_url                           String?
+  batch_id                               String?
+  members_stripe_customers_subscriptions members_stripe_customers_subscriptions @relation(fields: [subscription_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  members                                members                                @relation(fields: [member_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([attribution_id], map: "members_subscription_created_events_attribution_id_index")
+}
+
+model mentions {
+  id                    String   @id
+  source                String
+  source_title          String?
+  source_site_title     String?
+  source_excerpt        String?
+  source_author         String?
+  source_featured_image String?
+  source_favicon        String?
+  target                String
+  resource_id           String?
+  resource_type         String?
+  created_at            DateTime
+  payload               String?
+  deleted               Boolean  @default(false)
+  verified              Boolean  @default(false)
+}
+
+model migrations {
+  id             Int     @id @default(autoincrement())
+  name           String
+  version        String
+  currentVersion String?
+
+  @@unique([name, version], map: "migrations_name_version_unique")
+}
+
+model migrations_lock {
+  lock_key    String    @id
+  locked      Boolean?  @default(false)
+  acquired_at DateTime?
+  released_at DateTime?
+}
+
+model milestones {
+  id            String    @id
+  type          String
+  value         Int
+  currency      String?
+  created_at    DateTime
+  email_sent_at DateTime?
+}
+
+model mobiledoc_revisions {
+  id            String   @id
+  post_id       String
+  mobiledoc     String?
+  created_at_ts BigInt
+  created_at    DateTime
+
+  @@index([post_id], map: "mobiledoc_revisions_post_id_index")
+}
+
+model newsletters {
+  id                        String                     @id
+  uuid                      String                     @unique(map: "newsletters_uuid_unique")
+  name                      String                     @unique(map: "newsletters_name_unique")
+  description               String?
+  feedback_enabled          Boolean                    @default(false)
+  slug                      String                     @unique(map: "newsletters_slug_unique")
+  sender_name               String?
+  sender_email              String?
+  sender_reply_to           String                     @default("newsletter")
+  status                    String                     @default("active")
+  visibility                String                     @default("members")
+  subscribe_on_signup       Boolean                    @default(true)
+  sort_order                Int                        @default(0)
+  header_image              String?
+  show_header_icon          Boolean                    @default(true)
+  show_header_title         Boolean                    @default(true)
+  title_font_category       String                     @default("sans_serif")
+  title_alignment           String                     @default("center")
+  show_feature_image        Boolean                    @default(true)
+  body_font_category        String                     @default("sans_serif")
+  footer_content            String?
+  show_badge                Boolean                    @default(true)
+  show_header_name          Boolean                    @default(true)
+  show_post_title_section   Boolean                    @default(true)
+  show_comment_cta          Boolean                    @default(true)
+  show_subscription_details Boolean                    @default(false)
+  show_latest_posts         Boolean                    @default(false)
+  background_color          String                     @default("light")
+  border_color              String?
+  title_color               String?
+  created_at                DateTime
+  updated_at                DateTime?
+  emails                    emails[]
+  members_newsletters       members_newsletters[]
+  members_subscribe_events  members_subscribe_events[]
+  posts                     posts[]
+}
+
+model offer_redemptions {
+  id                                     String                                 @id
+  offer_id                               String
+  member_id                              String
+  subscription_id                        String
+  created_at                             DateTime
+  members_stripe_customers_subscriptions members_stripe_customers_subscriptions @relation(fields: [subscription_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  members                                members                                @relation(fields: [member_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  offers                                 offers                                 @relation(fields: [offer_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model offers {
+  id                                     String                                   @id
+  active                                 Boolean                                  @default(true)
+  name                                   String                                   @unique(map: "offers_name_unique")
+  code                                   String                                   @unique(map: "offers_code_unique")
+  product_id                             String
+  stripe_coupon_id                       String?                                  @unique(map: "offers_stripe_coupon_id_unique")
+  interval                               String
+  currency                               String?
+  discount_type                          String
+  discount_amount                        Int
+  duration                               String
+  duration_in_months                     Int?
+  portal_title                           String?
+  portal_description                     String?
+  created_at                             DateTime
+  updated_at                             DateTime?
+  members_stripe_customers_subscriptions members_stripe_customers_subscriptions[]
+  offer_redemptions                      offer_redemptions[]
+  products                               products                                 @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  subscriptions                          subscriptions[]
+}
+
+model permissions {
+  id          String    @id
+  name        String    @unique(map: "permissions_name_unique")
+  object_type String
+  action_type String
+  object_id   String?
+  created_at  DateTime
+  created_by  String
+  updated_at  DateTime?
+  updated_by  String?
+}
+
+model permissions_roles {
+  id            String @id
+  role_id       String
+  permission_id String
+}
+
+model permissions_users {
+  id            String @id
+  user_id       String
+  permission_id String
+}
+
+model post_revisions {
+  id                    String   @id
+  post_id               String
+  lexical               String?
+  created_at_ts         BigInt
+  created_at            DateTime
+  author_id             String?
+  title                 String?
+  post_status           String?
+  reason                String?
+  feature_image         String?
+  feature_image_alt     String?
+  feature_image_caption String?
+  users                 users?   @relation(fields: [author_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([post_id], map: "post_revisions_post_id_index")
+}
+
+model posts {
+  id                           String              @id
+  uuid                         String
+  title                        String
+  slug                         String
+  mobiledoc                    String?
+  lexical                      String?
+  html                         String?
+  comment_id                   String?
+  plaintext                    String?
+  feature_image                String?
+  featured                     Boolean             @default(false)
+  type                         String              @default("post")
+  status                       String              @default("draft")
+  locale                       String?
+  visibility                   String              @default("public")
+  email_recipient_filter       String
+  created_at                   DateTime
+  created_by                   String
+  updated_at                   DateTime?
+  updated_by                   String?
+  published_at                 DateTime?
+  published_by                 String?
+  custom_excerpt               String?
+  codeinjection_head           String?
+  codeinjection_foot           String?
+  custom_template              String?
+  canonical_url                String?
+  newsletter_id                String?
+  show_title_and_feature_image Boolean             @default(true)
+  collections_posts            collections_posts[]
+  comments                     comments[]
+  members_feedback             members_feedback[]
+  newsletters                  newsletters?        @relation(fields: [newsletter_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  posts_authors                posts_authors[]
+  posts_meta                   posts_meta?
+  posts_products               posts_products[]
+  posts_tags                   posts_tags[]
+  redirects                    redirects[]
+
+  @@unique([slug, type], map: "posts_slug_type_unique")
+  @@index([published_at], map: "posts_published_at_index")
+}
+
+model posts_authors {
+  id         String @id
+  post_id    String
+  author_id  String
+  sort_order Int    @default(0)
+  users      users  @relation(fields: [author_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  posts      posts  @relation(fields: [post_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model posts_meta {
+  id                    String  @id
+  post_id               String  @unique(map: "posts_meta_post_id_unique")
+  og_image              String?
+  og_title              String?
+  og_description        String?
+  twitter_image         String?
+  twitter_title         String?
+  twitter_description   String?
+  meta_title            String?
+  meta_description      String?
+  email_subject         String?
+  frontmatter           String?
+  feature_image_alt     String?
+  feature_image_caption String?
+  email_only            Boolean @default(false)
+  posts                 posts   @relation(fields: [post_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model posts_products {
+  id         String   @id
+  post_id    String
+  product_id String
+  sort_order Int      @default(0)
+  products   products @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  posts      posts    @relation(fields: [post_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model posts_tags {
+  id         String @id
+  post_id    String
+  tag_id     String
+  sort_order Int    @default(0)
+  tags       tags   @relation(fields: [tag_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  posts      posts  @relation(fields: [post_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model products {
+  id                     String                   @id
+  name                   String
+  slug                   String                   @unique(map: "products_slug_unique")
+  active                 Boolean                  @default(true)
+  welcome_page_url       String?
+  visibility             String                   @default("none")
+  trial_days             Int                      @default(0)
+  description            String?
+  type                   String                   @default("paid")
+  currency               String?
+  monthly_price          Int?
+  yearly_price           Int?
+  created_at             DateTime
+  updated_at             DateTime?
+  monthly_price_id       String?
+  yearly_price_id        String?
+  members_product_events members_product_events[]
+  members_products       members_products[]
+  offers                 offers[]
+  posts_products         posts_products[]
+  products_benefits      products_benefits[]
+  stripe_products        stripe_products[]
+  subscriptions          subscriptions[]
+}
+
+model products_benefits {
+  id         String   @id
+  product_id String
+  benefit_id String
+  sort_order Int      @default(0)
+  benefits   benefits @relation(fields: [benefit_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  products   products @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model recommendation_click_events {
+  id                String          @id
+  recommendation_id String
+  member_id         String?
+  created_at        DateTime
+  members           members?        @relation(fields: [member_id], references: [id], onUpdate: NoAction)
+  recommendations   recommendations @relation(fields: [recommendation_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model recommendation_subscribe_events {
+  id                String          @id
+  recommendation_id String
+  member_id         String?
+  created_at        DateTime
+  members           members?        @relation(fields: [member_id], references: [id], onUpdate: NoAction)
+  recommendations   recommendations @relation(fields: [recommendation_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model recommendations {
+  id                              String                            @id
+  url                             String
+  title                           String
+  excerpt                         String?
+  featured_image                  String?
+  favicon                         String?
+  description                     String?
+  one_click_subscribe             Boolean                           @default(false)
+  created_at                      DateTime
+  updated_at                      DateTime?
+  recommendation_click_events     recommendation_click_events[]
+  recommendation_subscribe_events recommendation_subscribe_events[]
+}
+
+model redirects {
+  id                   String                 @id
+  from                 String
+  to                   String
+  post_id              String?
+  created_at           DateTime
+  updated_at           DateTime?
+  members_click_events members_click_events[]
+  posts                posts?                 @relation(fields: [post_id], references: [id], onUpdate: NoAction)
+}
+
+model roles {
+  id          String    @id
+  name        String    @unique(map: "roles_name_unique")
+  description String?
+  created_at  DateTime
+  created_by  String
+  updated_at  DateTime?
+  updated_by  String?
+}
+
+model roles_users {
+  id      String @id
+  role_id String
+  user_id String
+}
+
+model sessions {
+  id           String    @id
+  session_id   String    @unique(map: "sessions_session_id_unique")
+  user_id      String
+  session_data String
+  created_at   DateTime
+  updated_at   DateTime?
+}
+
+model settings {
+  id         String    @id
+  group      String    @default("core")
+  key        String    @unique(map: "settings_key_unique")
+  value      String?
+  type       String
+  flags      String?
+  created_at DateTime
+  created_by String
+  updated_at DateTime?
+  updated_by String?
+}
+
+model snippets {
+  id         String    @id
+  name       String    @unique(map: "snippets_name_unique")
+  mobiledoc  String
+  lexical    String?
+  created_at DateTime
+  created_by String
+  updated_at DateTime?
+  updated_by String?
+}
+
+model stripe_prices {
+  id                String          @id
+  stripe_price_id   String          @unique(map: "stripe_prices_stripe_price_id_unique")
+  stripe_product_id String
+  active            Boolean
+  nickname          String?
+  currency          String
+  amount            Int
+  type              String          @default("recurring")
+  interval          String?
+  description       String?
+  created_at        DateTime
+  updated_at        DateTime?
+  stripe_products   stripe_products @relation(fields: [stripe_product_id], references: [stripe_product_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model stripe_products {
+  id                String          @id
+  product_id        String?
+  stripe_product_id String          @unique(map: "stripe_products_stripe_product_id_unique")
+  created_at        DateTime
+  updated_at        DateTime?
+  stripe_prices     stripe_prices[]
+  products          products?       @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model subscriptions {
+  id                                     String                                   @id
+  type                                   String
+  status                                 String
+  member_id                              String
+  tier_id                                String
+  cadence                                String?
+  currency                               String?
+  amount                                 Int?
+  payment_provider                       String?
+  payment_subscription_url               String?
+  payment_user_url                       String?
+  offer_id                               String?
+  expires_at                             DateTime?
+  created_at                             DateTime
+  updated_at                             DateTime?
+  members_stripe_customers_subscriptions members_stripe_customers_subscriptions[]
+  offers                                 offers?                                  @relation(fields: [offer_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  products                               products                                 @relation(fields: [tier_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  members                                members                                  @relation(fields: [member_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model suppressions {
+  id         String   @id
+  email      String   @unique(map: "suppressions_email_unique")
+  email_id   String?
+  reason     String
+  created_at DateTime
+  emails     emails?  @relation(fields: [email_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model tags {
+  id                  String       @id
+  name                String
+  slug                String       @unique(map: "tags_slug_unique")
+  description         String?
+  feature_image       String?
+  parent_id           String?
+  visibility          String       @default("public")
+  og_image            String?
+  og_title            String?
+  og_description      String?
+  twitter_image       String?
+  twitter_title       String?
+  twitter_description String?
+  meta_title          String?
+  meta_description    String?
+  codeinjection_head  String?
+  codeinjection_foot  String?
+  canonical_url       String?
+  accent_color        String?
+  created_at          DateTime
+  created_by          String
+  updated_at          DateTime?
+  updated_by          String?
+  posts_tags          posts_tags[]
+}
+
+model temp_mail_events {
+  id          String   @id
+  type        String
+  message_id  String
+  recipient   String
+  occurred_at DateTime
+}
+
+model tokens {
+  id            String    @id
+  token         String
+  data          String?
+  created_at    DateTime
+  updated_at    DateTime?
+  first_used_at DateTime?
+  used_count    Int       @default(0)
+  created_by    String
+
+  @@index([token], map: "tokens_token_index")
+}
+
+model users {
+  id                                      String           @id
+  name                                    String
+  slug                                    String           @unique(map: "users_slug_unique")
+  password                                String
+  email                                   String           @unique(map: "users_email_unique")
+  profile_image                           String?
+  cover_image                             String?
+  bio                                     String?
+  website                                 String?
+  location                                String?
+  facebook                                String?
+  twitter                                 String?
+  accessibility                           String?
+  status                                  String           @default("active")
+  locale                                  String?
+  visibility                              String           @default("public")
+  meta_title                              String?
+  meta_description                        String?
+  tour                                    String?
+  last_seen                               DateTime?
+  comment_notifications                   Boolean          @default(true)
+  free_member_signup_notification         Boolean          @default(true)
+  paid_subscription_started_notification  Boolean          @default(true)
+  paid_subscription_canceled_notification Boolean          @default(false)
+  mention_notifications                   Boolean          @default(true)
+  recommendation_notifications            Boolean          @default(true)
+  milestone_notifications                 Boolean          @default(true)
+  donation_notifications                  Boolean          @default(true)
+  created_at                              DateTime
+  created_by                              String
+  updated_at                              DateTime?
+  updated_by                              String?
+  post_revisions                          post_revisions[]
+  posts_authors                           posts_authors[]
+}
+
+model webhooks {
+  id                    String       @id
+  event                 String
+  target_url            String
+  name                  String?
+  secret                String?
+  api_version           String       @default("v2")
+  integration_id        String
+  last_triggered_at     DateTime?
+  last_triggered_status String?
+  last_triggered_error  String?
+  created_at            DateTime
+  created_by            String
+  updated_at            DateTime?
+  updated_by            String?
+  integrations          integrations @relation(fields: [integration_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
