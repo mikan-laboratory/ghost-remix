@@ -15,3 +15,17 @@
 ```
 tilt up
 ```
+
+## Useful Commands
+
+- Seed DB
+
+```
+prisma db seed
+```
+
+- Prisma DB GUI
+
+```
+prisma studio
+```
