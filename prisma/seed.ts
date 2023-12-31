@@ -1,101 +1,174 @@
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
-import axios from 'axios';
 import { randomUUID } from 'crypto';
 
 const prisma = new PrismaClient();
 
 async function main() {
-  await prisma.$executeRawUnsafe('PRAGMA foreign_keys = OFF;');
-
   const integrationId = randomUUID();
   const userEmail = 'test@example.com';
-
-  await prisma.posts.deleteMany();
-  await prisma.tags.deleteMany();
-  await prisma.api_keys.deleteMany({
-    where: {
-      integration_id: integrationId,
-    },
-  });
-  await prisma.integrations.deleteMany({
-    where: {
-      type: 'custom',
-    },
-  });
-  await prisma.api_keys.deleteMany({
-    where: {
-      secret: process.env.GHOST_CONTENT_API_KEY as string,
-    },
-  });
-  await prisma.users.deleteMany({
-    where: {
-      email: userEmail,
-    },
-  });
-
   const hashedPassword = await bcrypt.hash('password', 10);
 
-  await axios.post(`${process.env.GHOST_URL}/ghost/admin/authentication/setup`, {
-    blogTitle: 'Test',
-    email: userEmail,
+  const firstUserId = '1';
+
+  const createUpdateUser = {
+    id: firstUserId,
     name: 'test',
+    email: userEmail,
     password: hashedPassword,
-  });
+    slug: 'test',
+    status: 'active',
+    visibility: 'public',
+    created_at: new Date(),
+    updated_at: new Date(),
+    last_seen: new Date(),
+    created_by: '1',
+  };
 
-  const firstUser = await prisma.users.findFirstOrThrow();
-
-  await prisma.users.create({
-    data: {
-      id: '2',
-      name: 'test',
-      email: userEmail,
-      password: hashedPassword,
-      slug: 'test',
-      status: 'active',
-      visibility: 'public',
-      created_at: new Date(),
-      updated_at: new Date(),
-      created_by: firstUser.id,
+  const user = await prisma.users.upsert({
+    create: createUpdateUser,
+    update: createUpdateUser,
+    where: {
+      id: firstUserId,
     },
   });
 
-  await prisma.posts.create({
-    data: {
-      uuid: randomUUID(),
+  await prisma.settings.upsert({
+    create: {
       id: randomUUID(),
-      email_recipient_filter: 'all',
-      title: 'Hello World',
-      slug: 'hello-world',
-      html: '<p>Hello World</p>',
-      plaintext: 'Hello World',
+      key: 'title',
+      value: 'Test',
+      type: 'string',
+      flags: 'PUBLIC',
       created_at: new Date(),
       updated_at: new Date(),
-      created_by: firstUser.id,
+      created_by: firstUserId,
+    },
+    update: {
+      value: 'Test',
+      created_at: new Date(),
+    },
+    where: {
+      key: 'title',
     },
   });
 
-  await prisma.integrations.create({
+  await prisma.settings.upsert({
+    create: {
+      id: randomUUID(),
+      key: 'description',
+      value: 'test description',
+      type: 'string',
+      flags: 'PUBLIC',
+      created_at: new Date(),
+      updated_at: new Date(),
+      created_by: firstUserId,
+    },
+    update: {
+      value: 'test description',
+      created_at: new Date(),
+    },
+    where: {
+      key: 'description',
+    },
+  });
+
+  const ownerRole = await prisma.roles.upsert({
+    create: {
+      id: randomUUID(),
+      name: 'Owner',
+      description: 'Blog Owner',
+      created_at: new Date(),
+      updated_at: new Date(),
+      created_by: firstUserId,
+    },
+    update: {
+      created_at: new Date(),
+      created_by: firstUserId,
+    },
+    where: {
+      name: 'Owner',
+    },
+  });
+
+  const rolesUsersId = randomUUID();
+
+  await prisma.roles_users.deleteMany({
+    where: {
+      user_id: firstUserId,
+    },
+  });
+
+  await prisma.roles_users.create({
     data: {
+      id: rolesUsersId,
+      user_id: firstUserId,
+      role_id: ownerRole.id,
+    },
+  });
+
+  const firstPostId = randomUUID();
+
+  await prisma.posts.upsert({
+    create: {
+      uuid: randomUUID(),
+      id: firstPostId,
+      email_recipient_filter: 'all',
+      title: 'Example Post',
+      slug: 'example',
+      html: '<p>Example Post</p>',
+      plaintext: 'Example Post',
+      created_at: new Date(),
+      updated_at: new Date(),
+      created_by: user.id,
+      status: 'published',
+    },
+    update: {
+      created_at: new Date(),
+    },
+    where: {
+      slug_type: {
+        slug: 'example',
+        type: 'post',
+      },
+    },
+  });
+
+  await prisma.integrations.upsert({
+    create: {
       id: integrationId,
       name: 'remix',
       slug: 'remix',
       description: 'Remix',
       created_at: new Date(),
       updated_at: new Date(),
-      created_by: firstUser.id,
+      created_by: firstUserId,
+    },
+    update: {
+      created_at: new Date(),
+    },
+    where: {
+      slug: 'remix',
     },
   });
 
-  await prisma.api_keys.create({
-    data: {
+  const ghostContentApiKeyAsString = process.env.GHOST_CONTENT_API_KEY as string;
+
+  await prisma.api_keys.upsert({
+    create: {
       id: randomUUID(),
       integration_id: integrationId,
       type: 'content',
-      secret: process.env.GHOST_CONTENT_API_KEY as string,
+      secret: ghostContentApiKeyAsString,
       created_at: new Date(),
       updated_at: new Date(),
-      created_by: firstUser.id,
+      created_by: firstUserId,
+    },
+    update: {
+      created_at: new Date(),
+    },
+    where: {
+      secret: ghostContentApiKeyAsString,
     },
   });
 }
