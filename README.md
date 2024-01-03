@@ -10,13 +10,13 @@
 - [Docker](https://www.docker.com/)
 - [Tilt](https://tilt.dev/)
 
-## Development
+## Local Development
+
+- Start Tilt
 
 ```
 tilt up
 ```
-
-## Useful Commands
 
 - Seed DB
 
@@ -28,4 +28,26 @@ prisma db seed
 
 ```
 prisma studio
+```
+
+- Build Docker
+
+```
+docker run -e GHOST_CONTENT_API_KEY=your-api-key-value
+```
+
+## Deploy to Fly.io
+
+- Create Fly.io account, app, and install CLI
+
+- Set secrets
+
+```
+flyctl secrets set GHOST_CONTENT_API_KEY=value_of_var -a your-app-name
+```
+
+- Deploy
+
+```
+flyctl deploy -a your-app-name
 ```
