@@ -13,18 +13,18 @@ echo 10 > /proc/sys/vm/swappiness
 swapon /swapfile
 echo 1 > /proc/sys/vm/overcommit_memory
 
-# Prisma migrations
-npx prisma migrate deploy
-
-# Seed Content API Key
-npm run seed:prod
-
 # Start Nginx
 nginx &
 
 # Start Ghost
 cd /var/www/ghost
 ghost start &
+
+# Prisma migrations
+npx prisma migrate deploy
+
+# Seed Content API Key
+npm run seed:prod
 
 # Start Remix app
 cd /myapp
