@@ -30,10 +30,11 @@ prisma db seed
 prisma studio
 ```
 
-- Build Docker
+- Build/Run Docker
 
 ```
-docker run -e GHOST_CONTENT_API_KEY=your-api-key-value
+docker build -t your-image-name .
+docker run -e GHOST_CONTENT_API_KEY=your-api-key-value your-image-name
 ```
 
 ## Deploy to Fly.io
