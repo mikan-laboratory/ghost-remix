@@ -28,6 +28,7 @@
     "@tryghost/content-api": "^1.11.20",
     "axios": "^1.6.2",
     "bcrypt": "^5.1.1",
+    "dayjs": "^1.11.10",
     "esno": "^4.0.0",
     "framer-motion": "^6.5.1",
     "isbot": "^3.6.8",

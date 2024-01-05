@@ -1,4 +1,6 @@
-import { Box, Heading, Input, Button, Image, Text, Flex, VStack } from '@chakra-ui/react';
+import dayjs from 'dayjs';
+import colors from '~/theme/colors';
+import { Box, Heading, Input, Button, Image, Text, Flex, VStack, Circle } from '@chakra-ui/react';
 import type { MetaFunction } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import { getPosts } from '~/content-api/getPosts';
@@ -11,59 +13,53 @@ export const loader = async () => {
   return getPosts();
 };
 
-function getDayOfWeek(dateString: string): string {
-  const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-  const date = new Date(dateString);
-  return daysOfWeek[date.getDay()];
-}
-
-function formatDate(dateString: string | null | undefined): string {
-  if (!dateString) {
-    return 'Unknown Date'; // Return a default or placeholder string
-  }
-
-  const date = new Date(dateString);
-  const year = date.getFullYear().toString().slice(-2); // Get the last two digits of the year
-  const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Month is 0-indexed, add 1
-  const day = date.getDate().toString().padStart(2, '0');
-
-  return `${month}-${day}-${year}`;
-}
-
 export default function Index() {
   const posts = useLoaderData<typeof loader>();
 
   return (
-    <Box p={5}>
-      <Heading mb={4}>Tech Bro Lifestyle</Heading>
+    <Box p={5} backgroundColor={colors.background}>
+      <Heading mb={4} color={colors.primary}>
+        Tech Bro Lifestyle
+      </Heading>
       <Flex mb={6}>
-        <Input placeholder="Search blog posts" />
-        <Button ml={2}>Search</Button>
+        <Input placeholder="Search blog posts" borderColor={colors.secondary} />
+        <Button ml={2} background={colors.secondary} textColor={colors.text1}>
+          Search
+        </Button>
       </Flex>
 
-      {/* List of Blog Posts */}
-      <VStack spacing={5}>
+      <VStack spacing={0}>
         {posts.map((post) => {
           console.log(post);
           return (
-            <Box key={post.id} borderWidth="1px" borderRadius="lg" overflow="hidden" p={4} w="full">
-              <Text fontSize="4xl">{post.published_at ? `${getDayOfWeek(post.published_at)}` : 'Someday'}</Text>
-              <Text>
-                {formatDate(post.published_at)} · {post.authors?.[0]?.name ?? 'Anonymous'}
+            <Box key={post.id} borderLeft={`2px solid ${colors.secondary}`} overflow="hidden" p={0} pb={10} w="full">
+              <Flex alignItems="center">
+                <Circle size="20px" bg={colors.secondary} position="absolute" left="11px" />
+
+                <Text fontSize="4xl" fontWeight="bolder" ml={4} textColor={colors.primary}>
+                  {post.published_at ? `${dayjs(post.published_at).format('dddd')}` : 'Someday'}
+                </Text>
+              </Flex>
+              <Text borderBottom={`2px solid ${colors.secondary}`} width="50%" pl={5} pb={1} textColor={colors.text2}>
+                {dayjs(post.published_at).format('MM-DD-YY')} · {post.authors?.[0]?.name ?? 'Anonymous'}
               </Text>
               {post.feature_image && (
                 <Image
                   src={post.feature_image}
                   alt={post.feature_image_alt || 'image'}
-                  mt={2}
+                  mt={5}
+                  ml={5}
+                  borderRadius="xl"
                   width="50%"
                   height="auto"
                 />
               )}
-              <Heading size="md" mt={2} fontStyle="italic">
+              <Heading size="md" mt={2} ml={5} fontStyle="italic" textColor={colors.text1}>
                 {post.title}
               </Heading>
-              <Text mt={2}>{post.excerpt}</Text>
+              <Text mt={2} ml={5} textColor={colors.text2}>
+                {post.excerpt}
+              </Text>
             </Box>
           );
         })}
