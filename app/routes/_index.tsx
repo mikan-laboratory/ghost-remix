@@ -22,8 +22,25 @@ export default function Index() {
         Tech Bro Lifestyle
       </Heading>
       <Flex mb={6}>
-        <Input placeholder="Search blog posts" borderColor={colors.secondary} />
-        <Button ml={2} background={colors.secondary} textColor={colors.text1}>
+        <Input
+          placeholder="Search blog posts"
+          borderColor={colors.secondary}
+          textColor={colors.text1}
+          focusBorderColor={colors.primary}
+        />
+        <Button
+          ml={2}
+          background={colors.secondary}
+          textColor={colors.text1}
+          border={`solid ${colors.secondary}`}
+          sx={{
+            ':hover': {
+              bg: colors.background,
+              borderColor: colors.primary,
+              color: colors.primary,
+            },
+          }}
+        >
           Search
         </Button>
       </Flex>
@@ -31,6 +48,7 @@ export default function Index() {
       <VStack spacing={0}>
         {posts.map((post) => {
           console.log(post);
+          let time = post.published_at ? new Date(post.published_at).toLocaleTimeString() : 0;
           return (
             <Box key={post.id} borderLeft={`2px solid ${colors.secondary}`} overflow="hidden" p={0} pb={10} w="full">
               <Flex alignItems="center">
@@ -41,7 +59,7 @@ export default function Index() {
                 </Text>
               </Flex>
               <Text borderBottom={`2px solid ${colors.secondary}`} width="50%" pl={5} pb={1} textColor={colors.text2}>
-                {dayjs(post.published_at).format('MM-DD-YY')} · {post.authors?.[0]?.name ?? 'Anonymous'}
+                {dayjs(post.published_at).format('MM-DD-YY')} - {time} - {post.authors?.[0]?.name ?? 'Anonymous'}
               </Text>
               {post.feature_image && (
                 <Image
