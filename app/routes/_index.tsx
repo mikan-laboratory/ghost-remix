@@ -1,73 +1,74 @@
-import { Box, Heading, Input, Button, Image, Text, Flex, VStack } from '@chakra-ui/react';
-import type { MetaFunction } from '@remix-run/node';
-import { useLoaderData } from '@remix-run/react';
-import { getPosts } from '~/content-api/getPosts';
+// External library imports
+import { useState } from 'react';
+import { Box, Heading, Input, Button, Image, Text, Flex, VStack, Circle } from '@chakra-ui/react';
+import type { MetaFunction, LoaderFunction } from '@remix-run/node';
+import { useLoaderData, useNavigate } from '@remix-run/react';
+
+// Internal module imports
+import colors from '~/theme/colors';
+import { Post } from '~/types/blogTypes';
+import { getPostsAndPagination } from '~/content-api/getPostsAndPagination';
+import PaginationNavigation from '~/components/PaginationNavigation';
+import BlogListItem from '~/components/BlogListItem';
 
 export const meta: MetaFunction = () => {
-  return [{ title: 'The Tech Brolog' }, { name: 'description', content: 'Welcome to Tech!' }];
+  return [{ title: 'Tech Bro Lifestyle' }, { name: 'description', content: 'Welcome to Tech!' }];
 };
 
-export const loader = async () => {
-  return getPosts();
+export const loader: LoaderFunction = async ({ request }) => {
+  const url = new URL(request.url);
+  const page = parseInt(url.searchParams.get('page') || '1', 10);
+
+  return getPostsAndPagination(page, 5);
 };
-
-function getDayOfWeek(dateString: string): string {
-  const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-  const date = new Date(dateString);
-  return daysOfWeek[date.getDay()];
-}
-
-function formatDate(dateString: string | null | undefined): string {
-  if (!dateString) {
-    return 'Unknown Date'; // Return a default or placeholder string
-  }
-
-  const date = new Date(dateString);
-  const year = date.getFullYear().toString().slice(-2); // Get the last two digits of the year
-  const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Month is 0-indexed, add 1
-  const day = date.getDate().toString().padStart(2, '0');
-
-  return `${month}-${day}-${year}`;
-}
 
 export default function Index() {
-  const posts = useLoaderData<typeof loader>();
+  const { posts, totalPages, totalPosts } = useLoaderData<typeof loader>();
+
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const navigate = useNavigate();
+
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+    navigate(`/?page=${newPage}`);
+  };
 
   return (
-    <Box p={5}>
-      <Heading mb={4}>Tech Bro Lifestyle</Heading>
+    <Box p={5} backgroundColor={colors.background}>
+      <Heading mb={4} color={colors.primary}>
+        Tech Bro Lifestyle
+      </Heading>
       <Flex mb={6}>
-        <Input placeholder="Search blog posts" />
-        <Button ml={2}>Search</Button>
+        <Input
+          placeholder="Search blog posts"
+          borderColor={colors.secondary}
+          textColor={colors.text1}
+          focusBorderColor={colors.primary}
+        />
+        <Button
+          ml={2}
+          background={colors.secondary}
+          textColor={colors.text1}
+          border={`solid ${colors.secondary}`}
+          sx={{
+            ':hover': {
+              bg: colors.background,
+              borderColor: colors.primary,
+              color: colors.primary,
+            },
+          }}
+        >
+          Search
+        </Button>
       </Flex>
 
-      {/* List of Blog Posts */}
-      <VStack spacing={5}>
-        {posts.map((post) => {
-          console.log(post);
-          return (
-            <Box key={post.id} borderWidth="1px" borderRadius="lg" overflow="hidden" p={4} w="full">
-              <Text fontSize="4xl">{post.published_at ? `${getDayOfWeek(post.published_at)}` : 'Someday'}</Text>
-              <Text>
-                {formatDate(post.published_at)} · {post.authors?.[0]?.name ?? 'Anonymous'}
-              </Text>
-              {post.feature_image && (
-                <Image
-                  src={post.feature_image}
-                  alt={post.feature_image_alt || 'image'}
-                  mt={2}
-                  width="50%"
-                  height="auto"
-                />
-              )}
-              <Heading size="md" mt={2} fontStyle="italic">
-                {post.title}
-              </Heading>
-              <Text mt={2}>{post.excerpt}</Text>
-            </Box>
-          );
-        })}
+      <VStack spacing={0}>
+        {posts.map((post: Post) => (
+          <BlogListItem post={post} />
+        ))}
       </VStack>
+      <PaginationNavigation currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
     </Box>
   );
 }
