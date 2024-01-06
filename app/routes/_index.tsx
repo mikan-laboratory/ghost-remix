@@ -3,18 +3,18 @@ import colors from '~/theme/colors';
 import { Box, Heading, Input, Button, Image, Text, Flex, VStack, Circle } from '@chakra-ui/react';
 import type { MetaFunction } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
-import { getPosts } from '~/content-api/getPosts';
+import { getPostsAndPagination } from '~/content-api/getPostsAndPagination';
 
 export const meta: MetaFunction = () => {
   return [{ title: 'The Tech Brolog' }, { name: 'description', content: 'Welcome to Tech!' }];
 };
 
 export const loader = async () => {
-  return getPosts();
+  return getPostsAndPagination();
 };
 
 export default function Index() {
-  const posts = useLoaderData<typeof loader>();
+  const { posts, totalPages, totalPosts } = useLoaderData<typeof loader>();
 
   return (
     <Box p={5} backgroundColor={colors.background}>
