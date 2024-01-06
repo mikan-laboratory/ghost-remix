@@ -12,7 +12,7 @@ import PaginationNavigation from '~/components/PaginationNavigation';
 import BlogListItem from '~/components/BlogListItem';
 
 export const meta: MetaFunction = () => {
-  return [{ title: 'The Tech Brolog' }, { name: 'description', content: 'Welcome to Tech!' }];
+  return [{ title: 'Tech Bro Lifestyle' }, { name: 'description', content: 'Welcome to Tech!' }];
 };
 
 export const loader: LoaderFunction = async ({ request }) => {
