@@ -25,7 +25,7 @@ export default function BlogListItem({ post }: BlogListItemProps) {
       <Text borderBottom={`2px solid ${colors.secondary}`} width="50%" pl={5} pb={1} textColor={colors.text2}>
         {dayjs(post.published_at).format('MM-DD-YY')} - {time} - {post.authors?.[0]?.name ?? 'Anonymous'}
       </Text>
-      <Link to={`/posts/${post.id}`}>
+      <Link to={`/${post.slug}`}>
         {post.feature_image && (
           <Image
             src={post.feature_image}

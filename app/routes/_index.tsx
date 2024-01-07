@@ -1,6 +1,6 @@
 // External library imports
 import { useState } from 'react';
-import { Box, Heading, Input, Button, Image, Text, Flex, VStack, Circle } from '@chakra-ui/react';
+import { Box, Heading, Input, Button, Flex, VStack } from '@chakra-ui/react';
 import type { MetaFunction, LoaderFunction } from '@remix-run/node';
 import { useLoaderData, useNavigate } from '@remix-run/react';
 

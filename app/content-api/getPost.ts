@@ -1,7 +1,7 @@
 import { ghostContentAPI } from './ghostContentAPI';
 
-export const getPost = async (id: string) => {
+export const getPost = async (slug: string) => {
   return ghostContentAPI.posts.read({
-    id: id,
+    slug: slug,
   });
 };
