@@ -65,7 +65,7 @@ export default function Index() {
 
       <VStack spacing={0}>
         {posts.map((post: Post) => (
-          <BlogListItem post={post} />
+          <BlogListItem key={post.id} post={post} />
         ))}
       </VStack>
       <PaginationNavigation currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />

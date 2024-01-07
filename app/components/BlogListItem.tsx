@@ -3,6 +3,7 @@ import dayjs from 'dayjs';
 
 //internal module import
 import { Box, Flex, Circle, Text, Image, Heading } from '@chakra-ui/react';
+import { Link } from '@remix-run/react';
 import { Post } from '~/types/blogTypes';
 import colors from '~/theme/colors';
 
@@ -24,20 +25,29 @@ export default function BlogListItem({ post }: BlogListItemProps) {
       <Text borderBottom={`2px solid ${colors.secondary}`} width="50%" pl={5} pb={1} textColor={colors.text2}>
         {dayjs(post.published_at).format('MM-DD-YY')} - {time} - {post.authors?.[0]?.name ?? 'Anonymous'}
       </Text>
-      {post.feature_image && (
-        <Image
-          src={post.feature_image}
-          alt={post.feature_image_alt || 'image'}
-          mt={5}
+      <Link to={`/posts/${post.id}`}>
+        {post.feature_image && (
+          <Image
+            src={post.feature_image}
+            alt={post.feature_image_alt || 'image'}
+            mt={5}
+            ml={5}
+            borderRadius="xl"
+            width="50%"
+            height="auto"
+          />
+        )}
+        <Heading
+          size="md"
+          mt={2}
           ml={5}
-          borderRadius="xl"
-          width="50%"
-          height="auto"
-        />
-      )}
-      <Heading size="md" mt={2} ml={5} fontStyle="italic" textColor={colors.text1}>
-        {post.title}
-      </Heading>
+          fontStyle="italic"
+          textColor={colors.text1}
+          sx={{ _hover: { color: colors.primary } }}
+        >
+          {post.title}
+        </Heading>
+      </Link>
       <Text mt={2} ml={5} textColor={colors.text2}>
         {post.excerpt}
       </Text>
