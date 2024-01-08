@@ -16,9 +16,8 @@ echo 1 > /proc/sys/vm/overcommit_memory
 # Start Nginx
 nginx &
 
-# Start Ghost
-cd /var/www/ghost
-ghost start &
+# Switch to non-root user and Start Ghost
+su ghostuser -c 'cd /var/www/ghost && ghost start' &
 
 # Prisma migrations
 npx prisma migrate deploy

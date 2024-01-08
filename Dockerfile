@@ -1,19 +1,29 @@
 # Base node image
-FROM node:16-bullseye-slim as base
+FROM node:18.19-bullseye-slim as base
 
 # Set environment for base and all layers that inherit from it
 ENV NODE_ENV production
 
 # Install openssl for Prisma, sqlite3 for Ghost, and Nginx for routing
-RUN apt-get update && apt-get install -y openssl sqlite3 nginx
+RUN apt-get update && apt-get install -y openssl sqlite3 nginx python3 build-essential
 
 # Install Ghost CLI
-RUN npm install ghost-cli@latest -g
+RUN npm install ghost-cli@1.25.3 -g
+
+# Create the Ghost directory and set appropriate permissions
+RUN mkdir -p /var/www/ghost \
+    && adduser --disabled-password --gecos '' ghostuser \
+    && chown -R ghostuser:ghostuser /var/www/ghost
+
+# Switch to the non-root user
+USER ghostuser
 
 # Set up Ghost
-RUN mkdir -p /var/www/ghost
 WORKDIR /var/www/ghost
 RUN ghost install local --no-start
+
+# Switch back to root user for any other root-required operations
+USER root
 
 # Install all node_modules, including dev dependencies for Remix
 FROM base as deps
