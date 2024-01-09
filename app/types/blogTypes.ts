@@ -1,4 +1,4 @@
-interface Author {
+export interface Author {
   id: string;
   name: string;
   slug: string;

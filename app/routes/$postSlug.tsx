@@ -3,6 +3,7 @@ import { Button, Box, Heading, Text } from '@chakra-ui/react';
 import { getPost } from '~/content-api/getPost';
 import { LoaderFunction } from '@remix-run/node';
 import PostContent from '~/components/PostContent';
+import AuthorsList from '~/components/AuthorsList';
 
 export const loader: LoaderFunction = async ({ params }) => {
   const postSlug = params.postSlug;
@@ -25,7 +26,7 @@ export default function Post() {
       </Button> */}
       <Box>
         <Heading fontSize={60}>{post.title}</Heading>
-        <Text>written by: {post.author}</Text>
+        <AuthorsList authors={post.authors} />
       </Box>
       <PostContent html={postHtml} />
     </Box>
