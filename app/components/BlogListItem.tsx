@@ -27,15 +27,27 @@ export default function BlogListItem({ post }: BlogListItemProps) {
       </Text>
       <Link to={`/${post.slug}`}>
         {post.feature_image && (
-          <Image
-            src={post.feature_image}
-            alt={post.feature_image_alt || 'image'}
+          <Box
+            position="relative"
+            width="50%"
+            height="0"
+            paddingBottom="25%" // This sets the height as a percentage of the width
+            overflow="hidden"
             mt={5}
             ml={5}
-            borderRadius="xl"
-            width="50%"
-            height="auto"
-          />
+          >
+            <Image
+              src={post.feature_image}
+              alt={post.feature_image_alt || 'image'}
+              position="absolute"
+              top="50%"
+              left="50%"
+              transform="translate(-50%, -50%)"
+              minWidth="100%"
+              minHeight="100%"
+              objectFit="cover" // Ensures the image covers the area, might crop if necessary
+            />
+          </Box>
         )}
         <Heading
           size="md"
@@ -48,8 +60,8 @@ export default function BlogListItem({ post }: BlogListItemProps) {
           {post.title}
         </Heading>
       </Link>
-      <Text mt={2} ml={5} textColor={colors.text2}>
-        {post.excerpt}
+      <Text mt={2} ml={5} textColor={colors.text2} width="80%">
+        {post.excerpt}...
       </Text>
     </Box>
   );

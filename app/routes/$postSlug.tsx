@@ -1,9 +1,11 @@
-import { useParams, Link, useLoaderData } from '@remix-run/react';
+import { useLoaderData } from '@remix-run/react';
 import { Button, Box, Heading, Text } from '@chakra-ui/react';
 import { getPost } from '~/content-api/getPost';
 import { LoaderFunction } from '@remix-run/node';
 import PostContent from '~/components/PostContent';
 import AuthorsList from '~/components/AuthorsList';
+import TopicsList from '~/components/TopicsList';
+import colors from '~/theme/colors';
 
 export const loader: LoaderFunction = async ({ params }) => {
   const postSlug = params.postSlug;
@@ -20,15 +22,22 @@ export default function Post() {
   console.log(post);
 
   return (
-    <Box>
+    <Box minHeight="100vh" backgroundColor={colors.background}>
       {/* <Button as={Link} to="/" colorScheme="blue">
         Back to Blog List
       </Button> */}
-      <Box>
-        <Heading fontSize={60}>{post.title}</Heading>
-        <AuthorsList authors={post.authors} />
+      <Box p="10%">
+        <Box pb={5} borderBottom={`2px solid ${colors.secondary}`}>
+          <Heading fontSize={60} textColor={colors.primary}>
+            {post.title}
+          </Heading>
+          <AuthorsList authors={post.authors} />
+          {post.tags.length > 0 && <TopicsList topics={post.tags} />}
+        </Box>
+        <Box py={5} textColor={colors.text2}>
+          <PostContent html={postHtml} />
+        </Box>
       </Box>
-      <PostContent html={postHtml} />
     </Box>
   );
 }
