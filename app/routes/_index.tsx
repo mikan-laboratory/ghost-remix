@@ -5,7 +5,6 @@ import type { MetaFunction, LoaderFunction } from '@remix-run/node';
 import { useLoaderData, useNavigate } from '@remix-run/react';
 
 // Internal module imports
-import colors from '~/theme/colors';
 import { Post } from '~/types/blogTypes';
 import { getPostsAndPagination } from '~/content-api/getPostsAndPagination';
 import Header from '~/components/Header';
@@ -36,7 +35,7 @@ export default function Index() {
   };
 
   return (
-    <Box p={5} backgroundColor={colors.background}>
+    <Box px="100px" py="5%" backgroundColor="background">
       <Header />
       <VStack spacing={0}>
         {posts.map((post: Post) => (

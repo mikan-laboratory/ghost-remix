@@ -4,6 +4,7 @@ import { withEmotionCache } from '@emotion/react';
 import { ChakraProvider } from '@chakra-ui/react';
 import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
 import { MetaFunction, LinksFunction } from '@remix-run/node'; // Depends on the runtime you choose
+import theme from './theme/theme';
 
 import { ServerStyleContext, ClientStyleContext } from './context';
 
@@ -70,7 +71,7 @@ const Document = withEmotionCache(({ children }: DocumentProps, emotionCache) =>
 export default function App() {
   return (
     <Document>
-      <ChakraProvider>
+      <ChakraProvider theme={theme}>
         <Outlet />
       </ChakraProvider>
     </Document>
