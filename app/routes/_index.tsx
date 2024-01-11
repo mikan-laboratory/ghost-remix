@@ -1,13 +1,14 @@
 // External library imports
 import { useState } from 'react';
-import { Box, Heading, Input, Button, Flex, VStack } from '@chakra-ui/react';
+import { Box, VStack } from '@chakra-ui/react';
 import type { MetaFunction, LoaderFunction } from '@remix-run/node';
-import { Link, useLoaderData, useNavigate } from '@remix-run/react';
+import { useLoaderData, useNavigate } from '@remix-run/react';
 
 // Internal module imports
 import colors from '~/theme/colors';
 import { Post } from '~/types/blogTypes';
 import { getPostsAndPagination } from '~/content-api/getPostsAndPagination';
+import Header from '~/components/Header';
 import PaginationNavigation from '~/components/PaginationNavigation';
 import BlogListItem from '~/components/BlogListItem';
 
@@ -36,37 +37,7 @@ export default function Index() {
 
   return (
     <Box p={5} backgroundColor={colors.background}>
-      <Flex>
-        <Link to="./">
-          <Heading mb={4} color={colors.primary} sx={{ _hover: { color: colors.text1 } }}>
-            Tech Bro Lifestyle
-          </Heading>
-        </Link>
-      </Flex>
-      <Flex mb={6}>
-        <Input
-          placeholder="Search blog posts"
-          borderColor={colors.secondary}
-          textColor={colors.text1}
-          focusBorderColor={colors.primary}
-        />
-        <Button
-          ml={2}
-          background={colors.secondary}
-          textColor={colors.text1}
-          border={`solid ${colors.secondary}`}
-          sx={{
-            ':hover': {
-              bg: colors.background,
-              borderColor: colors.primary,
-              color: colors.primary,
-            },
-          }}
-        >
-          Search
-        </Button>
-      </Flex>
-
+      <Header />
       <VStack spacing={0}>
         {posts.map((post: Post) => (
           <BlogListItem key={post.id} post={post} />
