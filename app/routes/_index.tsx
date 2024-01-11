@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { Box, Heading, Input, Button, Flex, VStack } from '@chakra-ui/react';
 import type { MetaFunction, LoaderFunction } from '@remix-run/node';
-import { useLoaderData, useNavigate } from '@remix-run/react';
+import { Link, useLoaderData, useNavigate } from '@remix-run/react';
 
 // Internal module imports
 import colors from '~/theme/colors';
@@ -36,9 +36,13 @@ export default function Index() {
 
   return (
     <Box p={5} backgroundColor={colors.background}>
-      <Heading mb={4} color={colors.primary}>
-        Tech Bro Lifestyle
-      </Heading>
+      <Flex>
+        <Link to="./">
+          <Heading mb={4} color={colors.primary} sx={{ _hover: { color: colors.text1 } }}>
+            Tech Bro Lifestyle
+          </Heading>
+        </Link>
+      </Flex>
       <Flex mb={6}>
         <Input
           placeholder="Search blog posts"

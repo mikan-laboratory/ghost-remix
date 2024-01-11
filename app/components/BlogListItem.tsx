@@ -31,10 +31,11 @@ export default function BlogListItem({ post }: BlogListItemProps) {
             position="relative"
             width="50%"
             height="0"
-            paddingBottom="25%" // This sets the height as a percentage of the width
+            paddingBottom="25%"
             overflow="hidden"
             mt={5}
             ml={5}
+            borderRadius="xl"
           >
             <Image
               src={post.feature_image}
@@ -45,7 +46,7 @@ export default function BlogListItem({ post }: BlogListItemProps) {
               transform="translate(-50%, -50%)"
               minWidth="100%"
               minHeight="100%"
-              objectFit="cover" // Ensures the image covers the area, might crop if necessary
+              objectFit="cover"
             />
           </Box>
         )}

@@ -52,3 +52,25 @@ export interface Post {
   uuid: string;
   visibility: string;
 }
+
+export interface Tag {
+  accent_color: string | null;
+  canonical_url: string | null;
+  codeinjection_foot: string | null;
+  codeinjection_head: string | null;
+  description: string | null;
+  feature_image: string | null;
+  id: string;
+  meta_description: string | null;
+  meta_title: string | null;
+  name: string;
+  og_description: string | null;
+  og_image: string | null;
+  og_title: string | null;
+  slug: string | null;
+  twitter_description: string | null;
+  twitter_image: string | null;
+  twitter_title: string | null;
+  url: string;
+  visibility: string;
+}
