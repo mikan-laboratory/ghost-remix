@@ -1,6 +1,5 @@
 import { Text } from '@chakra-ui/react';
 import { Author } from '~/types/blogTypes';
-import colors from '~/theme/colors';
 
 interface AuthorsListProps {
   authors: Author[];
@@ -23,5 +22,5 @@ export default function AuthorsList({ authors }: AuthorsListProps) {
     authorNames = authors[0].name;
   }
 
-  return <Text textColor={colors.text1}>Author: {authorNames}</Text>;
+  return <Text textColor="text1">written by: {authorNames}</Text>;
 }

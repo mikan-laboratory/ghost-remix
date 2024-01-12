@@ -27,8 +27,8 @@ export default function Post() {
         Back to Blog List
       </Button> */}
       <Header />
-      <Box pb={5} borderBottom="2px solid secondary">
-        <Heading fontSize={60} textColor="primary">
+      <Box pb={5} borderBottom="2px solid" borderColor="secondary">
+        <Heading fontSize={60} textColor="text1">
           {post.title}
         </Heading>
         {post.feature_image && (
@@ -54,7 +54,7 @@ export default function Post() {
             />
           </Box>
         )}
-        <Flex justifyContent="space-between">
+        <Flex justifyContent="space-between" mt={5}>
           <AuthorsList authors={post.authors} />
           {post.tags.length > 0 && <TopicsList topics={post.tags} />}
         </Flex>

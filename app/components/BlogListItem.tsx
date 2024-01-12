@@ -13,7 +13,7 @@ interface BlogListItemProps {
 export default function BlogListItem({ post }: BlogListItemProps) {
   let time = post.published_at ? new Date(post.published_at).toLocaleTimeString() : 0;
   return (
-    <Box key={post.id} borderLeft={`2px solid secondary`} overflow="hidden" p={0} pb={10} w="full">
+    <Box key={post.id} borderLeft="2px solid" borderColor="secondary" overflow="hidden" p={0} pb={10} w="full">
       <Flex alignItems="center">
         <Circle size="20px" bg="secondary" position="absolute" left="91px" />
 
@@ -21,7 +21,7 @@ export default function BlogListItem({ post }: BlogListItemProps) {
           {post.published_at ? `${dayjs(post.published_at).format('dddd')}` : 'Someday'}
         </Text>
       </Flex>
-      <Text borderBottom="2px solid secondary" width="50%" pl={5} pb={1} textColor="text2">
+      <Text borderBottom="2px solid" borderColor="secondary" width="50%" pl={5} pb={1} textColor="text2">
         {dayjs(post.published_at).format('MM-DD-YY')} - {time} - {post.authors?.[0]?.name ?? 'Anonymous'}
       </Text>
       <Link to={`/${post.slug}`}>

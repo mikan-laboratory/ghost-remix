@@ -1,34 +1,29 @@
 import { Box, Input, Button, Flex, Heading } from '@chakra-ui/react';
 import { Link } from '@remix-run/react';
-import colors from '~/theme/colors';
 
 export default function Header() {
   return (
     <Box>
       <Flex>
         <Link to="/">
-          <Heading mb={4} color={colors.primary} sx={{ _hover: { color: colors.text1 } }}>
+          <Heading mb={4} color="primary" sx={{ _hover: { color: 'text1' } }}>
             Tech Bro Lifestyle
           </Heading>
         </Link>
       </Flex>
       <Flex mb={6}>
-        <Input
-          placeholder="Search blog posts"
-          borderColor={colors.secondary}
-          textColor={colors.text1}
-          focusBorderColor={colors.primary}
-        />
+        <Input placeholder="Search blog posts" borderColor="secondary" textColor="text1" focusBorderColor="primary" />
         <Button
           ml={2}
-          background={colors.secondary}
-          textColor={colors.text1}
-          border={`solid ${colors.secondary}`}
+          background="secondary"
+          textColor="text1"
+          border="solid"
+          borderColor="secondary"
           sx={{
             ':hover': {
-              bg: colors.background,
-              borderColor: colors.primary,
-              color: colors.primary,
+              bg: 'background',
+              borderColor: 'primary',
+              color: 'primary',
             },
           }}
         >

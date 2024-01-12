@@ -1,5 +1,4 @@
 import { Text } from '@chakra-ui/react';
-import colors from '~/theme/colors';
 import { Tag } from '~/types/blogTypes';
 
 interface TopicsListProps {
@@ -15,5 +14,5 @@ export default function TopicsList({ topics }: TopicsListProps) {
     topicsList = topics[0].name;
   }
 
-  return <Text textColor={colors.text1}>Topics: {topicsList.toLowerCase()}</Text>;
+  return <Text textColor="text1">topics: {topicsList.toLowerCase()}</Text>;
 }
