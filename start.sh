@@ -24,7 +24,7 @@ nginx &
 su ghostuser -c 'cd /var/www/ghost && ghost start' &
 
 # Prisma migrations
-npx prisma migrate deploy
+npx prisma migrate resolve --applied 0_init
 
 # Seed Content API Key
 npm run seed:prod

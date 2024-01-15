@@ -8,7 +8,7 @@ GHOST_CONTENT_API_KEY ?= 77a7e9c49a7cc3416ab81eb233
 CONTAINER_NAME ?= smooth-jazz-container
 
 # Phony targets
-.PHONY: build run all clean clean-image clean-all
+.PHONY: build run all clean clean-image clean-all terminal
 
 all: build run
 clean-all: clean clean-image
@@ -19,7 +19,7 @@ build:
 
 # Run the Docker container
 run:
-	docker run --name $(CONTAINER_NAME) -e GHOST_CONTENT_API_KEY=$(GHOST_CONTENT_API_KEY) $(IMAGE_NAME)
+	docker run -d --name $(CONTAINER_NAME) -p 80:80 -e GHOST_CONTENT_API_KEY=$(GHOST_CONTENT_API_KEY) $(IMAGE_NAME)
 
 clean:
 	docker stop $(CONTAINER_NAME) && docker rm $(CONTAINER_NAME)
@@ -27,3 +27,6 @@ clean:
 # Remove the Docker image
 clean-image:
 	docker rmi $(IMAGE_NAME)
+
+terminal:
+	docker exec -it $(CONTAINER_NAME) /bin/bash

@@ -59,7 +59,7 @@ RUN npm run build
 FROM base
 
 # Environment variables
-ENV DATABASE_URL=file:/var/lib/ghost/content/data/ghost.db
+ENV DATABASE_URL=file:/var/www/ghost/content/data/ghost-local.db
 ENV GHOST_URL=http://localhost:2368
 ENV PORT=3000
 ENV NODE_ENV=production
