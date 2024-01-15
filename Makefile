@@ -5,7 +5,9 @@ IMAGE_NAME ?= smooth-jazz
 GHOST_API_KEY ?= 77a7e9c49a7cc3416ab81eb233
 
 # Phony targets
-.PHONY: build run
+.PHONY: build run all
+
+all: build run
 
 # Build the Docker image
 build:

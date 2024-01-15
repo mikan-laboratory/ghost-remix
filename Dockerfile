@@ -75,9 +75,12 @@ WORKDIR /myapp
 
 COPY --from=production-deps /myapp/node_modules /myapp/node_modules
 COPY --from=build /myapp/node_modules/.prisma /myapp/node_modules/.prisma
+
 COPY --from=build /myapp/build /myapp/build
 COPY --from=build /myapp/public /myapp/public
 COPY --from=build /myapp/package.json /myapp/package.json
+COPY --from=build /myapp/start.sh /myapp/start.sh
+COPY --from=build /myapp/prisma /myapp/prisma
 
 # Copy Ghost
 COPY --from=base /var/www/ghost /var/www/ghost
@@ -85,9 +88,6 @@ COPY --from=base /var/www/ghost /var/www/ghost
 # Copy Nginx configuration
 COPY nginx.prod.conf /etc/nginx/nginx.conf
 
-# Start script
-COPY start.sh /start.sh
-
-RUN chmod +x /start.sh
+RUN chmod +x ./start.sh
 
 ENTRYPOINT [ "./start.sh" ]
