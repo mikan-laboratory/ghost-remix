@@ -2,7 +2,6 @@ import { ghostContentAPI } from './ghostContentAPI';
 
 export const getSearchResults = async (query: string = '', page = 1, limit = 5) => {
   const tagsList = query.replaceAll(' ', ',');
-  console.log('List', tagsList);
   const filterQuery = `title:~'${query}', tags: [${tagsList}]`;
   const posts = await ghostContentAPI.posts.browse({
     limit: limit,
