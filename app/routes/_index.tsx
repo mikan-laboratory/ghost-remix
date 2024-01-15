@@ -35,7 +35,7 @@ export default function Index() {
   };
 
   return (
-    <Box px="100px" py="5%" backgroundColor="background">
+    <Box px="100px" py="5%" minHeight="100vh" backgroundColor="background">
       <Header />
       <VStack spacing={0}>
         {posts.map((post: Post) => (

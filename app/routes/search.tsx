@@ -1,8 +1,8 @@
 // External library imports
 import { useState } from 'react';
-import { Box, VStack } from '@chakra-ui/react';
+import { Box, VStack, Text } from '@chakra-ui/react';
 import type { MetaFunction, LoaderFunction } from '@remix-run/node';
-import { useLoaderData, useNavigate } from '@remix-run/react';
+import { useLoaderData, useNavigate, useSearchParams } from '@remix-run/react';
 
 // Internal module imports
 import { Post } from '~/types/blogTypes';
@@ -25,6 +25,8 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export default function Index() {
   const { posts, totalPages, totalPosts } = useLoaderData<typeof loader>();
+  const [searchParams] = useSearchParams();
+  const currentSearchQuery = searchParams.get('query');
 
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -32,16 +34,19 @@ export default function Index() {
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
-    navigate(`/?page=${newPage}`);
+    navigate(`/search?query=${currentSearchQuery}&page=${newPage}`);
   };
 
   return (
-    <Box px="100px" py="5%" backgroundColor="background">
+    <Box px="100px" py="5%" minHeight="100vh" backgroundColor="background">
       <Header />
       <VStack spacing={0}>
-        {posts.map((post: Post) => (
-          <BlogListItem key={post.id} post={post} />
-        ))}
+        {posts.length > 0 && posts.map((post: Post) => <BlogListItem key={post.id} post={post} />)}
+        {posts.length === 0 && (
+          <Box>
+            <Text textColor="text1">There don't seem to be any results.</Text>
+          </Box>
+        )}
       </VStack>
       <PaginationNavigation currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
     </Box>

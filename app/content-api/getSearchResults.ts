@@ -2,7 +2,13 @@ import { ghostContentAPI } from './ghostContentAPI';
 
 export const getSearchResults = async (query: string = '', page = 1, limit = 5) => {
   const tagsList = query.replaceAll(' ', ',');
-  const filterQuery = `title:~'${query}', tags: [${tagsList}]`;
+  //Ghost API can't do partial/like filter with the current state of NQL, so this is a work around.
+  let queryWords = query.split(' ');
+  let transformedWords = queryWords.map((word) => `title:~'${word}'`);
+  let titleList = transformedWords.join(', ');
+  console.log(titleList);
+
+  const filterQuery = `${titleList}, tags: [${tagsList}]`;
   const posts = await ghostContentAPI.posts.browse({
     limit: limit,
     page: page,
