@@ -17,7 +17,6 @@ else
    echo "/proc/sys/vm/swappiness is not writable, skipping modification."
 fi
 
-
 # Start Nginx
 nginx &
 
