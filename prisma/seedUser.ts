@@ -8,10 +8,10 @@ export const seedUser = async (prisma: PrismaClient): Promise<users> => {
 
   const createUpdateUser = {
     id: firstUserId,
-    name: process.env.OWNNER_NAME as string,
-    email: process.env.OWNNER_EMAIL as string,
+    name: process.env.OWNER_NAME as string,
+    email: process.env.OWNER_EMAIL as string,
     password: hashedPassword,
-    slug: process.env.OWNNER_SLUG as string,
+    slug: process.env.OWNER_SLUG as string,
     status: 'active',
     visibility: 'public',
     created_at: new Date(),
