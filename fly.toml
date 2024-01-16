@@ -12,10 +12,10 @@ processes = []
 
 [mounts]
   source = "ghost-data"
-  destination = "/var/lib/ghost/content"
+  destination = "/var/www/ghost/content"
 
 [[services]]
-  internal_port = 80
+  internal_port = 8080
   processes = ["app"]
   protocol = "tcp"
   script_checks = []
