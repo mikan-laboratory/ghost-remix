@@ -1,4 +1,4 @@
-import { Text } from '@chakra-ui/react';
+import { Text, Link } from '@chakra-ui/react';
 import { Tag } from '~/types/blogTypes';
 
 interface TopicsListProps {
@@ -6,13 +6,20 @@ interface TopicsListProps {
 }
 
 export default function TopicsList({ topics }: TopicsListProps) {
-  let topicsList = '';
+  let topicsList;
 
-  if (topics.length > 1) {
-    topicsList = topics.map((topic) => topic.name).join(' | ');
-  } else if (topics.length === 1) {
-    topicsList = topics[0].name;
+  if (topics.length > 0) {
+    topicsList = topics.map((topic, index) => (
+      <span key={topic.id}>
+        <Link href={`/search?query=${topic.name}`} color="primary">
+          {topic.name.toLowerCase()}
+        </Link>
+        {index < topics.length - 1 ? ' | ' : ''}
+      </span>
+    ));
+  } else {
+    topicsList = 'No topics';
   }
 
-  return <Text textColor="text1">topics: {topicsList.toLowerCase()}</Text>;
+  return <Text textColor="text1">topics: {topicsList}</Text>;
 }
