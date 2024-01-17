@@ -17,12 +17,26 @@ else
    echo "/proc/sys/vm/swappiness is not writable, skipping modification."
 fi
 
+
+if [ "$ENVIRONMENT" = "local" ]; then
+    # Use the local Nginx configuration
+    cp /etc/nginx/nginx.local.conf /etc/nginx/nginx.conf
+else
+    # Use the production Nginx configuration
+    # First, substitute environment variables in the production config
+    envsubst '${BLOG_URL} ${NEWSLETTER_URL}' < /etc/nginx/nginx.prod.conf > /etc/nginx/nginx.conf
+fi
+
 # Start Nginx
 nginx &
 
-# Switch to non-root user and Start Ghost
-su ghostuser -c 'cd /var/www/ghost && ghost start' &
-
+if [ "$ENVIRONMENT" = "local" ]; then
+    # Start Ghost in local mode
+    su ghostuser -c 'cd /var/www/ghost && ghost start' &
+else
+    # Set Ghost URL from environment variable and start Ghost in production mode
+    su ghostuser -c 'cd /var/www/ghost && ghost config url $NEWSLETTER_URL && ghost start' &
+fi
 # Prisma migrations
 npx prisma migrate resolve --applied 0_init
 

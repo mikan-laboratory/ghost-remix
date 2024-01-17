@@ -1,3 +1,4 @@
+ENVIRONMENT ?= local
 # Default image name
 IMAGE_NAME ?= smooth-jazz
 
@@ -26,7 +27,7 @@ build:
 
 # Run the Docker container
 run:
-	docker run -d --name $(CONTAINER_NAME) -p 8080:8080 \
+	docker run -d --name $(CONTAINER_NAME) -p 8080:8080 -p 8081:8081 \
 	-e GHOST_CONTENT_API_KEY=$(GHOST_CONTENT_API_KEY) \
 	-e SITE_TITLE=$(SITE_TITLE) \
 	-e SITE_DESCRIPTION=$(SITE_DESCRIPTION) \
@@ -34,6 +35,7 @@ run:
 	-e OWNER_SLUG=$(OWNER_SLUG) \
 	-e OWNER_EMAIL=$(OWNER_EMAIL) \
 	-e OWNER_PASSWORD=$(OWNER_PASSWORD) \
+	-e ENVIRONMENT=$(ENVIRONMENT) \
 	$(IMAGE_NAME)
 
 clean:

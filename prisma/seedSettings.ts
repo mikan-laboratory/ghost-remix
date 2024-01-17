@@ -44,25 +44,6 @@ export const seedSettings = async ({ user, prisma }: SecondarySeedParams): Promi
     },
   });
 
-  await prisma.settings.upsert({
-    create: {
-      id: randomUUID(),
-      key: 'is_private',
-      value: 'true',
-      type: 'boolean',
-      flags: 'PUBLIC',
-      created_at: new Date(),
-      updated_at: new Date(),
-      created_by: firstUserId,
-    },
-    update: {
-      updated_at: new Date(),
-    },
-    where: {
-      key: 'is_private',
-    },
-  });
-
   const hasMailgun = process.env.MAILGUN_API_KEY && process.env.MAILGUN_DOMAIN && process.env.MAILGUN_BASE_URL;
 
   if (!hasMailgun) return;
