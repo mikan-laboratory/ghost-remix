@@ -62,7 +62,7 @@ export default function Post() {
       <Box py={5} textColor="text2">
         <PostContent html={postHtml} />
       </Box>
-      {post.comments && <Box>comments</Box>}
+      {post.comments && <Box>comments will be displayed here</Box>}
     </Box>
   );
 }
