@@ -5,7 +5,7 @@
 # run, which is why this file exists in the first place.
 # Learn more: https://community.fly.io/t/sqlite-not-getting-setup-properly/4386
 
-# allocate swap space
+# Allocate swap space
 if [ -w "/proc/sys/vm/swappiness" ]; then
     fallocate -l 512M /swapfile
     chmod 0600 /swapfile
@@ -16,7 +16,6 @@ if [ -w "/proc/sys/vm/swappiness" ]; then
 else
    echo "/proc/sys/vm/swappiness is not writable, skipping modification."
 fi
-
 
 if [ "$ENVIRONMENT" = "local" ]; then
     # Use the local Nginx configuration
@@ -30,7 +29,7 @@ fi
 # Start Nginx
 nginx &
 
-su ghostuser -c 'cd /var/www/ghost && ghost config url $NEWSLETTER_URL && ghost restart' &
+su ghostuser -c 'cd /var/www/ghost && ghost config url $NEWSLETTER_URL && ghost start' &
 
 # Prisma migrations
 npx prisma migrate resolve --applied 0_init
@@ -38,9 +37,10 @@ npx prisma migrate resolve --applied 0_init
 # Seed Content API Key
 npm run seed:prod
 
+# Seed theme
 npm run seed:theme
 
-su ghostuser -c 'cd /var/www/ghost && ghost stop && ghost start' &
+su ghostuser -c 'cd /var/www/ghost && ghost restart' &
 
 # Start Remix app
 cd /myapp
