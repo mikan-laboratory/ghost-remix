@@ -17,6 +17,6 @@ cmd_button('seed',
 cmd_button('copy_theme', 
   argv=['sh', '-c', 'npm run seed:theme && docker-compose -f docker-compose.dev.yml restart ghost'],
   resource='ghost',
-  icon_name='copy',
+  icon_name='palette',
   text='Copy Theme'
 )
