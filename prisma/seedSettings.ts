@@ -46,11 +46,15 @@ export const seedSettings = async ({ user, prisma }: SecondarySeedParams): Promi
 
   const hasMailgun = process.env.MAILGUN_API_KEY && process.env.MAILGUN_DOMAIN && process.env.MAILGUN_BASE_URL;
 
-  if (!hasMailgun) return;
+  if (!hasMailgun) {
+    console.log("Mailgun isn't configured; skipping mailgun settings seed");
+    return;
+  }
 
   await prisma.settings.upsert({
     create: {
       id: randomUUID(),
+      group: 'email',
       key: 'mailgun_api_key',
       value: process.env.MAILGUN_API_KEY as string,
       type: 'string',
@@ -60,6 +64,7 @@ export const seedSettings = async ({ user, prisma }: SecondarySeedParams): Promi
       created_by: firstUserId,
     },
     update: {
+      value: process.env.MAILGUN_API_KEY as string,
       updated_at: new Date(),
     },
     where: {
@@ -70,6 +75,7 @@ export const seedSettings = async ({ user, prisma }: SecondarySeedParams): Promi
   await prisma.settings.upsert({
     create: {
       id: randomUUID(),
+      group: 'email',
       key: 'mailgun_domain',
       value: process.env.MAILGUN_DOMAIN as string,
       type: 'string',
@@ -79,6 +85,7 @@ export const seedSettings = async ({ user, prisma }: SecondarySeedParams): Promi
       created_by: firstUserId,
     },
     update: {
+      value: process.env.MAILGUN_DOMAIN as string,
       updated_at: new Date(),
     },
     where: {
@@ -89,6 +96,7 @@ export const seedSettings = async ({ user, prisma }: SecondarySeedParams): Promi
   await prisma.settings.upsert({
     create: {
       id: randomUUID(),
+      group: 'email',
       key: 'mailgun_base_url',
       value: process.env.MAILGUN_BASE_URL as string,
       type: 'string',
@@ -98,6 +106,7 @@ export const seedSettings = async ({ user, prisma }: SecondarySeedParams): Promi
       created_by: firstUserId,
     },
     update: {
+      value: process.env.MAILGUN_BASE_URL as string,
       updated_at: new Date(),
     },
     where: {
