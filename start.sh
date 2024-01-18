@@ -30,18 +30,17 @@ fi
 # Start Nginx
 nginx &
 
-if [ "$ENVIRONMENT" = "local" ]; then
-    # Start Ghost in local mode
-    su ghostuser -c 'cd /var/www/ghost && ghost start' &
-else
-    # Set Ghost URL from environment variable and start Ghost in production mode
-    su ghostuser -c 'cd /var/www/ghost && ghost config url $NEWSLETTER_URL && ghost start' &
-fi
+su ghostuser -c 'cd /var/www/ghost && ghost config url $NEWSLETTER_URL && ghost restart' &
+
 # Prisma migrations
 npx prisma migrate resolve --applied 0_init
 
 # Seed Content API Key
 npm run seed:prod
+
+npm run seed:theme
+
+su ghostuser -c 'cd /var/www/ghost && ghost stop && ghost start' &
 
 # Start Remix app
 cd /myapp
