@@ -1,4 +1,4 @@
-app = "blog-tutorial"
+app = "smooth-jazz"
 
 kill_signal = "SIGINT"
 kill_timeout = 5
@@ -11,8 +11,8 @@ processes = []
   entrypoint = "sh"
 
 [mounts]
-  source = "data"
-  destination = "/data"
+  source = "ghost-data"
+  destination = "/var/www/ghost/content"
 
 [[services]]
   internal_port = 8080
