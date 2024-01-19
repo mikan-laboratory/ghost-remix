@@ -11,7 +11,7 @@ interface BlogListItemProps {
 }
 
 export default function BlogListItem({ post }: BlogListItemProps) {
-  let time = post.published_at ? new Date(post.published_at).toLocaleTimeString() : 0;
+  let time = post.published_at ? new Date(post.published_at).toLocaleTimeString() : 'Sometime';
   return (
     <Box key={post.id} borderLeft="2px solid" borderColor="secondary" overflow="hidden" p={0} pb={10} w="full">
       <Flex alignItems="center">
@@ -22,7 +22,8 @@ export default function BlogListItem({ post }: BlogListItemProps) {
         </Text>
       </Flex>
       <Text borderBottom="2px solid" borderColor="secondary" width="50%" pl={5} pb={1} textColor="text2">
-        {dayjs(post.published_at).format('MM-DD-YY')} - {time} - {post.authors?.[0]?.name ?? 'Anonymous'}
+        {post.published_at ? dayjs(post.published_at).format('MM-DD-YY') : 'Some Date'} - {time} -{' '}
+        {post.authors?.[0]?.name ?? 'Someone'}
       </Text>
       <Link to={`/${post.slug}`}>
         {post.feature_image && (

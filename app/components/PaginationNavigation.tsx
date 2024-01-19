@@ -8,9 +8,17 @@ interface PaginationProps {
 
 export default function PaginationNavigation({ currentPage, totalPages, onPageChange }: PaginationProps) {
   return (
-    <Flex justify="center">
-      {currentPage > 1 && <Button onClick={() => onPageChange(currentPage - 1)}>Previous</Button>}
-      {currentPage < totalPages && <Button onClick={() => onPageChange(currentPage + 1)}>Next</Button>}
+    <Flex justify="center" gap="10">
+      {currentPage > 1 && (
+        <Button onClick={() => onPageChange(currentPage - 1)} w={32}>
+          Previous
+        </Button>
+      )}
+      {currentPage < totalPages && (
+        <Button onClick={() => onPageChange(currentPage + 1)} w={32}>
+          Next
+        </Button>
+      )}
     </Flex>
   );
 }
