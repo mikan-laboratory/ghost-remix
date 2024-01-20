@@ -13,3 +13,17 @@ jobs:
       - run: flyctl deploy --remote-only
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          OWNER_PASSWORD: ${{ secrets.OWNER_PASSWORD }}
+          MAILGUN_DOMAIN: ${{ secrets.MAILGUN_DOMAIN }}
+          MAILGUN_API_KEY: ${{ secrets.MAILGUN_API_KEY }}
+          MAILGUN_BASE_URL: ${{ secrets.MAILGUN_BASE_URL }}
+          SITE_TITLE: ${{ secrets.SITE_TITLE }}
+          SITE_DESCRIPTION: ${{ secrets.SITE_DESCRIPTION }}
+          OWNER_NAME: ${{ secrets.OWNER_NAME }}
+          OWNER_SLUG: ${{ secrets.OWNER_SLUG }}
+          THEME_SOURCE: ${{ secrets.THEME_SOURCE }}
+          THEME_DESTINATION: ${{ secrets.THEME_DESTINATION }}
+          THEME_NAME: ${{ secrets.THEME_NAME }}
+          BLOG_URL: ${{ secrets.BLOG_URL }}
+          NEWSLETTER_URL: ${{ secrets.NEWS_LETTER_URL }}
