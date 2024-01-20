@@ -1,0 +1,10 @@
+"mail": {
+    "transport": "SMTP",
+    "options": {
+      "service": "Mailgun",
+      "auth": {
+        "user": "postmaster@example.mailgun.org",
+        "pass": "1234567890"
+      }
+    }
+  }
