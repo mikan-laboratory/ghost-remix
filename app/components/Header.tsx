@@ -8,7 +8,7 @@ export default function Header() {
       <Flex>
         <Link to="/">
           <Heading mb={4} color="primary" sx={{ _hover: { color: 'text1' } }}>
-            Tech Bro Lifestyle
+            SITE TITLE
           </Heading>
         </Link>
       </Flex>
