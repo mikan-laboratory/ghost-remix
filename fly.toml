@@ -18,7 +18,7 @@ kill_timeout = "5s"
   ignorefile = ".dockerignore"
 
 [[mounts]]
-  source = "ghost-data"
+  source = "ghost_data"
   destination = "/var/www/ghost/content"
   auto_extend_size_threshold = 0
 
