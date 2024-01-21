@@ -17,6 +17,12 @@ else
    echo "/proc/sys/vm/swappiness is not writable, skipping modification."
 fi
 
+echo "Ensuring correct ownership for /var/www/ghost and subdirectories:"
+chown -R ghostuser:ghostuser /var/www/ghost
+
+echo "Setting correct permissions for /var/www/ghost/content:"
+chmod -R 755 /var/www/ghost/content
+
 if [ "$ENVIRONMENT" = "local" ]; then
     # Use the local Nginx configuration
     cp /etc/nginx/nginx.local.conf /etc/nginx/nginx.conf
@@ -29,7 +35,7 @@ fi
 # Start Nginx
 nginx &
 
-su ghostuser -c 'cd /var/www/ghost && ghost config url $NEWSLETTER_URL && ghost start' &
+su ghostuser -c 'cd /var/www/ghost && ghost config url https://$NEWSLETTER_URL && ghost start'
 
 # Prisma migrations
 npx prisma migrate resolve --applied 0_init
@@ -40,7 +46,12 @@ npm run seed:prod
 # Seed theme
 npm run seed:theme
 
-su ghostuser -c 'cd /var/www/ghost && ghost restart' &
+# Unlock the migrations lock in the Ghost SQLite database
+echo "Unlocking the Ghost migrations lock..."
+sqlite3 /var/www/ghost/content/data/ghost-local.db "UPDATE migrations_lock SET locked=0 WHERE lock_key='km01';"
+
+# Restart to apply url and theme config
+su ghostuser -c 'cd /var/www/ghost && ghost restart'
 
 # Start Remix app
 cd /myapp

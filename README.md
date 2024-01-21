@@ -93,6 +93,6 @@ flyctl deploy --env SITE_TITLE="My Site"
 --env THEME_SOURCE=./themes/bulletin
 --env THEME_DESTINATION=../var/www/ghost/content/themes/bulletin
 --env THEME_NAME=bulletin
---env BLOG_URL=https://mysite.com
---env NEWSLETTER_URL=https://newsletter.mysite.com
+--env BLOG_URL=mysite.com
+--env NEWSLETTER_URL=newsletter.mysite.com
 ```

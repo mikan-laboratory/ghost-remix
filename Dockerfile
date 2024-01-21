@@ -86,8 +86,6 @@ COPY --from=build /myapp/themes /myapp/themes
 # Copy Ghost
 COPY --from=base /var/www/ghost /var/www/ghost
 
-RUN chown -R ghostuser:ghostuser /var/www/ghost
-
 # Copy Nginx configuration
 COPY nginx.local.conf /etc/nginx/nginx.local.conf
 COPY nginx.prod.conf /etc/nginx/nginx.prod.conf

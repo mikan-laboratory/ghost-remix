@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { wrapSeed } from './wrapSeed';
 import fs from 'fs-extra';
+import { randomUUID } from 'crypto';
 
 const prisma = new PrismaClient();
 
@@ -15,9 +16,19 @@ export const parseThenSeed = async (): Promise<void> => {
   await fs.copy(THEME_SOURCE, THEME_DESTINATION, { overwrite: true });
 
   const seedTheme = async (prisma: PrismaClient): Promise<void> => {
-    await prisma.settings.update({
-      data: {
+    await prisma.settings.upsert({
+      create: {
+        id: randomUUID(),
+        key: 'active_theme',
+        type: 'string',
         value: THEME_NAME,
+        created_at: new Date(),
+        updated_at: new Date(),
+        created_by: '1',
+      },
+      update: {
+        value: THEME_NAME,
+        updated_at: new Date(),
       },
       where: {
         key: 'active_theme',
