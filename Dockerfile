@@ -5,7 +5,7 @@ FROM node:18.19-bullseye-slim as base
 ENV NODE_ENV production
 
 # Install openssl for Prisma, sqlite3 for Ghost, and Nginx for routing
-RUN apt-get update && apt-get install -y openssl sqlite3 nginx python3 build-essential procps
+RUN apt-get update && apt-get install -y openssl sqlite3 nginx python3 build-essential procps gettext
 
 # Install Ghost CLI
 RUN npm install ghost-cli@1.25.3 -g
@@ -85,6 +85,8 @@ COPY --from=build /myapp/themes /myapp/themes
 
 # Copy Ghost
 COPY --from=base /var/www/ghost /var/www/ghost
+
+RUN chown -R ghostuser:ghostuser /var/www/ghost
 
 # Copy Nginx configuration
 COPY nginx.local.conf /etc/nginx/nginx.local.conf
