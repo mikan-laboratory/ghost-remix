@@ -5,8 +5,13 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
 import { MetaFunction, LinksFunction } from '@remix-run/node'; // Depends on the runtime you choose
 import theme from './theme/theme';
-
+import { LoaderFunction } from '@remix-run/node';
 import { ServerStyleContext, ClientStyleContext } from './context';
+import { authenticateCookie } from './authentication.server';
+
+export const loader: LoaderFunction = async ({ request }) => {
+  return authenticateCookie(request);
+};
 
 export const meta: MetaFunction = () => [
   {

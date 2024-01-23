@@ -1,5 +1,5 @@
 import { Text, Link } from '@chakra-ui/react';
-import { Tag } from '~/types/blogTypes';
+import { Tag } from '@tryghost/content-api';
 
 interface TopicsListProps {
   topics: Tag[];
@@ -12,7 +12,7 @@ export default function TopicsList({ topics }: TopicsListProps) {
     topicsList = topics.map((topic, index) => (
       <span key={topic.id}>
         <Link href={`/search?query=${topic.name}`} color="primary">
-          {topic.name.toLowerCase()}
+          {topic.name?.toLowerCase()}
         </Link>
         {index < topics.length - 1 ? ' | ' : ''}
       </span>

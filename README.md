@@ -75,24 +75,20 @@ flyctl launch
 - Set secrets
 
 ```
-flyctl secrets set GHOST_CONTENT_API_KEY=my-api-key-value
-OWNER_EMAIL=my-email-value
-OWNER_PASSWORD=my-password-value
-MAILGUN_DOMAIN=somedomain
-MAILGUN_API_KEY=somekey
-MAILGUN_BASE_URL=mailgunbase
+flyctl secrets set GHOST_CONTENT_API_KEY="my-api-key-value" \
+OWNER_EMAIL="my-email-value" \
+OWNER_PASSWORD="my-password-value" \
+MAILGUN_DOMAIN="somedomain" \
+MAILGUN_API_KEY="somekey" \
+MAILGUN_BASE_URL="mailgunbase"
 ```
 
 - Deploy
 
 ```
-flyctl deploy --env SITE_TITLE="My Site"
---env SITE_DESCRIPTION="My website"
---env OWNER_NAME=Admin
---env OWNER_SLUG=admin
---env THEME_SOURCE=./themes/bulletin
---env THEME_DESTINATION=../var/www/ghost/content/themes/bulletin
---env THEME_NAME=bulletin
---env BLOG_URL=mysite.com
---env NEWSLETTER_URL=newsletter.mysite.com
+flyctl deploy --env SITE_TITLE="My Site" \
+--env SITE_DESCRIPTION="My website" \
+--env OWNER_NAME="Admin" \
+--env OWNER_SLUG="admin" \
+--env BLOG_URL="mysite.com"
 ```

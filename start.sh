@@ -29,13 +29,13 @@ if [ "$ENVIRONMENT" = "local" ]; then
 else
     # Use the production Nginx configuration
     # First, substitute environment variables in the production config
-    envsubst '${BLOG_URL} ${NEWSLETTER_URL}' < /etc/nginx/nginx.prod.conf > /etc/nginx/nginx.conf
+    envsubst '${BLOG_URL}' < /etc/nginx/nginx.prod.conf > /etc/nginx/nginx.conf
 fi
 
 # Start Nginx
 nginx &
 
-su ghostuser -c 'cd /var/www/ghost && ghost config url https://$NEWSLETTER_URL && ghost start'
+su ghostuser -c 'cd /var/www/ghost && ghost config url https://$BLOG_URL && ghost start'
 
 # Prisma migrations
 npx prisma migrate resolve --applied 0_init
@@ -43,8 +43,6 @@ npx prisma migrate resolve --applied 0_init
 # Seed Content API Key
 npm run seed:prod
 
-# Seed theme
-npm run seed:theme
 
 # Unlock the migrations lock in the Ghost SQLite database
 echo "Unlocking the Ghost migrations lock..."

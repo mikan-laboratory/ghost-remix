@@ -1,5 +1,5 @@
 import { Text } from '@chakra-ui/react';
-import { Author } from '~/types/blogTypes';
+import { Author } from '@tryghost/content-api';
 
 interface AuthorsListProps {
   authors: Author[];
@@ -19,7 +19,7 @@ export default function AuthorsList({ authors }: AuthorsListProps) {
     authorNames = `${allButLast} & ${lastAuthor}`;
   } else if (authors.length === 1) {
     // Only one author, so use their name directly
-    authorNames = authors[0].name;
+    authorNames = authors[0].name as string;
   }
 
   return <Text textColor="text1">written by: {authorNames}</Text>;
