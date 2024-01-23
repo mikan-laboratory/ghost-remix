@@ -18,7 +18,7 @@ export const authenticateCookie = async (request: Request) => {
 
     const token = cookies.token;
 
-    if (!token) defaultReturn;
+    if (!token) return defaultReturn;
 
     const decoded = jwt.verify(token, env.JWT_SECRET) as BasicMember;
 
