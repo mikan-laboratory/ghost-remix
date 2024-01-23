@@ -8,7 +8,7 @@ import { getPostsAndPagination } from '~/content-api/getPostsAndPagination';
 import Header from '~/components/Header';
 import PaginationNavigation from '~/components/PaginationNavigation';
 import BlogListItem from '~/components/BlogListItem';
-import { posts } from '@prisma/client';
+import { PostOrPage } from '@tryghost/content-api';
 
 export const meta: MetaFunction = () => {
   return [{ title: 'Tech Bro Lifestyle' }, { name: 'description', content: 'Welcome to Tech!' }];
@@ -36,7 +36,7 @@ export default function Index() {
     <Box px="100px" py="5%" minHeight="100vh" backgroundColor="background">
       <Header />
       <VStack spacing={0}>
-        {posts.map((post: posts) => (
+        {posts.map((post: PostOrPage) => (
           <BlogListItem key={post.id} post={post} />
         ))}
       </VStack>
