@@ -7,7 +7,7 @@ export const env = createEnv({
     GHOST_URL: z.string().min(1),
     GHOST_CONTENT_API_KEY: z.string().min(1),
     JWT_SECRET: z.string().min(1),
-    ENVIRONMENT: z.enum(['local', 'development', 'production']).optional(),
+    ENVIRONMENT: z.enum(['local', 'production']).optional(),
   },
   client: {},
   runtimeEnv: process.env,

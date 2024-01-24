@@ -113,7 +113,8 @@ export const setCookie = async (request: Request) => {
       httpOnly: true,
       sameSite: 'lax',
       path: '/',
-      secure: env.ENVIRONMENT === 'local' ? false : true,
+      secure: env.ENVIRONMENT !== 'local',
+      maxAge: 60 * 60 * 24, // 1 day in seconds
     });
 
     return redirect('/', {

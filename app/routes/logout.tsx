@@ -1,11 +1,16 @@
-import { ActionFunction, redirect } from '@remix-run/node';
+import { ActionFunction, json } from '@remix-run/node';
 
-export const action: ActionFunction = async ({ request }) => {
+export const action: ActionFunction = async () => {
   const cookie = 'token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly';
 
-  return redirect('/', {
-    headers: {
-      'Set-Cookie': cookie,
+  return json(
+    {
+      success: true,
     },
-  });
+    {
+      headers: {
+        'Set-Cookie': cookie,
+      },
+    },
+  );
 };

@@ -80,7 +80,8 @@ OWNER_EMAIL="my-email-value" \
 OWNER_PASSWORD="my-password-value" \
 MAILGUN_DOMAIN="somedomain" \
 MAILGUN_API_KEY="somekey" \
-MAILGUN_BASE_URL="mailgunbase"
+MAILGUN_BASE_URL="mailgunbase" \
+JWT_SECRET="somejwtsecret"
 ```
 
 - Deploy

@@ -1,10 +1,18 @@
 import { Box, Button, Flex, Heading } from '@chakra-ui/react';
 import { Link, useNavigate, useRouteLoaderData } from '@remix-run/react';
 import SearchBar from './SearchBar';
+import { BasicMember } from '~/types/member';
 
 export default function Header() {
   const navigate = useNavigate();
-  const { member } = useRouteLoaderData('root');
+  const loaderData = useRouteLoaderData<{ member: BasicMember | null }>('root');
+  const member = loaderData?.member;
+
+  const login = (): void => navigate('/members');
+  const logout = async (): Promise<void> => {
+    await fetch('/logout', { method: 'POST' });
+    navigate('/', { replace: true });
+  };
 
   return (
     <Box w="100%">
@@ -17,11 +25,7 @@ export default function Header() {
         </Link>
       </Flex>
       <SearchBar />
-      {member ? (
-        <Button onClick={() => fetch('/logout', { method: 'POST' })}>Sign Out</Button>
-      ) : (
-        <Button onClick={() => navigate('/members')}>Sign In</Button>
-      )}
+      {member ? <Button onClick={logout}>Sign Out</Button> : <Button onClick={login}>Sign In</Button>}
     </Box>
   );
 }
