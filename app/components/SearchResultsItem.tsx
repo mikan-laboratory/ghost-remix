@@ -1,17 +1,17 @@
 //external library imports
 import dayjs from 'dayjs';
-
 //internal module import
 import { Box, Flex, Circle, Text, Image, Heading } from '@chakra-ui/react';
 import { Link } from '@remix-run/react';
-import { Post } from '~/types/blogTypes';
+import { PostOrPage } from '@tryghost/content-api';
 
 interface BlogListItemProps {
-  post: Post;
+  post: PostOrPage;
 }
 
 export default function SearchResultsItem({ post }: BlogListItemProps) {
-  let time = post.published_at ? new Date(post.published_at).toLocaleTimeString() : 0;
+  const time = post.published_at ? new Date(post.published_at).toLocaleTimeString() : 0;
+
   return (
     <Box key={post.id} borderLeft="2px solid" borderColor="secondary" overflow="hidden" p={0} pb={10} w="full">
       <Flex alignItems="center">

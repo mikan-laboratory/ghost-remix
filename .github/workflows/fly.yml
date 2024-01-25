@@ -1,7 +1,6 @@
 name: Fly Deploy
 on:
-  release:
-    types: [published]
+  workflow_dispatch:
 jobs:
   deploy:
     name: Deploy app
@@ -10,6 +9,24 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: superfly/flyctl-actions/setup-flyctl@master
-      - run: flyctl deploy --remote-only
+      - name: Set secrets in Fly app
+        run: |
+          flyctl secrets set \
+            GHOST_CONTENT_API_KEY="${{ secrets.GHOST_CONTENT_API_KEY }}" \
+            OWNER_EMAIL="${{ secrets.OWNER_EMAIL }}" \
+            OWNER_PASSWORD="${{ secrets.OWNER_PASSWORD }}" \
+            MAILGUN_DOMAIN="${{ secrets.MAILGUN_DOMAIN }}" \
+            MAILGUN_API_KEY="${{ secrets.MAILGUN_API_KEY }}" \
+            MAILGUN_BASE_URL="${{ secrets.MAILGUN_BASE_URL }}" \
+            SITE_TITLE="${{ secrets.SITE_TITLE }}" \
+            SITE_DESCRIPTION="${{ secrets.SITE_DESCRIPTION }}" \
+            OWNER_NAME="${{ secrets.OWNER_NAME }}" \
+            OWNER_SLUG="${{ secrets.OWNER_SLUG }}" \
+            BLOG_URL="${{ secrets.BLOG_URL }}" \
+            JWT_SECRET="${{ secrets.JWT_SECRET }}"
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+      - name: Deploy to Fly.io
+        run: flyctl deploy --remote-only
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}

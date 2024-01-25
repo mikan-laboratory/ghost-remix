@@ -13,10 +13,3 @@ cmd_button('seed',
   icon_name='downloading',
   text='Seed'
 )
-
-cmd_button('copy_theme', 
-  argv=['sh', '-c', 'npm run seed:theme && docker-compose -f docker-compose.dev.yml restart ghost'],
-  resource='ghost',
-  icon_name='palette',
-  text='Copy Theme'
-)
