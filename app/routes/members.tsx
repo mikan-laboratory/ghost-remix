@@ -14,6 +14,8 @@ export const action: ActionFunction = async ({ request }) => {
     const name = body.get('name');
     const emailType = body.get('emailType');
 
+    console.log('created consts');
+
     if (emailType === 'signup' && !name) {
       return json({ success: true, error: 'Name is required for signup' }, { status: 400 });
     }
@@ -25,8 +27,11 @@ export const action: ActionFunction = async ({ request }) => {
       emailType,
     });
 
+    console.log('created response');
+
     return json({ success: response.data === 'Created.' });
   } catch (error) {
+    console.log(error);
     return json({ success: false, error: 'Something went wrong' }, { status: 400 });
   }
 };
