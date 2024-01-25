@@ -16,16 +16,16 @@ export default function Header() {
 
   return (
     <Box w="100%">
-      <Flex>
+      <Flex flexDirection="row" justifyContent="space-between">
         <Link to="/">
           <Heading mb={4} color="primary" sx={{ _hover: { color: 'text1' } }}>
             SITE TITLE
           </Heading>
           {member && <Heading mb={4}>Welcome, {member.name}</Heading>}
         </Link>
+        {member ? <Button onClick={logout}>Sign Out</Button> : <Button onClick={login}>Sign In</Button>}
       </Flex>
       <SearchBar />
-      {member ? <Button onClick={logout}>Sign Out</Button> : <Button onClick={login}>Sign In</Button>}
     </Box>
   );
 }

@@ -83,18 +83,34 @@ export default function MembersPage() {
         <fetcher.Form method="post">
           {formMode === 'signup' && (
             <FormControl>
-              <FormLabel>Name</FormLabel>
-              <Input name="name" placeholder="Enter your name" />
+              <FormLabel color="primary" fontSize="3xl">
+                Name
+              </FormLabel>
+              <Input name="name" placeholder="Enter your name" color="text1" />
             </FormControl>
           )}
           <FormControl>
-            <FormLabel>Email</FormLabel>
-            <Input name="email" placeholder="Enter your email" />
+            <FormLabel color="primary" fontSize="3xl">
+              Email
+            </FormLabel>
+            <Input name="email" placeholder="Enter your email" color="text1" />
           </FormControl>
           <Input type="hidden" name="emailType" value={formMode} />
-          <Text>Sign {formMode === 'signin' ? 'In' : 'Up'}</Text>
-          <Switch onChange={() => setFormMode(formMode === 'signin' ? 'signup' : 'signin')} />
-          <Button type="submit">Submit</Button>
+          <Box display="flex" flexDirection="row" justifyContent="space-between" alignItems="center" py={5}>
+            <Box>
+              <Text
+                color="secondary"
+                onClick={() => setFormMode(formMode === 'signin' ? 'signup' : 'signin')}
+                sx={{ _hover: { color: 'primary' } }}
+                cursor="pointer"
+              >
+                {formMode === 'signin'
+                  ? `Don't have an account? Sign up here!`
+                  : 'Already have an account? Sign in here!'}
+              </Text>
+            </Box>
+            <Button type="submit">Sign {formMode === 'signin' ? 'In' : 'Up'}</Button>
+          </Box>
         </fetcher.Form>
       </Stack>
     </Box>
