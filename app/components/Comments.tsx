@@ -1,5 +1,6 @@
 import { Box, Flex, Text, Avatar, Button, Spacer } from '@chakra-ui/react';
 import { FaThumbsUp, FaReply } from 'react-icons/fa';
+import { formatDistanceToNow } from 'date-fns';
 
 interface Comment {
   id: string;
@@ -23,7 +24,10 @@ interface CommentsProps {
 export default function Comments({ comments }: CommentsProps) {
   const validComments = Array.isArray(comments) ? comments : [];
   return (
-    <Box>
+    <Box display="flex" flexDirection="column" borderTopWidth="1px" borderTopColor="secondary">
+      <Text fontSize="4xl" py={5} w="100%" textAlign="center">
+        Join the Discussion ({validComments.length})
+      </Text>
       {validComments.map((comment) => (
         <Box key={comment.id} p={4} borderWidth="1px" borderRadius="lg" mb={4} borderColor="primary">
           <Flex align="center">
@@ -31,7 +35,7 @@ export default function Comments({ comments }: CommentsProps) {
               <Text fontWeight="bold">
                 {comment.member?.name ? comment.member.name : 'Anonymous'}
                 <Text as="span" fontWeight="normal" color="gray.500" ml={2}>
-                  {new Date(comment.created_at).toLocaleDateString()}
+                  {formatDistanceToNow(new Date(comment.created_at), { addSuffix: true })}
                 </Text>
               </Text>
               <Box dangerouslySetInnerHTML={{ __html: comment.html }} mt={2}></Box>
