@@ -23,7 +23,28 @@ export default function Header() {
           </Heading>
           {member && <Heading mb={4}>Welcome, {member.name}</Heading>}
         </Link>
-        {member ? <Button onClick={logout}>Sign Out</Button> : <Button onClick={login}>Sign In</Button>}
+        {member ? (
+          <Button onClick={logout} bg="primary" color="text1">
+            Sign Out
+          </Button>
+        ) : (
+          <Button
+            onClick={login}
+            bg="background"
+            color="primary"
+            border="solid"
+            borderColor="primary"
+            sx={{
+              ':hover': {
+                bg: 'primary',
+                borderColor: 'primary',
+                color: 'text1',
+              },
+            }}
+          >
+            Sign In
+          </Button>
+        )}
       </Flex>
       <SearchBar />
     </Box>

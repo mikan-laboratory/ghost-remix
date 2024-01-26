@@ -1,11 +1,13 @@
 import { useLoaderData } from '@remix-run/react';
 import { Image, Box, Heading, Flex } from '@chakra-ui/react';
 import { getPost } from '~/content-api/getPost';
+import { getCommentsForPost } from '~/content-api/getCommentsForPost';
 import { LoaderFunction } from '@remix-run/node';
 import PostContent from '~/components/PostContent';
 import AuthorsList from '~/components/AuthorsList';
 import TopicsList from '~/components/TopicsList';
 import Header from '~/components/Header';
+import Comments from '~/components/Comments';
 
 export const loader: LoaderFunction = async ({ params }) => {
   const postSlug = params.postSlug;
@@ -13,13 +15,20 @@ export const loader: LoaderFunction = async ({ params }) => {
     throw new Response('Not Found', { status: 404 });
   }
   const post = await getPost(postSlug);
-  return post;
+  if (!post || !post.id) {
+    throw new Response('Post ID not found', { status: 404 });
+  }
+  const comments = await getCommentsForPost(post.id);
+  return [post, comments];
 };
 
 export default function Post() {
-  const post = useLoaderData<typeof loader>();
+  const [post, comments] = useLoaderData<typeof loader>();
+  // const post = useLoaderData<typeof loader>();
+
   const postHtml: string = post.html;
   console.log(post);
+  console.log(comments);
 
   return (
     <Box minHeight="100vh" px="100px" py="5%" backgroundColor="background">
@@ -61,6 +70,9 @@ export default function Post() {
       </Box>
       <Box py={5} textColor="text2">
         <PostContent html={postHtml} />
+      </Box>
+      <Box textColor="text2">
+        <Comments comments={comments.comments} />
       </Box>
     </Box>
   );
