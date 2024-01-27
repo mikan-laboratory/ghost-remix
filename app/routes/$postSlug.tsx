@@ -8,27 +8,30 @@ import AuthorsList from '~/components/AuthorsList';
 import TopicsList from '~/components/TopicsList';
 import Header from '~/components/Header';
 import Comments from '~/components/Comments';
+import { PostOrPage } from '@tryghost/content-api';
 
 export const loader: LoaderFunction = async ({ params }) => {
   const postSlug = params.postSlug;
   if (!postSlug) {
     throw new Response('Not Found', { status: 404 });
   }
-  const post = await getPost(postSlug);
+  const post = (await getPost(postSlug)) as PostOrPage & { comments: boolean };
   if (!post || !post.id) {
     throw new Response('Post ID not found', { status: 404 });
   }
-  const comments = await getCommentsForPost(post.id);
+
+  //this checks if comments are active. If they are not, it would throw an error response code without this
+  if (post.comments) {
+    const comments = await getCommentsForPost(post.id);
+    return [post, comments];
+  }
+  const comments: null = null;
   return [post, comments];
 };
 
 export default function Post() {
   const [post, comments] = useLoaderData<typeof loader>();
-  // const post = useLoaderData<typeof loader>();
-
   const postHtml: string = post.html;
-  console.log(post);
-  console.log(comments);
 
   return (
     <Box minHeight="100vh" px="100px" py="5%" backgroundColor="background">
@@ -71,9 +74,7 @@ export default function Post() {
       <Box py={5} textColor="text2">
         <PostContent html={postHtml} />
       </Box>
-      <Box textColor="text2">
-        <Comments comments={comments.comments} />
-      </Box>
+      <Box textColor="text2">{comments && <Comments comments={comments.comments} />}</Box>
     </Box>
   );
 }

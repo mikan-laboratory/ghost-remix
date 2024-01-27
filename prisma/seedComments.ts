@@ -1,13 +1,19 @@
 import { faker } from '@faker-js/faker';
 import { randomUUID } from 'crypto';
 import { PrismaClient } from '@prisma/client';
+import { seedMembers } from './seedMembers';
 
 const prisma = new PrismaClient();
 
 export const seedComments = async () => {
   // Assuming you already have posts created and want to add comments to them
+  await seedMembers();
+  console.log('seeded members!');
   const posts = await prisma.posts.findMany();
   const members = await prisma.members.findMany();
+
+  console.log('posts!', posts);
+  console.log('members!', members);
 
   for (const post of posts) {
     // Create a certain number of comments for each post

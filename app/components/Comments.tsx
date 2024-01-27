@@ -31,6 +31,7 @@ export default function Comments({ comments }: CommentsProps) {
       {validComments.map((comment) => (
         <Box key={comment.id} p={4} borderWidth="1px" borderRadius="lg" mb={4} borderColor="primary">
           <Flex align="center">
+            <Avatar name="Member Name" src={comment.member.avatar_image} />
             <Box ml={3}>
               <Text fontWeight="bold">
                 {comment.member?.name ? comment.member.name : 'Anonymous'}
