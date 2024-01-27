@@ -7,7 +7,7 @@ import PostContent from '~/components/PostContent';
 import AuthorsList from '~/components/AuthorsList';
 import TopicsList from '~/components/TopicsList';
 import Header from '~/components/Header';
-import Comments from '~/components/Comments';
+import CommentsList from '~/components/CommentsList';
 import { PostOrPage } from '@tryghost/content-api';
 
 export const loader: LoaderFunction = async ({ params }) => {
@@ -74,7 +74,7 @@ export default function Post() {
       <Box py={5} textColor="text2">
         <PostContent html={postHtml} />
       </Box>
-      <Box textColor="text2">{comments && <Comments comments={comments.comments} />}</Box>
+      <Box textColor="text2">{comments && <CommentsList comments={comments.comments} />}</Box>
     </Box>
   );
 }
