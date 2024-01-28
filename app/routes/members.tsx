@@ -14,11 +14,13 @@ export const action: ActionFunction = async ({ request }) => {
     const name = body.get('name');
     const emailType = body.get('emailType');
 
-    console.log('created consts');
+    console.log('email:', email, 'name:', name, 'type:', emailType);
 
     if (emailType === 'signup' && !name) {
       return json({ success: true, error: 'Name is required for signup' }, { status: 400 });
     }
+
+    console.log('URL', env.GHOST_URL);
 
     const response = await axios.post(`${env.GHOST_URL}/members/api/send-magic-link/`, {
       autoRedirect: false,

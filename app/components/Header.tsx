@@ -19,7 +19,7 @@ export default function Header() {
       <Flex flexDirection="row" justifyContent="space-between">
         <Link to="/">
           <Heading mb={4} color="primary" sx={{ _hover: { color: 'text1' } }}>
-            SITE TITLE
+            TEST
           </Heading>
           {member && <Heading mb={4}>Welcome, {member.name}</Heading>}
         </Link>
