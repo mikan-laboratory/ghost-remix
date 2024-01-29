@@ -1,4 +1,4 @@
-//external library imports
+//External Library Imports
 import dayjs from 'dayjs';
 import { Box, Flex, Circle, Text, Image, Heading } from '@chakra-ui/react';
 import { Link } from '@remix-run/react';

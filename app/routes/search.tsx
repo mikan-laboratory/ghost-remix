@@ -44,7 +44,7 @@ export default function Index() {
         {posts.length > 0 && posts.map((post: PostOrPage) => <BlogListItem key={post.id} post={post} />)}
         {posts.length === 0 && (
           <Box>
-            <Text textColor="text1">There don't seem to be any results.</Text>
+            <Text textColor="text1">Sorry, we couldn't find anything.</Text>
           </Box>
         )}
       </VStack>

@@ -1,5 +1,5 @@
 //External Library Imports
-import { Box, Flex, Avatar, Text, Button } from '@chakra-ui/react';
+import { Box, Flex, Text, Button } from '@chakra-ui/react';
 import { FaThumbsUp, FaReply } from 'react-icons/fa';
 import { formatDistanceToNow } from 'date-fns';
 import { Prisma, PrismaClient } from '@prisma/client';

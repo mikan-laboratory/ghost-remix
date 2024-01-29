@@ -1,7 +1,7 @@
 //External Library Imports
 import { Box, Text } from '@chakra-ui/react';
 import { Prisma, PrismaClient } from '@prisma/client';
-import { useFetcher } from '@remix-run/react';
+import { useFetcher, useNavigate, useRouteLoaderData } from '@remix-run/react';
 
 //Internal Module Imports
 import Comments from './Comments';
@@ -26,29 +26,21 @@ interface CommentsProps {
 }
 
 export default function CommentsList({ comments, postId, postSlug }: CommentsProps) {
-  //uncomment for real before production
-  // const loaderData = useRouteLoaderData<{ member: BasicMember | null }>('root');
-  // const member = loaderData?.member;
-
-  //remove before production
-  const dummyMember: BasicMember = {
-    id: '01875d68-e765-45c6-9117-1041a9fd5bf1',
-    email: 'Jamar.Bednar5@yahoo.com',
-    name: 'Ryan Koch',
-  };
-
-  const member = dummyMember;
-  //testing logic ends
+  const loaderData = useRouteLoaderData<{ member: BasicMember | null }>('root');
+  const member = loaderData?.member || null;
 
   const validComments = Array.isArray(comments) ? comments : [];
 
+  const navigate = useNavigate();
+
   const handleLogin = () => {
-    console.log('log in!');
+    navigate('/members');
   };
 
   const fetcher = useFetcher();
 
   const handlePostComment = (comment: string) => {
+    if (!member) return;
     fetcher.submit(
       { actionType: 'postComment', comment, postId: postId, memberId: member.id },
       { method: 'post', action: `/${postSlug}` },

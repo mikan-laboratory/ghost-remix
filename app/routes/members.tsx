@@ -1,6 +1,6 @@
 //External Library Imports
 import { Box, Button, FormControl, FormLabel, Input, Stack, Heading, Text, useUpdateEffect } from '@chakra-ui/react';
-import { ActionFunction, LoaderFunction, json } from '@remix-run/node';
+import { ActionFunction, LoaderFunction, json, MetaFunction } from '@remix-run/node';
 import { useFetcher, useLoaderData, Link } from '@remix-run/react';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -9,6 +9,19 @@ import { useToast } from '@chakra-ui/react';
 //Internal Module Imports
 import { env } from '~/env';
 import { setCookie } from '~/authentication.server';
+
+export const meta: MetaFunction = () => {
+  return [
+    {
+      title: 'TITLE',
+    },
+    {
+      name: 'description',
+      content: 'description',
+    },
+  ];
+};
+
 export const action: ActionFunction = async ({ request }) => {
   try {
     const body = await request.formData();
