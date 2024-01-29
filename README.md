@@ -1,78 +1,83 @@
 # Smooth Jazz
 
-## Description
+Ghost as a headless CMS with Remix and Chakra UI. Easy deployment to Fly.io.
 
-- Ghost as a headless CMS with Remix and Chakra UI
+## Table of Contents
+
+- [Smooth Jazz](#smooth-jazz)
+  - [Dependencies](#dependencies)
+  - [Local Development](#local-development)
+  - [Deploy to Fly.io](#deploy-to-flyio)
+    - [Automated](#automated)
+    - [Manual](#manual)
 
 ## Dependencies
 
 - [NPM](https://www.npmjs.com/)
 - [Docker](https://www.docker.com/)
 - [Tilt](https://tilt.dev/)
+- [flyctl](https://fly.io/docs/flyctl/installing/)
 
 ## Local Development
 
-- Start Tilt
+### Mailgun
 
-```
-tilt up
-```
+You don't need Mailgun to get started, but you'll need for email-based workflows like member sign up.
 
-- Seed
+Don't worry about the $35 a month price tag, immediately after signing up for the trial, you can downgrade to the flex plan.
 
-```
-# Basic Seed
+1. Create [Mailgun](https://www.mailgun.com/) account.
 
-Seed button in Ghost section of Tilt UI
+2. Navigate to Sending -> Domains. You should see a test domain that looks like `sandbox1234567890abcdef1234567890ab.mailgun.org`
 
-# Newsletter Theme Seed
+3. Add your email as an authorized recipient.
 
-Seed theme button in Ghost section of Tilt UI
-```
+4. Scroll down and select API Keys. Create a new API key and copy the key.
 
-- Test Docker Build
+5. Find the correct base URL [here](https://documentation.mailgun.com/en/latest/api-intro.html#base-url).
 
-```
-# Build
+6. Add values to .env file.
 
-make all
+### Basics
 
-# Cleanup
+1. Create [Mailgun](https://www.mailgun.com/) account.
 
-make clean-all
-```
+2. Install dependencies with `npm i`
+
+3. Start services with `tilt up`
+
+4. Seed database with button in Ghost section of Tilt UI
+
+   - If you want to inspect the database, you can manually trigger a GUI from the Tilt UI.
+
+## Test Docker Build
+
+1. Build image and run container with `make all`.
+
+2. Clean image and container with `make clean-all`.
 
 ## Deploy to Fly.io
 
-- Create [Fly.io](https://fly.io)
+### Prerequisites
 
-### Automated
+1. Create [Fly.io](https://fly.io) account.
 
-- Get Deploy API Token from Fly dashboard
+2. Authenticate with `flyctl auth login`.
 
-- Set secrets in GitHub repository settings
+3. Create app with `flyctl launch`.
 
-### Manual
+### GitHub Actions
 
-- Install CLI
+1. Get Deploy API Token from Fly dashboard
 
-```
-brew install flyctl
-```
+2. Set secrets in GitHub repository settings
 
-- Authenticate
+3. Manually trigger by going to Actions tab and selecting `Fly Deploy`. Click `Run workflow` and enter the branch name to deploy.
+   - You can update this action to trigger on push to `main` by changing the `on` section of the workflow file to `push: [main]`
 
-```
-flyctl auth login
-```
+### Command Line
 
-- Create App
-
-```
-flyctl launch
-```
-
-- Set secrets
+1. Set secrets
 
 ```
 flyctl secrets set GHOST_CONTENT_API_KEY="my-api-key-value" \
@@ -84,7 +89,7 @@ MAILGUN_BASE_URL="mailgunbase" \
 JWT_SECRET="somejwtsecret"
 ```
 
-- Deploy
+2. Deploy
 
 ```
 flyctl deploy --env SITE_TITLE="My Site" \
