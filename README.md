@@ -36,8 +36,6 @@ Don't worry about the $35 a month price tag, immediately after signing up for th
 
 5. Find the correct base URL [here](https://documentation.mailgun.com/en/latest/api-intro.html#base-url).
 
-6. Add values to .env file.
-
 ### Basics
 
 1. Create [Mailgun](https://www.mailgun.com/) account.
