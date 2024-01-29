@@ -27,6 +27,7 @@
     "@remix-run/serve": "^2.5.1",
     "@t3-oss/env-core": "^0.7.1",
     "@tryghost/content-api": "^1.11.20",
+    "@types/uuid": "^9.0.8",
     "axios": "^1.6.5",
     "bcrypt": "^5.1.1",
     "cookie": "^0.6.0",
@@ -42,6 +43,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.0.1",
+    "uuid": "^9.0.1",
     "zod": "^3.22.4"
   },
   "devDependencies": {

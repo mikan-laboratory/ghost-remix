@@ -5,8 +5,17 @@ import { BasicMember } from '~/types/member';
 
 export default function Header() {
   const navigate = useNavigate();
-  const loaderData = useRouteLoaderData<{ member: BasicMember | null }>('root');
-  const member = loaderData?.member;
+  //uncomment before production
+  // const loaderData = useRouteLoaderData<{ member: BasicMember | null }>('root');
+  // const member = loaderData?.member;
+
+  //remove before production
+  const dummyMember: BasicMember = {
+    id: '01875d68-e765-45c6-9117-1041a9fd5bf1',
+    email: 'Jamar.Bednar5@yahoo.com',
+    name: 'Ryan Koch',
+  };
+  const member = dummyMember;
 
   const login = (): void => navigate('/members');
   const logout = async (): Promise<void> => {
@@ -21,8 +30,12 @@ export default function Header() {
           <Heading mb={4} color="primary" sx={{ _hover: { color: 'text1' } }}>
             TEST
           </Heading>
-          {member && <Heading mb={4}>Welcome, {member.name}</Heading>}
         </Link>
+        {member && (
+          <Heading color="text2" mb={4}>
+            Welcome, {member.name}
+          </Heading>
+        )}
         {member ? (
           <Button onClick={logout} bg="primary" color="text1">
             Sign Out

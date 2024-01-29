@@ -1,6 +1,6 @@
-import { Box, Button, FormControl, FormLabel, Input, Stack, Switch, Text, useUpdateEffect } from '@chakra-ui/react';
+import { Box, Button, FormControl, FormLabel, Input, Stack, Heading, Text, useUpdateEffect } from '@chakra-ui/react';
 import { ActionFunction, LoaderFunction, json } from '@remix-run/node';
-import { useFetcher, useLoaderData } from '@remix-run/react';
+import { useFetcher, useLoaderData, Link } from '@remix-run/react';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useToast } from '@chakra-ui/react';
@@ -45,7 +45,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 export default function MembersPage() {
   const fetcher = useFetcher<{ success: boolean; error?: string }>();
   const data = useLoaderData<{ authenticated: boolean; error?: string }>();
-  const [formMode, setFormMode] = useState<'signin' | 'signup'>('signup');
+  const [formMode, setFormMode] = useState<'signin' | 'signup'>('signin');
   const toast = useToast();
 
   useEffect(() => {
@@ -86,18 +86,23 @@ export default function MembersPage() {
 
   return (
     <Box px="100px" py="5%" minHeight="100vh" backgroundColor="background">
+      <Link to="/">
+        <Heading mb={4} color="primary" sx={{ _hover: { color: 'text1' } }}>
+          TEST
+        </Heading>
+      </Link>
       <Stack>
         <fetcher.Form method="post">
           {formMode === 'signup' && (
             <FormControl>
-              <FormLabel color="primary" fontSize="3xl">
+              <FormLabel color="secondary" fontSize="3xl">
                 Name
               </FormLabel>
               <Input name="name" placeholder="Enter your name" color="text1" />
             </FormControl>
           )}
           <FormControl>
-            <FormLabel color="primary" fontSize="3xl">
+            <FormLabel color="secondary" fontSize="3xl">
               Email
             </FormLabel>
             <Input name="email" placeholder="Enter your email" color="text1" />
@@ -106,7 +111,7 @@ export default function MembersPage() {
           <Box display="flex" flexDirection="row" justifyContent="space-between" alignItems="center" py={5}>
             <Box>
               <Text
-                color="secondary"
+                color="text1"
                 onClick={() => setFormMode(formMode === 'signin' ? 'signup' : 'signin')}
                 sx={{ _hover: { color: 'primary' } }}
                 cursor="pointer"

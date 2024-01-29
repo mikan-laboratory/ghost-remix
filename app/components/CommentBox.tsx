@@ -1,20 +1,22 @@
 import React from 'react';
 import { Button, Box, Textarea, Input } from '@chakra-ui/react';
+import { BasicMember } from '~/types/member';
 
 interface CommentBoxProps {
-  isLoggedIn: boolean;
+  member: BasicMember | null;
   onLogin: () => void;
-  onPostComment: (comment: string) => void;
+  onPostComment: (comment: string, postId: string, memberId: string) => void;
+  postId: string;
 }
 
-export default function CommentBox({ isLoggedIn, onLogin, onPostComment }: CommentBoxProps) {
+export default function CommentBox({ member, onLogin, onPostComment, postId }: CommentBoxProps) {
   const [comment, setComment] = React.useState('');
 
   const handleCommentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setComment(event.target.value);
   };
 
-  if (!isLoggedIn) {
+  if (!member) {
     return (
       <Box my={4}>
         <Button onClick={onLogin}>Log In to Comment</Button>
@@ -35,7 +37,7 @@ export default function CommentBox({ isLoggedIn, onLogin, onPostComment }: Comme
         flex={1}
         mr={2}
       />
-      <Button colorScheme="blue" onClick={() => onPostComment(comment)} isDisabled={!comment}>
+      <Button colorScheme="blue" onClick={() => onPostComment(comment, postId, member.id)} isDisabled={!comment}>
         Comment
       </Button>
     </Box>

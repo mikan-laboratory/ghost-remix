@@ -1,38 +1,54 @@
 import { Box, Text } from '@chakra-ui/react';
 import Comments from './Comments';
 import CommentBox from './CommentBox';
+import { BasicMember } from '~/types/member';
+import { Prisma, PrismaClient } from '@prisma/client';
+import { useFetcher } from '@remix-run/react';
 
-interface Comment {
-  id: string;
-  status: string;
-  html: string;
-  created_at: string;
-  edited_at: string | null;
-  member: any; //i need to fix this later
-  replies: Comment[];
-  liked: boolean;
-  count: {
-    replies: number;
-    likes: number;
-  }; // Replace with the correct type if known
-}
+const prisma = new PrismaClient();
+
+type CommentWithRelations = Prisma.commentsGetPayload<{
+  include: {
+    comment_likes: true;
+    comment_reports: true;
+    members: true;
+    other_comments: true;
+  };
+}>;
 
 interface CommentsProps {
-  comments: Comment[];
+  comments: CommentWithRelations[];
+  postId: string;
+  postSlug: string;
 }
 
-export default function CommentsList({ comments }: CommentsProps) {
-  const validComments = Array.isArray(comments) ? comments : [];
+export default function CommentsList({ comments, postId, postSlug }: CommentsProps) {
+  //uncomment for real before production
+  // const loaderData = useRouteLoaderData<{ member: BasicMember | null }>('root');
+  // const member = loaderData?.member;
 
-  //writeacomment testing login
-  const isLoggedIn = false;
+  //remove before production
+  const dummyMember: BasicMember = {
+    id: '01875d68-e765-45c6-9117-1041a9fd5bf1',
+    email: 'Jamar.Bednar5@yahoo.com',
+    name: 'Ryan Koch',
+  };
+
+  const member = dummyMember;
+
+  const validComments = Array.isArray(comments) ? comments : [];
 
   const handleLogin = () => {
     console.log('log in!');
   };
 
+  const fetcher = useFetcher();
+
   const handlePostComment = (comment: string) => {
-    console.log(comment);
+    fetcher.submit(
+      { comment, postId, memberId: member.id },
+      { method: 'post', action: `/${postSlug}` }, // Replace with the correct path to your route
+    );
   };
   //testing logic ends
 
@@ -50,8 +66,8 @@ export default function CommentsList({ comments }: CommentsProps) {
           grow together in this engaging and supportive community!
         </Text>
       </Box>
-      <CommentBox isLoggedIn={isLoggedIn} onLogin={handleLogin} onPostComment={handlePostComment} />
-      {validComments.length && <Comments validComments={validComments} />}
+      <CommentBox member={member} onLogin={handleLogin} onPostComment={handlePostComment} postId={postId} />
+      {validComments.length && <Comments validComments={validComments} member={member} />}
       {!validComments.length && (
         <Box>
           <Text>Be the first to start a conversation!</Text>
