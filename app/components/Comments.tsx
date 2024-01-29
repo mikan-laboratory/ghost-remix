@@ -1,8 +1,11 @@
+//External Library Imports
 import { Box, Flex, Avatar, Text, Button } from '@chakra-ui/react';
 import { FaThumbsUp, FaReply } from 'react-icons/fa';
 import { formatDistanceToNow } from 'date-fns';
-import { BasicMember } from '~/types/member';
 import { Prisma, PrismaClient } from '@prisma/client';
+
+//Internal Module Imports
+import { BasicMember } from '~/types/member';
 
 const prisma = new PrismaClient();
 

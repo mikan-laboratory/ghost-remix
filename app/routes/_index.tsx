@@ -3,12 +3,13 @@ import { useState } from 'react';
 import { Box, VStack } from '@chakra-ui/react';
 import type { MetaFunction, LoaderFunction } from '@remix-run/node';
 import { useLoaderData, useNavigate } from '@remix-run/react';
+import { PostOrPage } from '@tryghost/content-api';
+
 // Internal module imports
 import { getPostsAndPagination } from '~/content-api/getPostsAndPagination';
 import Header from '~/components/Header';
 import PaginationNavigation from '~/components/PaginationNavigation';
 import BlogListItem from '~/components/BlogListItem';
-import { PostOrPage } from '@tryghost/content-api';
 
 export const meta: MetaFunction = () => {
   return [{ title: 'TITLE' }, { name: 'description', content: 'description' }];

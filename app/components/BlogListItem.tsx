@@ -1,6 +1,5 @@
 //external library imports
 import dayjs from 'dayjs';
-//internal module import
 import { Box, Flex, Circle, Text, Image, Heading } from '@chakra-ui/react';
 import { Link } from '@remix-run/react';
 import { PostOrPage } from '@tryghost/content-api';

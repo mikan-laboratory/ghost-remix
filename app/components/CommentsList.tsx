@@ -1,9 +1,12 @@
+//External Library Imports
 import { Box, Text } from '@chakra-ui/react';
+import { Prisma, PrismaClient } from '@prisma/client';
+import { useFetcher } from '@remix-run/react';
+
+//Internal Module Imports
 import Comments from './Comments';
 import CommentBox from './CommentBox';
 import { BasicMember } from '~/types/member';
-import { Prisma, PrismaClient } from '@prisma/client';
-import { useFetcher } from '@remix-run/react';
 
 const prisma = new PrismaClient();
 

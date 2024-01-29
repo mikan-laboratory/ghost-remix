@@ -1,3 +1,4 @@
+//External Library Imports
 import { ghostContentAPI } from './ghostContentAPI';
 
 export const getPost = async (slug: string) => {
@@ -5,7 +6,6 @@ export const getPost = async (slug: string) => {
     .read({
       slug: slug,
       include: 'authors,tags,comments,slug',
-      // fields: 'published_at,id,feature_image,feature_image_alt,title,excerpt,slug',
     } as any) //without any, we get an dumb red line on include even though its ok.
     .catch((err) => {
       console.error(err);

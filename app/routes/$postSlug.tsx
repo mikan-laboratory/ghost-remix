@@ -1,16 +1,19 @@
+//External Library Imports
 import { useLoaderData, useFetcher } from '@remix-run/react';
+import { LoaderFunction, ActionFunction, json, redirect } from '@remix-run/node';
 import { Image, Box, Heading, Flex } from '@chakra-ui/react';
+import { PostOrPage } from '@tryghost/content-api';
+import { PrismaClient } from '@prisma/client';
+import { v4 as uuidv4 } from 'uuid';
+
+// Internal Module Imports
 import { getPost } from '~/content-api/getPost';
 import { getCommentsForPost } from '~/content-api/getCommentsForPost';
-import { LoaderFunction, ActionFunction, json, redirect } from '@remix-run/node';
 import PostContent from '~/components/PostContent';
 import AuthorsList from '~/components/AuthorsList';
 import TopicsList from '~/components/TopicsList';
 import Header from '~/components/Header';
 import CommentsList from '~/components/CommentsList';
-import { PostOrPage } from '@tryghost/content-api';
-import { PrismaClient } from '@prisma/client';
-import { v4 as uuidv4 } from 'uuid';
 
 const prisma = new PrismaClient();
 
