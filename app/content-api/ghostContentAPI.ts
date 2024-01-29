@@ -1,4 +1,7 @@
+//External Library Imports
 import GhostContentAPI from '@tryghost/content-api';
+
+//Internal Module Imports
 import { env } from '~/env';
 
 export const ghostContentAPI = new GhostContentAPI({

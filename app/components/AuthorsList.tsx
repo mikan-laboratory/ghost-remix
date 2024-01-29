@@ -1,3 +1,4 @@
+//External Library Imports
 import { Text } from '@chakra-ui/react';
 import { Author } from '@tryghost/content-api';
 
@@ -22,5 +23,5 @@ export default function AuthorsList({ authors }: AuthorsListProps) {
     authorNames = authors[0].name as string;
   }
 
-  return <Text textColor="text1">written by: {authorNames}</Text>;
+  return <Text textColor="text1">{authors.length > 0 ? `written by: ${authorNames}` : 'written by: Annonymous'}</Text>;
 }

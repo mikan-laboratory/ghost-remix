@@ -1,3 +1,4 @@
+//External Library Imports
 import { ghostContentAPI } from './ghostContentAPI';
 
 export const getPosts = async () => {

@@ -1,11 +1,26 @@
-import { Box, Button, FormControl, FormLabel, Input, Stack, Switch, Text, useUpdateEffect } from '@chakra-ui/react';
-import { ActionFunction, LoaderFunction, json } from '@remix-run/node';
-import { useFetcher, useLoaderData } from '@remix-run/react';
+//External Library Imports
+import { Box, Button, FormControl, FormLabel, Input, Stack, Heading, Text, useUpdateEffect } from '@chakra-ui/react';
+import { ActionFunction, LoaderFunction, json, MetaFunction } from '@remix-run/node';
+import { useFetcher, useLoaderData, Link } from '@remix-run/react';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useToast } from '@chakra-ui/react';
+
+//Internal Module Imports
 import { env } from '~/env';
 import { setCookie } from '~/authentication.server';
+
+export const meta: MetaFunction = () => {
+  return [
+    {
+      title: 'TITLE',
+    },
+    {
+      name: 'description',
+      content: 'description',
+    },
+  ];
+};
 
 export const action: ActionFunction = async ({ request }) => {
   try {
@@ -14,9 +29,13 @@ export const action: ActionFunction = async ({ request }) => {
     const name = body.get('name');
     const emailType = body.get('emailType');
 
+    console.log('email:', email, 'name:', name, 'type:', emailType);
+
     if (emailType === 'signup' && !name) {
       return json({ success: true, error: 'Name is required for signup' }, { status: 400 });
     }
+
+    console.log('URL', env.GHOST_URL);
 
     const response = await axios.post(`${env.GHOST_URL}/members/api/send-magic-link/`, {
       autoRedirect: false,
@@ -25,8 +44,11 @@ export const action: ActionFunction = async ({ request }) => {
       emailType,
     });
 
+    console.log('created response');
+
     return json({ success: response.data === 'Created.' });
   } catch (error) {
+    console.log(error);
     return json({ success: false, error: 'Something went wrong' }, { status: 400 });
   }
 };
@@ -38,7 +60,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 export default function MembersPage() {
   const fetcher = useFetcher<{ success: boolean; error?: string }>();
   const data = useLoaderData<{ authenticated: boolean; error?: string }>();
-  const [formMode, setFormMode] = useState<'signin' | 'signup'>('signup');
+  const [formMode, setFormMode] = useState<'signin' | 'signup'>('signin');
   const toast = useToast();
 
   useEffect(() => {
@@ -79,22 +101,43 @@ export default function MembersPage() {
 
   return (
     <Box px="100px" py="5%" minHeight="100vh" backgroundColor="background">
+      <Link to="/">
+        <Heading mb={4} color="primary" sx={{ _hover: { color: 'text1' } }}>
+          TEST
+        </Heading>
+      </Link>
       <Stack>
         <fetcher.Form method="post">
           {formMode === 'signup' && (
             <FormControl>
-              <FormLabel>Name</FormLabel>
-              <Input name="name" placeholder="Enter your name" />
+              <FormLabel color="secondary" fontSize="3xl">
+                Name
+              </FormLabel>
+              <Input name="name" placeholder="Enter your name" color="text1" />
             </FormControl>
           )}
           <FormControl>
-            <FormLabel>Email</FormLabel>
-            <Input name="email" placeholder="Enter your email" />
+            <FormLabel color="secondary" fontSize="3xl">
+              Email
+            </FormLabel>
+            <Input name="email" placeholder="Enter your email" color="text1" />
           </FormControl>
           <Input type="hidden" name="emailType" value={formMode} />
-          <Text>Sign {formMode === 'signin' ? 'In' : 'Up'}</Text>
-          <Switch onChange={() => setFormMode(formMode === 'signin' ? 'signup' : 'signin')} />
-          <Button type="submit">Submit</Button>
+          <Box display="flex" flexDirection="row" justifyContent="space-between" alignItems="center" py={5}>
+            <Box>
+              <Text
+                color="text1"
+                onClick={() => setFormMode(formMode === 'signin' ? 'signup' : 'signin')}
+                sx={{ _hover: { color: 'primary' } }}
+                cursor="pointer"
+              >
+                {formMode === 'signin'
+                  ? `Don't have an account? Sign up here!`
+                  : 'Already have an account? Sign in here!'}
+              </Text>
+            </Box>
+            <Button type="submit">Sign {formMode === 'signin' ? 'In' : 'Up'}</Button>
+          </Box>
         </fetcher.Form>
       </Stack>
     </Box>

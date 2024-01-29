@@ -1,3 +1,4 @@
+//External Library Imports
 import { ghostContentAPI } from './ghostContentAPI';
 
 export const getSearchResults = async (query: string = '', page = 1, limit = 5) => {

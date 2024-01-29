@@ -3,9 +3,9 @@ import { useState } from 'react';
 import { Box, VStack, Text } from '@chakra-ui/react';
 import type { MetaFunction, LoaderFunction } from '@remix-run/node';
 import { useLoaderData, useNavigate, useSearchParams } from '@remix-run/react';
+import { PostOrPage } from '@tryghost/content-api';
 
 // Internal module imports
-import { Post } from '~/types/blogTypes';
 import { getSearchResults } from '~/content-api/getSearchResults';
 import Header from '~/components/Header';
 import PaginationNavigation from '~/components/PaginationNavigation';
@@ -41,10 +41,10 @@ export default function Index() {
     <Box px="100px" py="5%" minHeight="100vh" backgroundColor="background">
       <Header />
       <VStack spacing={0}>
-        {posts.length > 0 && posts.map((post: Post) => <BlogListItem key={post.id} post={post} />)}
+        {posts.length > 0 && posts.map((post: PostOrPage) => <BlogListItem key={post.id} post={post} />)}
         {posts.length === 0 && (
           <Box>
-            <Text textColor="text1">There don't seem to be any results.</Text>
+            <Text textColor="text1">Sorry, we couldn't find anything.</Text>
           </Box>
         )}
       </VStack>
