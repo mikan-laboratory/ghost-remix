@@ -1,4 +1,4 @@
-import { Box, Flex, Avatar, Text, Button, Spacer } from '@chakra-ui/react';
+import { Box, Flex, Avatar, Text, Button } from '@chakra-ui/react';
 import { FaThumbsUp, FaReply } from 'react-icons/fa';
 import { formatDistanceToNow } from 'date-fns';
 import { BasicMember } from '~/types/member';
@@ -17,32 +17,42 @@ type CommentWithRelations = Prisma.commentsGetPayload<{
 
 interface CommentsProps {
   validComments: CommentWithRelations[];
+  onDeleteComment: (commentId: string) => void;
   member: BasicMember | null;
 }
 
-// async function handleLike(commentId: string, currentLikes: number) {
-//   const updatedLikes = currentLikes + 1;
-//   console.log('liked', commentId, 'count:', updatedLikes);
-// }
-
-export default function Comments({ validComments, member }: CommentsProps) {
-  console.log(validComments[0]);
+export default function Comments({ validComments, onDeleteComment, member }: CommentsProps) {
+  const handleDeleteComment = (commentId: string) => {
+    onDeleteComment(commentId);
+  };
   return validComments.map((comment) => (
     <Box key={comment.id} p={4} borderWidth="1px" borderRadius="lg" mb={4} borderColor="primary">
-      <Flex align="center">
-        {/* <Avatar name="Member Name" src={comment.member.avatar_image} /> */}
-        <Box ml={3}>
-          <Text fontWeight="bold">
-            {comment.members?.name ? comment.members.name : 'Anonymous'}
-            <Text as="span" fontWeight="normal" color="gray.500" ml={2}>
-              {formatDistanceToNow(new Date(comment.created_at), { addSuffix: true })}
+      <Flex justifyContent="space-between" w="100%">
+        <Flex align="center">
+          <Box ml={3}>
+            <Text fontWeight="bold">
+              {comment.members?.name ? comment.members.name : 'Anonymous'}
+              <Text as="span" fontWeight="normal" color="gray.500" ml={2}>
+                {formatDistanceToNow(new Date(comment.created_at), { addSuffix: true })}
+              </Text>
             </Text>
-          </Text>
-          <Box dangerouslySetInnerHTML={{ __html: comment.html || '<></>' }} mt={2}></Box>
-        </Box>
+            <Box dangerouslySetInnerHTML={{ __html: comment.html || '<></>' }} mt={2}></Box>
+          </Box>
+        </Flex>
+        {comment.member_id === member?.id && (
+          <Button colorScheme="red" onClick={() => handleDeleteComment(comment.id)}>
+            Delete
+          </Button>
+        )}
       </Flex>
-      {/* need to figure out likes and replies. */}
-      {/* <Flex mt={2} align="center">
+      {/* need to figure out likes and replies logic. UI below would go here */}
+    </Box>
+  ));
+}
+
+/* 
+this is the UI for likes and replies for later integration:
+<Flex mt={2} align="center">
         <Button
           size="sm"
           leftIcon={<FaThumbsUp />}
@@ -66,7 +76,5 @@ export default function Comments({ validComments, member }: CommentsProps) {
           need to figure out replies
           <Comments validComments={comment.other_comments} member={member} />
         </Box>
-      )} */}
-    </Box>
-  ));
-}
+      )} 
+      */

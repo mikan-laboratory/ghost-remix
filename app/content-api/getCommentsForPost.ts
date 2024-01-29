@@ -31,6 +31,9 @@ export const getCommentsForPost = async (postId: string) => {
       where: {
         post_id: postId,
       },
+      orderBy: {
+        created_at: 'desc',
+      },
       include: {
         comment_likes: true,
         comment_reports: true,

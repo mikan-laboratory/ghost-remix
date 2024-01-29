@@ -1,15 +1,14 @@
 import React from 'react';
-import { Button, Box, Textarea, Input } from '@chakra-ui/react';
+import { Button, Box, Input } from '@chakra-ui/react';
 import { BasicMember } from '~/types/member';
 
 interface CommentBoxProps {
   member: BasicMember | null;
   onLogin: () => void;
-  onPostComment: (comment: string, postId: string, memberId: string) => void;
-  postId: string;
+  onPostComment: (comment: string, memberId: string) => void;
 }
 
-export default function CommentBox({ member, onLogin, onPostComment, postId }: CommentBoxProps) {
+export default function CommentBox({ member, onLogin, onPostComment }: CommentBoxProps) {
   const [comment, setComment] = React.useState('');
 
   const handleCommentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -24,6 +23,11 @@ export default function CommentBox({ member, onLogin, onPostComment, postId }: C
     );
   }
 
+  const handlePostAndClear = (commentText: string, memberId: string) => {
+    onPostComment(commentText, memberId);
+    setComment(''); // Reset comment field after posting
+  };
+
   return (
     <Box display="flex" my={4} alignItems="center">
       <Input
@@ -37,7 +41,7 @@ export default function CommentBox({ member, onLogin, onPostComment, postId }: C
         flex={1}
         mr={2}
       />
-      <Button colorScheme="blue" onClick={() => onPostComment(comment, postId, member.id)} isDisabled={!comment}>
+      <Button colorScheme="blue" onClick={() => handlePostAndClear(comment, member.id)} isDisabled={!comment}>
         Comment
       </Button>
     </Box>

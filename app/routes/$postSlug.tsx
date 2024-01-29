@@ -33,36 +33,50 @@ export const loader: LoaderFunction = async ({ params }) => {
   return [post, comments];
 };
 
-export const action: ActionFunction = async ({ request }) => {
+export const action: ActionFunction = async ({ request, params }) => {
   const formData = await request.formData();
-  const postId = formData.get('postId');
-  const memberId = formData.get('memberId'); // Replace with actual authenticated memberId
-  const commentHtml = formData.get('comment');
+  const actionType = formData.get('actionType');
 
-  if (typeof commentHtml !== 'string' || typeof postId !== 'string') {
-    return json({ error: 'Invalid form data' }, { status: 400 });
+  if (actionType === 'postComment') {
+    const postId = formData.get('postId');
+    const memberId = formData.get('memberId'); // Replace with actual authenticated memberId
+    const commentHtml = formData.get('comment');
+
+    if (typeof commentHtml !== 'string' || typeof postId !== 'string') {
+      return json({ error: 'Invalid form data' }, { status: 400 });
+    }
+    if (typeof postId !== 'string') {
+      throw new Error("Invalid input for 'postId'");
+    }
+
+    if (typeof memberId !== 'string') {
+      throw new Error("Invalid input for 'postId'");
+    }
+
+    // Create a new comment using Prisma
+    const newComment = await prisma.comments.create({
+      data: {
+        id: uuidv4(),
+        post_id: postId,
+        member_id: memberId,
+        html: commentHtml,
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+    });
+  } else if (actionType === 'deleteComment') {
+    const commentId = formData.get('commentId');
+
+    if (typeof commentId !== 'string') {
+      throw new Error("Invalid input for 'commentId'");
+    }
+
+    await prisma.comments.delete({
+      where: { id: commentId },
+    });
   }
-  if (typeof postId !== 'string') {
-    throw new Error("Invalid input for 'postId'");
-  }
 
-  if (typeof memberId !== 'string') {
-    throw new Error("Invalid input for 'postId'");
-  }
-
-  // Create a new comment using Prisma
-  const newComment = await prisma.comments.create({
-    data: {
-      id: uuidv4(),
-      post_id: postId,
-      member_id: memberId, // This should be the ID of the member making the comment
-      html: commentHtml,
-      created_at: new Date(),
-      updated_at: new Date(),
-    },
-  });
-
-  return redirect(request.url); // Adjust the redirect as needed
+  return redirect(`/${params.postSlug}`);
 };
 
 export default function Post() {

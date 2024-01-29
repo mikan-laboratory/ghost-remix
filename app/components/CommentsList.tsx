@@ -35,6 +35,7 @@ export default function CommentsList({ comments, postId, postSlug }: CommentsPro
   };
 
   const member = dummyMember;
+  //testing logic ends
 
   const validComments = Array.isArray(comments) ? comments : [];
 
@@ -46,11 +47,14 @@ export default function CommentsList({ comments, postId, postSlug }: CommentsPro
 
   const handlePostComment = (comment: string) => {
     fetcher.submit(
-      { comment, postId, memberId: member.id },
-      { method: 'post', action: `/${postSlug}` }, // Replace with the correct path to your route
+      { actionType: 'postComment', comment, postId: postId, memberId: member.id },
+      { method: 'post', action: `/${postSlug}` },
     );
   };
-  //testing logic ends
+
+  const handleDeleteComment = (commentId: string) => {
+    fetcher.submit({ actionType: 'deleteComment', commentId }, { method: 'post', action: `/${postSlug}` });
+  };
 
   return (
     <Box display="flex" flexDirection="column" borderTopWidth="1px" borderTopColor="secondary">
@@ -66,8 +70,10 @@ export default function CommentsList({ comments, postId, postSlug }: CommentsPro
           grow together in this engaging and supportive community!
         </Text>
       </Box>
-      <CommentBox member={member} onLogin={handleLogin} onPostComment={handlePostComment} postId={postId} />
-      {validComments.length && <Comments validComments={validComments} member={member} />}
+      <CommentBox member={member} onLogin={handleLogin} onPostComment={handlePostComment} />
+      {validComments.length && (
+        <Comments validComments={validComments} member={member} onDeleteComment={handleDeleteComment} />
+      )}
       {!validComments.length && (
         <Box>
           <Text>Be the first to start a conversation!</Text>
