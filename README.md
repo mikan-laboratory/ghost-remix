@@ -38,13 +38,9 @@ Don't worry about the $35 a month price tag, immediately after signing up for th
 
 ### Basics
 
-1. Create [Mailgun](https://www.mailgun.com/) account.
+1. Use `tilt up` to install dependencies, generate prisma client, and start services with
 
-2. Install dependencies with `npm i`
-
-3. Start services with `tilt up`
-
-4. Seed database with button in Ghost section of Tilt UI
+2. Seed database with button in Ghost section of Tilt UI
 
    - If you want to inspect the database, you can manually trigger a GUI from the Tilt UI.
 
