@@ -38,9 +38,11 @@ Don't worry about the $35 a month price tag, immediately after signing up for th
 
 ### Basics
 
-1. Use `tilt up` to install dependencies, generate prisma client, and start services with
+1. Create `.env` file in root directory, using `.env.example` as a template.
 
-2. Seed database with button in Ghost section of Tilt UI
+2. Use `tilt up` to install dependencies, generate a prisma client, and start services.
+
+3. Seed database with button in Ghost section of Tilt UI
 
    - If you want to inspect the database, you can manually trigger a GUI from the Tilt UI.
 
