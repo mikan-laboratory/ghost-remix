@@ -36,7 +36,7 @@
     "dompurify": "^3.0.8",
     "dotenv": "^16.3.2",
     "esno": "^4.0.0",
-    "framer-motion": "^11.0.0",
+    "framer-motion": "^11.0.3",
     "fs-extra": "^11.2.0",
     "isbot": "^3.6.8",
     "jsonwebtoken": "^9.0.2",
