@@ -1,18 +1,27 @@
 docker_compose('docker-compose.dev.yml')
 
+# Install NPM packages
 local_resource(
-    name='prisma-generate',
+    name='install-packages',
+    cmd='sh -c "if [ ! -d node_modules ]; then npm install; fi"',
+    auto_init=True,
+)
+
+# Generate Prisma Client
+local_resource(
+    name='gen-prisma-client',
     cmd='npx prisma generate',
     auto_init=True,
-    deps=['./prisma/schema.prisma']
+    deps=['./prisma/schema.prisma'],
+    resource_deps=['install-packages']
 )
 
 # Remix
 local_resource(
     name='remix',
-    cmd='npm i',
     serve_cmd='npm run dev',
-    resource_deps=['prisma-generate']
+    resource_deps=['gen-prisma-client'],
+    deps=['./package.json', './package-lock.json']
 )
 
 local_resource(
@@ -20,7 +29,7 @@ local_resource(
     serve_cmd='prisma studio',
     trigger_mode=TRIGGER_MODE_MANUAL,
     auto_init=False,
-    resource_deps=['prisma-generate']
+    resource_deps=['gen-prisma-client']
 )
 
 # Seed and Restart
