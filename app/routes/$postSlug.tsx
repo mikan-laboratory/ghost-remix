@@ -3,7 +3,7 @@ import { useLoaderData } from '@remix-run/react';
 import { LoaderFunction, ActionFunction, json, redirect, MetaFunction } from '@remix-run/node';
 import { Image, Box, Heading, Flex } from '@chakra-ui/react';
 import { PostOrPage } from '@tryghost/content-api';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, comments } from '@prisma/client';
 import { v4 as uuidv4 } from 'uuid';
 
 // Internal Module Imports
@@ -14,6 +14,7 @@ import AuthorsList from '~/components/AuthorsList';
 import TopicsList from '~/components/TopicsList';
 import Header from '~/components/Header';
 import CommentsList from '~/components/CommentsList';
+import { prisma } from '../db.server';
 
 export const meta: MetaFunction = () => {
   return [
@@ -27,25 +28,26 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-const prisma = new PrismaClient();
-
 export const loader: LoaderFunction = async ({ params }) => {
   const postSlug = params.postSlug;
+
   if (!postSlug) {
     throw new Response('Not Found', { status: 404 });
   }
+
   const post = (await getPost(postSlug)) as PostOrPage & { comments: boolean };
+
   if (!post || !post.id) {
     console.error(`Post not found for slug: ${postSlug}`);
     throw new Response('Post not found', { status: 404 });
   }
 
+  let comments: comments[] = [];
   //this checks if owner has comments active in the Ghost admin dashboard.
   if (post.comments) {
-    const comments = await getCommentsForPost(post.id);
-    return [post, comments];
+    comments = await getCommentsForPost(post.id);
   }
-  const comments: null = null;
+
   return [post, comments];
 };
 
@@ -151,7 +153,7 @@ export default function Post() {
         <PostContent html={postHtml} />
       </Box>
       <Box textColor="text2">
-        {comments && <CommentsList comments={comments} postId={post.id} postSlug={post.slug} />}
+        {comments.length > 0 && <CommentsList comments={comments} postId={post.id} postSlug={post.slug} />}
       </Box>
     </Box>
   );

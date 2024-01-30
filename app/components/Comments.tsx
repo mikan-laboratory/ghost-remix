@@ -1,13 +1,9 @@
 //External Library Imports
 import { Box, Flex, Text, Button } from '@chakra-ui/react';
-import { FaThumbsUp, FaReply } from 'react-icons/fa';
 import { formatDistanceToNow } from 'date-fns';
-import { Prisma, PrismaClient } from '@prisma/client';
-
+import { Prisma } from '@prisma/client';
 //Internal Module Imports
 import { BasicMember } from '~/types/member';
-
-const prisma = new PrismaClient();
 
 type CommentWithRelations = Prisma.commentsGetPayload<{
   include: {

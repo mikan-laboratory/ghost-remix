@@ -8,8 +8,6 @@ import Comments from './Comments';
 import CommentBox from './CommentBox';
 import { BasicMember } from '~/types/member';
 
-const prisma = new PrismaClient();
-
 type CommentWithRelations = Prisma.commentsGetPayload<{
   include: {
     comment_likes: true;
