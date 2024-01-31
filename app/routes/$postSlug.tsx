@@ -42,11 +42,7 @@ export const loader: LoaderFunction = async ({ params }) => {
     throw new Response('Post not found', { status: 404 });
   }
 
-  let comments: comments[] = [];
-  //this checks if owner has comments active in the Ghost admin dashboard.
-  if (post.comments) {
-    comments = await getCommentsForPost(post.id);
-  }
+  const comments: comments[] = post.comments ? await getCommentsForPost(post.id) : [];
 
   return [post, comments];
 };
