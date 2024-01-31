@@ -23,10 +23,6 @@ chown -R ghostuser:ghostuser /var/www/ghost
 echo "Setting correct permissions for /var/www/ghost/content:"
 chmod -R 755 /var/www/ghost/content
 
-# Use the production Nginx configuration
-# First, substitute environment variables in the production config
-envsubst '${BLOG_URL}' < /etc/nginx/nginx.prod.conf > /etc/nginx/nginx.conf
-
 # Start Nginx
 nginx &
 
