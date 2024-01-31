@@ -10,10 +10,6 @@ OWNER_NAME ?= Test
 OWNER_SLUG ?= test
 OWNER_EMAIL ?= test@example.com
 OWNER_PASSWORD ?= password
-THEME_SOURCE ?= ./themes/bulletin
-NEWSLETTER_URL ?= http://localhost:8081
-THEME_DESTINATION ?= ../var/www/ghost/content/themes/bulletin
-THEME_NAME ?= bulletin
 
 # Container name
 CONTAINER_NAME ?= smooth-jazz-container
@@ -39,10 +35,6 @@ run:
 	-e OWNER_EMAIL=$(OWNER_EMAIL) \
 	-e OWNER_PASSWORD=$(OWNER_PASSWORD) \
 	-e ENVIRONMENT=$(ENVIRONMENT) \
-	-e THEME_SOURCE=$(THEME_SOURCE) \
-	-e THEME_DESTINATION=$(THEME_DESTINATION) \
-	-e THEME_NAME=$(THEME_NAME) \
-	-e NEWSLETTER_URL=$(NEWSLETTER_URL) \
 	$(IMAGE_NAME)
 
 clean:
