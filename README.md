@@ -46,6 +46,10 @@ Don't worry about the $35 a month price tag, immediately after signing up for th
 
    - If you want to inspect the database, you can manually trigger a GUI from the Tilt UI.
 
+### Theme
+
+You can change the theme colors in `app/theme/theme.ts`.
+
 ## Test Docker Build
 
 1. Build image and run container with `make all`.
