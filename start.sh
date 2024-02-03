@@ -34,7 +34,6 @@ npx prisma migrate resolve --applied 0_init
 # Seed Content API Key
 npm run seed:prod
 
-
 # Unlock the migrations lock in the Ghost SQLite database
 echo "Unlocking the Ghost migrations lock..."
 sqlite3 /var/www/ghost/content/data/ghost-local.db "UPDATE migrations_lock SET locked=0 WHERE lock_key='km01';"
