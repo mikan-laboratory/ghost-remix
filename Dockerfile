@@ -86,7 +86,7 @@ COPY --from=build /myapp/prisma /myapp/prisma
 COPY --from=base /var/www/ghost /var/www/ghost
 
 # Copy Nginx configuration
-COPY nginx.prod.conf /etc/nginx/nginx.prod.conf
+COPY nginx.prod.conf /etc/nginx/nginx.conf
 
 RUN chmod +x ./start.sh
 
