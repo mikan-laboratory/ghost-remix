@@ -26,7 +26,7 @@ chmod -R 755 /var/www/ghost/content
 # Start Nginx
 nginx &
 
-su ghostuser -c 'cd /var/www/ghost && ghost config url https://$BLOG_URL && ghost start'
+su ghostuser -c 'cd /var/www/ghost && ghost config url $BLOG_URL && ghost start'
 
 # Prisma migrations
 npx prisma migrate resolve --applied 0_init

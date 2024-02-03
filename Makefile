@@ -10,6 +10,7 @@ OWNER_NAME ?= Test
 OWNER_SLUG ?= test
 OWNER_EMAIL ?= test@example.com
 OWNER_PASSWORD ?= password
+JWT_SECRET ?= a543a2c76c05e0f9cbc3fa07b19ffb79af59a0b8d2d3971ac202e57853cb8cfa
 
 # Container name
 CONTAINER_NAME ?= smooth-jazz-container
@@ -26,7 +27,7 @@ build:
 
 # Run the Docker container
 run:
-	docker run -d --name $(CONTAINER_NAME) -p 8080:8080 -p 8081:8081 \
+	docker run -d --name $(CONTAINER_NAME) -p 8080:8080 \
 	-e GHOST_CONTENT_API_KEY=$(GHOST_CONTENT_API_KEY) \
 	-e SITE_TITLE=$(SITE_TITLE) \
 	-e SITE_DESCRIPTION=$(SITE_DESCRIPTION) \
@@ -36,6 +37,7 @@ run:
 	-e OWNER_PASSWORD=$(OWNER_PASSWORD) \
 	-e ENVIRONMENT=$(ENVIRONMENT) \
 	-e BLOG_URL=$(BLOG_URL) \
+	-e JWT_SECRET=$(JWT_SECRET) \
 	$(IMAGE_NAME)
 
 clean:
