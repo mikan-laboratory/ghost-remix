@@ -3,6 +3,8 @@ import { randomUUID } from 'crypto';
 import { SecondarySeedParams } from './types';
 
 export const seedPosts = async ({ user, prisma }: SecondarySeedParams): Promise<void> => {
+  await prisma.posts.deleteMany();
+
   for (let i = 0; i < 10; i++) {
     const postId = randomUUID();
     await prisma.posts.upsert({

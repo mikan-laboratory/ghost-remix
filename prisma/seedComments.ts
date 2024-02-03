@@ -1,13 +1,12 @@
 import { faker } from '@faker-js/faker';
 import { randomUUID } from 'crypto';
 import { PrismaClient } from '@prisma/client';
-import { seedMembers } from './seedMembers';
 
 const prisma = new PrismaClient();
 
-export const seedComments = async () => {
-  await seedMembers();
-  console.log('seeded members!');
+export const seedComments = async (): Promise<void> => {
+  await prisma.comments.deleteMany();
+
   const posts = await prisma.posts.findMany();
   const members = await prisma.members.findMany();
 
@@ -29,12 +28,3 @@ export const seedComments = async () => {
     }
   }
 };
-
-seedComments()
-  .catch((e) => {
-    console.error(e);
-    process.exit(1);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });

@@ -4,6 +4,8 @@ import { faker } from '@faker-js/faker';
 const prisma = new PrismaClient();
 
 export async function seedMembers(count = 10) {
+  await prisma.members.deleteMany();
+
   for (let i = 0; i < count; i++) {
     await prisma.members.create({
       data: {
