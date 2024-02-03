@@ -19,7 +19,7 @@ export default function SearchBar() {
           <Input
             type="search"
             name="query"
-            placeholder="Search blog posts by title or tag"
+            placeholder="Search blog posts by title, author, or tag"
             borderColor="secondary"
             textColor="text1"
             focusBorderColor="primary"
