@@ -1,4 +1,4 @@
-import { json, redirect } from '@remix-run/node';
+import { TypedResponse, json, redirect } from '@remix-run/node';
 import { parse, serialize } from 'cookie';
 import { prisma } from './db.server';
 import { env } from './env';
@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken';
 import dayjs from 'dayjs';
 import { BasicMember } from './types/member';
 
-export const authenticateCookie = async (request: Request) => {
+export const authenticateCookie = async (request: Request): Promise<TypedResponse<{ member: BasicMember | null }>> => {
   const defaultReturn = json({ member: null });
 
   try {

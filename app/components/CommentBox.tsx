@@ -1,7 +1,6 @@
 //External Library Imports
 import React from 'react';
 import { Button, Box, Input } from '@chakra-ui/react';
-
 //Internal Module Imports
 import { BasicMember } from '~/types/member';
 

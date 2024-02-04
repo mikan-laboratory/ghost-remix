@@ -5,7 +5,6 @@ import { useFetcher, useLoaderData, Link } from '@remix-run/react';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useToast } from '@chakra-ui/react';
-
 //Internal Module Imports
 import { env } from '~/env';
 import { setCookie } from '~/authentication.server';
@@ -33,7 +32,7 @@ export const action: ActionFunction = async ({ request }) => {
       return json({ success: true, error: 'Name is required for signup' }, { status: 400 });
     }
 
-    const response = await axios.post(`${env.GHOST_URL}/members/api/send-magic-link/`, {
+    const response = await axios.post<string>(`${env.GHOST_URL}/members/api/send-magic-link/`, {
       autoRedirect: false,
       email,
       ...(name && { name }),

@@ -1,7 +1,6 @@
 //External Library Imports
 import { Box, Button, Flex, Heading } from '@chakra-ui/react';
 import { Link, useNavigate, useRouteLoaderData } from '@remix-run/react';
-
 //Internal Module Imports
 import SearchBar from './SearchBar';
 import { BasicMember } from '~/types/member';
