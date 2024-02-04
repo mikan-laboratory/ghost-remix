@@ -13,7 +13,7 @@ export default function BlogListItem({ post }: BlogListItemProps) {
   return (
     <Box key={post.id} borderLeft="2px solid" borderColor="secondary" overflow="hidden" p={0} pb={10} w="full">
       <Flex alignItems="center">
-        <Circle size="20px" bg="secondary" position="absolute" left="91px" />
+        <Circle size="20px" bg="secondary" position="absolute" left={['10px', '10px', '10px', '91px']} />
 
         <Text fontSize="4xl" fontWeight="bolder" ml={4} textColor="primary">
           {post.published_at ? `${dayjs(post.published_at).format('dddd')}` : 'Someday'}
