@@ -13,13 +13,20 @@ export default function BlogListItem({ post }: BlogListItemProps) {
   return (
     <Box key={post.id} borderLeft="2px solid" borderColor="secondary" overflow="hidden" p={0} pb={10} w="full">
       <Flex alignItems="center">
-        <Circle size="20px" bg="secondary" position="absolute" left={['10px', '10px', '10px', '91px']} />
+        <Circle size="20px" bg="secondary" position="absolute" left={{ base: '11px', sm: '31px' }} />
 
         <Text fontSize="4xl" fontWeight="bolder" ml={4} textColor="primary">
           {post.published_at ? `${dayjs(post.published_at).format('dddd')}` : 'Someday'}
         </Text>
       </Flex>
-      <Text borderBottom="2px solid" borderColor="secondary" width="50%" pl={5} pb={1} textColor="text2">
+      <Text
+        borderBottom="2px solid"
+        borderColor="secondary"
+        width={{ base: '100%', sm: '75%', md: '50%' }}
+        pl={5}
+        pb={1}
+        textColor="text2"
+      >
         {post.published_at ? dayjs(post.published_at).format('MM-DD-YY') : 'Some Date'} - {time} -{' '}
         {post.authors?.[0]?.name ?? 'Someone'}
       </Text>
@@ -52,7 +59,7 @@ export default function BlogListItem({ post }: BlogListItemProps) {
           {post.title}
         </Heading>
       </Link>
-      <Text mt={2} ml={5} textColor="text2" width="80%">
+      <Text mt={2} ml={5} textColor="text2" width={{ base: '95%', md: '80%' }}>
         {post.excerpt}...
       </Text>
     </Box>

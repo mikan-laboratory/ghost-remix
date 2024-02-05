@@ -1,10 +1,12 @@
 //External Library Imports
-import { Flex, Input, Button, Stack } from '@chakra-ui/react';
+import { Flex, Input, Button, Stack, useMediaQuery } from '@chakra-ui/react';
 import { Form } from '@remix-run/react';
 import { useState } from 'react';
+import { FaSearch } from 'react-icons/fa';
 
 export default function SearchBar() {
   const [query, setQuery] = useState('');
+  const [isSmallScreen] = useMediaQuery('(max-width: 600px)');
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     if (!query.trim()) {
@@ -28,7 +30,8 @@ export default function SearchBar() {
           />
           <Button
             type="submit"
-            ml={2}
+            ml={1}
+            px={{ base: '17px', sm: 5 }}
             background="background"
             textColor="secondary"
             border="solid"
@@ -41,7 +44,7 @@ export default function SearchBar() {
               },
             }}
           >
-            Search
+            {isSmallScreen ? <FaSearch /> : 'Search'}
           </Button>
         </Stack>
       </Form>

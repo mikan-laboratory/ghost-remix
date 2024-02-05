@@ -111,10 +111,10 @@ export default function Post() {
   const postHtml: string = post.html;
 
   return (
-    <Box minHeight="100vh" px="100px" py="5%" backgroundColor="background">
+    <Box minHeight="100vh" px={{ base: 5, sm: 10, md: '100px' }} py="5%" backgroundColor="background">
       <Header />
       <Box pb={5} borderBottom="2px solid" borderColor="secondary">
-        <Heading fontSize={60} textColor="text1">
+        <Heading fontSize={{ base: 30, sm: 40, md: 60 }} textAlign={{ base: 'center', md: 'left' }} textColor="text1">
           {post.title}
         </Heading>
         {post.feature_image && (

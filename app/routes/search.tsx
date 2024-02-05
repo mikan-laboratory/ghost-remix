@@ -38,17 +38,19 @@ export default function Index() {
   };
 
   return (
-    <Box px="100px" py="5%" minHeight="100vh" backgroundColor="background">
-      <Header />
-      <VStack spacing={0}>
-        {posts.length > 0 && posts.map((post: PostOrPage) => <BlogListItem key={post.id} post={post} />)}
-        {posts.length === 0 && (
-          <Box>
-            <Text textColor="text1">Sorry, we couldn't find anything.</Text>
-          </Box>
-        )}
-      </VStack>
-      <PaginationNavigation currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
+    <Box minHeight="100vh" backgroundColor="background">
+      <Box py="5%" px={{ base: 5, sm: 10 }}>
+        <Header />
+        <VStack spacing={0}>
+          {posts.length > 0 && posts.map((post: PostOrPage) => <BlogListItem key={post.id} post={post} />)}
+          {posts.length === 0 && (
+            <Box>
+              <Text textColor="text1">Sorry, we couldn't find anything.</Text>
+            </Box>
+          )}
+        </VStack>
+        <PaginationNavigation currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
+      </Box>
     </Box>
   );
 }

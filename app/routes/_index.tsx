@@ -50,14 +50,16 @@ export default function Index() {
   };
 
   return (
-    <Box px={{ base: 0, md: 5, lg: 28 }} py="5%" minHeight="100vh" backgroundColor="background">
-      <Header />
-      <VStack spacing={0}>
-        {posts.map((post: PostOrPage) => (
-          <BlogListItem key={post.id} post={post} />
-        ))}
-      </VStack>
-      <PaginationNavigation currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
+    <Box minHeight="100vh" backgroundColor="background">
+      <Box py="5%" px={{ base: 5, sm: 10 }}>
+        <Header />
+        <VStack spacing={0}>
+          {posts.map((post: PostOrPage) => (
+            <BlogListItem key={post.id} post={post} />
+          ))}
+        </VStack>
+        <PaginationNavigation currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
+      </Box>
     </Box>
   );
 }
