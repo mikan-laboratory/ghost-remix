@@ -32,7 +32,7 @@ export default function CommentBox({ member, onLogin, onPostComment }: CommentBo
   };
 
   return (
-    <Box display="flex" my={4} alignItems="center">
+    <Box display="flex" my={4} alignItems="center" w="100%">
       <Input
         borderRadius="lg"
         border="solid"
