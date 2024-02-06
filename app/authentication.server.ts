@@ -5,6 +5,8 @@ import { env } from './env';
 import jwt from 'jsonwebtoken';
 import dayjs from 'dayjs';
 import { BasicMember } from './types/member';
+import { randomUUID } from 'crypto';
+import ObjectID from 'bson-objectid';
 
 export const authenticateCookie = async (request: Request): Promise<TypedResponse<{ member: BasicMember | null }>> => {
   const defaultReturn = json({ member: null });
@@ -87,8 +89,9 @@ export const setCookie = async (request: Request) => {
         email: parsed.email,
       },
       create: {
-        id: crypto.randomUUID(),
-        transient_id: crypto.randomUUID(),
+        id: ObjectID().toHexString(),
+        uuid: randomUUID(),
+        transient_id: ObjectID().toHexString(),
         email: parsed.email,
         name: parsed.name,
         created_at: new Date(),
@@ -123,6 +126,8 @@ export const setCookie = async (request: Request) => {
       },
     });
   } catch (error) {
+    console.error(error);
+
     return json({ authenticated: false, error: (error as Error).message }, { status: 400 });
   }
 };
