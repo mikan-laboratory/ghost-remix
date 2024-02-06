@@ -32,7 +32,7 @@ export default function CommentBox({ member, onLogin, onPostComment }: CommentBo
   };
 
   return (
-    <Box display="flex" my={4} alignItems="center" w="100%">
+    <Box display="flex" my={4} alignItems="center" w="100%" flexDirection={{ base: 'column', sm: 'row' }} gap={2}>
       <Input
         borderRadius="lg"
         border="solid"
@@ -44,7 +44,12 @@ export default function CommentBox({ member, onLogin, onPostComment }: CommentBo
         flex={1}
         mr={2}
       />
-      <Button colorScheme="blue" onClick={() => handlePostAndClear(comment, member.id)} isDisabled={!comment}>
+      <Button
+        colorScheme="blue"
+        onClick={() => handlePostAndClear(comment, member.id)}
+        isDisabled={!comment}
+        w={{ base: '100%', sm: 'unset' }}
+      >
         Comment
       </Button>
     </Box>
