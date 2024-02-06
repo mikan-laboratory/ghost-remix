@@ -50,8 +50,8 @@ export default function CommentsList({ comments, postId, postSlug }: CommentsPro
   };
 
   return (
-    <Box display="flex" flexDirection="column" borderTopWidth="1px" borderTopColor="secondary">
-      <Text fontSize="4xl" py={5} w="100%" textAlign="center">
+    <Box display="flex" flexDirection="column" borderTopWidth="1px" borderTopColor="secondary" alignItems="center">
+      <Text fontSize={{ base: '3xl', sm: '4xl' }} py={5} w="100%" textAlign="center">
         Join the Discussion ({validComments.length})
       </Text>
       <Box display="flex" alignItems="center" justifyContent="center" pb={5}>

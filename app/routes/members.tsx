@@ -94,46 +94,66 @@ export default function MembersPage() {
   }, [fetcher.data?.error]);
 
   return (
-    <Box px="100px" py="5%" minHeight="100vh" backgroundColor="background">
-      <Link to="/">
-        <Heading mb={4} color="primary" sx={{ _hover: { color: 'text1' } }}>
-          TEST
-        </Heading>
-      </Link>
-      <Stack>
-        <fetcher.Form method="post">
-          {formMode === 'signup' && (
+    <Box minHeight="100vh" backgroundColor="background" display="flex" justifyContent="center">
+      <Box
+        py="5%"
+        px={{ base: 5, sm: 10 }}
+        w="100%"
+        maxWidth="70em"
+        display="flex"
+        flexDirection="column"
+        alignItems={{ base: 'center', sm: 'start' }}
+      >
+        <Link to="/">
+          <Heading mb={4} color="primary" sx={{ _hover: { color: 'text1' } }}>
+            TEST
+          </Heading>
+        </Link>
+        <Stack w="100%">
+          <fetcher.Form method="post">
+            {formMode === 'signup' && (
+              <FormControl>
+                <FormLabel color="secondary" fontSize="3xl">
+                  Name
+                </FormLabel>
+                <Input name="name" placeholder="Enter your name" color="text1" />
+              </FormControl>
+            )}
             <FormControl>
               <FormLabel color="secondary" fontSize="3xl">
-                Name
+                Email
               </FormLabel>
-              <Input name="name" placeholder="Enter your name" color="text1" />
+              <Input name="email" placeholder="Enter your email" color="text1" />
             </FormControl>
-          )}
-          <FormControl>
-            <FormLabel color="secondary" fontSize="3xl">
-              Email
-            </FormLabel>
-            <Input name="email" placeholder="Enter your email" color="text1" />
-          </FormControl>
-          <Input type="hidden" name="emailType" value={formMode} />
-          <Box display="flex" flexDirection="row" justifyContent="space-between" alignItems="center" py={5}>
-            <Box>
-              <Text
-                color="text1"
-                onClick={() => setFormMode(formMode === 'signin' ? 'signup' : 'signin')}
-                sx={{ _hover: { color: 'primary' } }}
-                cursor="pointer"
-              >
-                {formMode === 'signin'
-                  ? `Don't have an account? Sign up here!`
-                  : 'Already have an account? Sign in here!'}
-              </Text>
+            <Input type="hidden" name="emailType" value={formMode} />
+            <Box
+              display="flex"
+              flexDirection={{ base: 'column-reverse', sm: 'row' }}
+              justifyContent="space-between"
+              alignItems="center"
+              py={5}
+              gap={{ base: 5, sm: 'unset' }}
+            >
+              <Box>
+                <Text
+                  color="text1"
+                  onClick={() => setFormMode(formMode === 'signin' ? 'signup' : 'signin')}
+                  sx={{ _hover: { color: 'primary' } }}
+                  cursor="pointer"
+                  textAlign={{ base: 'center', sm: 'left' }}
+                >
+                  {formMode === 'signin'
+                    ? `Don't have an account? Sign up here!`
+                    : 'Already have an account? Sign in here!'}
+                </Text>
+              </Box>
+              <Button w={{ base: '100%', sm: 'unset' }} type="submit">
+                Sign {formMode === 'signin' ? 'In' : 'Up'}
+              </Button>
             </Box>
-            <Button type="submit">Sign {formMode === 'signin' ? 'In' : 'Up'}</Button>
-          </Box>
-        </fetcher.Form>
-      </Stack>
+          </fetcher.Form>
+        </Stack>
+      </Box>
     </Box>
   );
 }

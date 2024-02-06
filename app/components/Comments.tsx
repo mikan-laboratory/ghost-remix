@@ -25,7 +25,7 @@ export default function Comments({ validComments, onDeleteComment, member }: Com
     onDeleteComment(commentId);
   };
   return validComments.map((comment) => (
-    <Box key={comment.id} p={4} borderWidth="1px" borderRadius="lg" mb={4} borderColor="primary">
+    <Box key={comment.id} p={4} borderWidth="1px" borderRadius="lg" mb={4} borderColor="primary" w="100%">
       <Flex justifyContent="space-between" w="100%">
         <Flex align="center">
           <Box ml={3}>

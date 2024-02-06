@@ -111,45 +111,47 @@ export default function Post() {
   const postHtml: string = post.html;
 
   return (
-    <Box minHeight="100vh" px="100px" py="5%" backgroundColor="background">
-      <Header />
-      <Box pb={5} borderBottom="2px solid" borderColor="secondary">
-        <Heading fontSize={60} textColor="text1">
-          {post.title}
-        </Heading>
-        {post.feature_image && (
-          <Box
-            position="relative"
-            width="100%"
-            height="0"
-            paddingBottom="40%"
-            overflow="hidden"
-            mt={5}
-            borderRadius="xl"
-          >
-            <Image
-              src={post.feature_image}
-              alt={post.feature_image_alt || 'image'}
-              position="absolute"
-              top="50%"
-              left="50%"
-              transform="translate(-50%, -50%)"
-              minWidth="100%"
-              minHeight="100%"
-              objectFit="cover"
-            />
-          </Box>
-        )}
-        <Flex justifyContent="space-between" mt={5}>
-          <AuthorsList authors={post.authors} />
-          {post.tags.length > 0 && <TopicsList topics={post.tags} />}
-        </Flex>
-      </Box>
-      <Box py={5} textColor="text2">
-        <PostContent html={postHtml} />
-      </Box>
-      <Box textColor="text2">
-        {comments.length > 0 && <CommentsList comments={comments} postId={post.id} postSlug={post.slug} />}
+    <Box minHeight="100vh" backgroundColor="background" display="flex" justifyContent="center">
+      <Box py="5%" px={{ base: 5, sm: 10 }} maxWidth="70em">
+        <Header />
+        <Box pb={5} borderBottom="2px solid" borderColor="secondary">
+          <Heading fontSize={{ base: 30, sm: 40, md: 60 }} textAlign={{ base: 'center', md: 'left' }} textColor="text1">
+            {post.title}
+          </Heading>
+          {post.feature_image && (
+            <Box
+              position="relative"
+              width="100%"
+              height="0"
+              paddingBottom="40%"
+              overflow="hidden"
+              mt={5}
+              borderRadius="xl"
+            >
+              <Image
+                src={post.feature_image}
+                alt={post.feature_image_alt || 'image'}
+                position="absolute"
+                top="50%"
+                left="50%"
+                transform="translate(-50%, -50%)"
+                minWidth="100%"
+                minHeight="100%"
+                objectFit="cover"
+              />
+            </Box>
+          )}
+          <Flex justifyContent="space-between" mt={5}>
+            <AuthorsList authors={post.authors} />
+            {post.tags.length > 0 && <TopicsList topics={post.tags} />}
+          </Flex>
+        </Box>
+        <Box py={5} textColor="text2">
+          <PostContent html={postHtml} />
+        </Box>
+        <Box textColor="text2">
+          {comments.length > 0 && <CommentsList comments={comments} postId={post.id} postSlug={post.slug} />}
+        </Box>
       </Box>
     </Box>
   );

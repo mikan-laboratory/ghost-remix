@@ -1,6 +1,7 @@
 //External Library Imports
-import { Box, Button, Flex, Heading } from '@chakra-ui/react';
+import { Box, Button, Flex, Heading, useMediaQuery } from '@chakra-ui/react';
 import { Link, useNavigate, useRouteLoaderData } from '@remix-run/react';
+import { FaSignInAlt, FaSignOutAlt } from 'react-icons/fa';
 
 //Internal Module Imports
 import SearchBar from './SearchBar';
@@ -11,6 +12,9 @@ export default function Header() {
   const loaderData = useRouteLoaderData<{ member: BasicMember | null }>('root');
   const member = loaderData?.member;
   const blogTitle = 'BLOG TITLE';
+
+  const [isSmallScreen] = useMediaQuery('(max-width: 600px)');
+  const [isLargeScreen] = useMediaQuery('(max-width: 992px)');
 
   const login = (): void => navigate('/members');
   const logout = async (): Promise<void> => {
@@ -26,14 +30,14 @@ export default function Header() {
             {blogTitle}
           </Heading>
         </Link>
-        {member && (
+        {member && isLargeScreen && (
           <Heading color="text2" mb={4}>
             Welcome, {member.name}
           </Heading>
         )}
         {member ? (
           <Button onClick={logout} bg="primary" color="text1">
-            Sign Out
+            {isSmallScreen ? <FaSignOutAlt /> : 'Sign Out'}
           </Button>
         ) : (
           <Button
@@ -50,7 +54,7 @@ export default function Header() {
               },
             }}
           >
-            Sign In
+            {isSmallScreen ? <FaSignInAlt /> : 'Sign In'}
           </Button>
         )}
       </Flex>
