@@ -1,6 +1,6 @@
 //External Library Imports
 import dayjs from 'dayjs';
-import { Box, Flex, Circle, Text, Image, Heading } from '@chakra-ui/react';
+import { Box, Flex, Square, Text, Image, Heading } from '@chakra-ui/react';
 import { Link } from '@remix-run/react';
 import { PostOrPage } from '@tryghost/content-api';
 
@@ -13,9 +13,9 @@ export default function BlogListItem({ post }: BlogListItemProps) {
   return (
     <Box key={post.id} borderLeft="2px solid" borderColor="secondary" overflow="hidden" p={0} pb={10} w="full">
       <Flex alignItems="center">
-        <Circle size="20px" bg="secondary" position="absolute" left={{ base: '11px', sm: '31px' }} />
+        <Square size="20px" bg="secondary" position="relative" left="-11px" transform="rotate(45deg)" />
 
-        <Text fontSize="4xl" fontWeight="bolder" ml={4} textColor="primary">
+        <Text fontSize="4xl" fontWeight="bolder" textColor="primary">
           {post.published_at ? `${dayjs(post.published_at).format('dddd')}` : 'Someday'}
         </Text>
       </Flex>

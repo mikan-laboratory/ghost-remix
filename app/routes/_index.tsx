@@ -50,8 +50,8 @@ export default function Index() {
   };
 
   return (
-    <Box minHeight="100vh" backgroundColor="background">
-      <Box py="5%" px={{ base: 5, sm: 10 }}>
+    <Box minHeight="100vh" backgroundColor="background" alignItems="center" display="flex" justifyContent="center">
+      <Box py="5%" px={{ base: 5, sm: 10 }} maxWidth="70em">
         <Header />
         <VStack spacing={0}>
           {posts.map((post: PostOrPage) => (
