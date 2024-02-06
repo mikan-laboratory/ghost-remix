@@ -2,7 +2,6 @@
 import { Box, Button, Flex, Heading, useMediaQuery } from '@chakra-ui/react';
 import { Link, useNavigate, useRouteLoaderData } from '@remix-run/react';
 import { FaSignInAlt, FaSignOutAlt } from 'react-icons/fa';
-
 //Internal Module Imports
 import SearchBar from './SearchBar';
 import { BasicMember } from '~/types/member';

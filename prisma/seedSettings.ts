@@ -1,12 +1,12 @@
-import { randomUUID } from 'crypto';
 import { SecondarySeedParams } from './types';
+import ObjectID from 'bson-objectid';
 
 export const seedSettings = async ({ user, prisma }: SecondarySeedParams): Promise<void> => {
   const firstUserId = user.id;
 
   await prisma.settings.upsert({
     create: {
-      id: randomUUID(),
+      id: ObjectID().toHexString(),
       key: 'title',
       value: process.env.SITE_TITLE as string,
       type: 'string',
@@ -26,7 +26,7 @@ export const seedSettings = async ({ user, prisma }: SecondarySeedParams): Promi
 
   await prisma.settings.upsert({
     create: {
-      id: randomUUID(),
+      id: ObjectID().toHexString(),
       key: 'description',
       value: process.env.SITE_DESCRIPTION as string,
       type: 'string',
@@ -53,7 +53,7 @@ export const seedSettings = async ({ user, prisma }: SecondarySeedParams): Promi
 
   await prisma.settings.upsert({
     create: {
-      id: randomUUID(),
+      id: ObjectID().toHexString(),
       group: 'email',
       key: 'mailgun_api_key',
       value: process.env.MAILGUN_API_KEY as string,
@@ -74,7 +74,7 @@ export const seedSettings = async ({ user, prisma }: SecondarySeedParams): Promi
 
   await prisma.settings.upsert({
     create: {
-      id: randomUUID(),
+      id: ObjectID().toHexString(),
       group: 'email',
       key: 'mailgun_domain',
       value: process.env.MAILGUN_DOMAIN as string,
@@ -95,7 +95,7 @@ export const seedSettings = async ({ user, prisma }: SecondarySeedParams): Promi
 
   await prisma.settings.upsert({
     create: {
-      id: randomUUID(),
+      id: ObjectID().toHexString(),
       group: 'email',
       key: 'mailgun_base_url',
       value: process.env.MAILGUN_BASE_URL as string,

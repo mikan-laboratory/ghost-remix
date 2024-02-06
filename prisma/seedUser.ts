@@ -1,6 +1,6 @@
 import { PrismaClient, users } from '@prisma/client';
-import { randomUUID } from 'crypto';
 import bcrypt from 'bcrypt';
+import ObjectID from 'bson-objectid';
 
 export const seedUser = async (prisma: PrismaClient): Promise<users> => {
   const hashedPassword = await bcrypt.hash(process.env.OWNER_PASSWORD as string, 10);
@@ -30,7 +30,7 @@ export const seedUser = async (prisma: PrismaClient): Promise<users> => {
 
   const ownerRole = await prisma.roles.upsert({
     create: {
-      id: randomUUID(),
+      id: ObjectID().toHexString(),
       name: 'Owner',
       description: 'Blog Owner',
       created_at: new Date(),
@@ -46,8 +46,6 @@ export const seedUser = async (prisma: PrismaClient): Promise<users> => {
     },
   });
 
-  const rolesUsersId = randomUUID();
-
   await prisma.roles_users.deleteMany({
     where: {
       user_id: firstUserId,
@@ -57,7 +55,7 @@ export const seedUser = async (prisma: PrismaClient): Promise<users> => {
 
   await prisma.roles_users.create({
     data: {
-      id: rolesUsersId,
+      id: ObjectID().toHexString(),
       user_id: firstUserId,
       role_id: ownerRole.id,
     },

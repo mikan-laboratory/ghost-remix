@@ -3,9 +3,7 @@ import { useLoaderData } from '@remix-run/react';
 import { LoaderFunction, ActionFunction, json, redirect, MetaFunction } from '@remix-run/node';
 import { Image, Box, Heading, Flex } from '@chakra-ui/react';
 import { PostOrPage } from '@tryghost/content-api';
-import { PrismaClient, comments } from '@prisma/client';
-import { v4 as uuidv4 } from 'uuid';
-
+import { comments as prismaComments } from '@prisma/client';
 // Internal Module Imports
 import { getPost } from '~/content-api/getPost';
 import { getCommentsForPost } from '~/content-api/getCommentsForPost';
@@ -15,6 +13,10 @@ import TopicsList from '~/components/TopicsList';
 import Header from '~/components/Header';
 import CommentsList from '~/components/CommentsList';
 import { prisma } from '../db.server';
+import { authenticateCookie } from '~/authentication.server';
+import { getCommentSettings } from '~/content-api/getCommentSettings';
+import { CommentWithRelations } from '~/components/types';
+import { randomUUID } from 'crypto';
 
 export const meta: MetaFunction = () => {
   return [
@@ -37,36 +39,32 @@ export const loader: LoaderFunction = async ({ params }) => {
 
   const post = (await getPost(postSlug)) as PostOrPage & { comments: boolean };
 
-  if (!post || !post.id) {
-    console.error(`Post not found for slug: ${postSlug}`);
+  if (!post) {
     throw new Response('Post not found', { status: 404 });
   }
 
-  const comments: comments[] = post.comments ? await getCommentsForPost(post.id) : [];
+  const commentSettings = await getCommentSettings();
 
-  return [post, comments];
+  const comments: prismaComments[] = post.comments ? await getCommentsForPost(post.id) : [];
+
+  return json({ post, comments, commentSettings });
 };
 
-const handlePostComment = async (formData: FormData) => {
+const handlePostComment = async ({ memberId, formData }: { memberId: string; formData: FormData }) => {
   const postId = formData.get('postId');
-  const memberId = formData.get('memberId'); // Replace with actual authenticated memberId
   const commentHtml = formData.get('comment');
 
   if (typeof commentHtml !== 'string' || typeof postId !== 'string') {
-    return json({ error: 'Invalid form data' }, { status: 400 });
+    throw new Error('Invalid form data');
   }
+
   if (typeof postId !== 'string') {
     throw new Error("Invalid input for 'postId'");
   }
 
-  if (typeof memberId !== 'string') {
-    throw new Error("Invalid input for 'postId'");
-  }
-
-  // Create a new comment using Prisma
-  const newComment = await prisma.comments.create({
+  await prisma.comments.create({
     data: {
-      id: uuidv4(),
+      id: randomUUID(),
       post_id: postId,
       member_id: memberId,
       html: commentHtml,
@@ -76,7 +74,7 @@ const handlePostComment = async (formData: FormData) => {
   });
 };
 
-const handleDeleteComment = async (formData: FormData) => {
+const handleDeleteComment = async ({ memberId, formData }: { memberId: string; formData: FormData }) => {
   const commentId = formData.get('commentId');
 
   if (typeof commentId !== 'string') {
@@ -84,31 +82,52 @@ const handleDeleteComment = async (formData: FormData) => {
   }
 
   await prisma.comments.delete({
-    where: { id: commentId },
+    where: { id: commentId, member_id: memberId },
   });
 };
 
 export const action: ActionFunction = async ({ request, params }) => {
-  const formData = await request.formData();
-  const actionType = formData.get('actionType');
+  try {
+    const maybeMember = await authenticateCookie(request);
+    const memberFromJson = await maybeMember.json();
+    const commentSettings = await getCommentSettings();
 
-  switch (actionType) {
-    case 'postComment':
-      await handlePostComment(formData);
-      break;
-    case 'deleteComment':
-      await handleDeleteComment(formData);
-      break;
-    default:
-      throw new Error('Invalid action type');
+    if (commentSettings === 'off') {
+      throw new Error('Comments are disabled');
+    }
+
+    if (!memberFromJson.member) {
+      throw new Error('Unauthorized');
+    }
+
+    const formData = await request.formData();
+    const actionType = formData.get('actionType');
+
+    switch (actionType) {
+      case 'postComment':
+        await handlePostComment({ memberId: memberFromJson.member.id, formData });
+        break;
+      case 'deleteComment':
+        await handleDeleteComment({ formData, memberId: memberFromJson.member.id });
+        break;
+      default:
+        throw new Error('Invalid action type');
+    }
+
+    return redirect(`/posts/${params.postSlug}`);
+  } catch (error) {
+    console.error(error);
+
+    return json({ error: (error as Error).message }, { status: 400 });
   }
-
-  return redirect(`/${params.postSlug}`);
 };
 
 export default function Post() {
-  const [post, comments] = useLoaderData<typeof loader>();
-  const postHtml: string = post.html;
+  const loaderData = useLoaderData<{ post: PostOrPage; comments: CommentWithRelations[]; commentSettings: string }>();
+  const { post, comments, commentSettings } = loaderData;
+
+  const authors = post.authors ?? [];
+  const tags = post.tags ?? [];
 
   return (
     <Box minHeight="100vh" backgroundColor="background" display="flex" justifyContent="center">
@@ -142,16 +161,18 @@ export default function Post() {
             </Box>
           )}
           <Flex justifyContent="space-between" mt={5}>
-            <AuthorsList authors={post.authors} />
-            {post.tags.length > 0 && <TopicsList topics={post.tags} />}
+            <AuthorsList authors={authors} />
+            {tags.length > 0 && <TopicsList topics={tags} />}
           </Flex>
         </Box>
         <Box py={5} textColor="text2">
-          <PostContent html={postHtml} />
+          <PostContent html={post.html ?? ''} />
         </Box>
-        <Box textColor="text2">
-          {comments.length > 0 && <CommentsList comments={comments} postId={post.id} postSlug={post.slug} />}
-        </Box>
+        {commentSettings !== 'off' && (
+          <Box>
+            <CommentsList comments={comments as any} postId={post.id} postSlug={post.slug} />
+          </Box>
+        )}
       </Box>
     </Box>
   );
