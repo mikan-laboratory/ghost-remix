@@ -50,7 +50,7 @@ export default function Comments({ validComments, onDeleteComment, member }: Com
 }
 
 /* 
-this is the UI for likes and replies for later integration:
+
 <Flex mt={2} align="center">
         <Button
           size="sm"
