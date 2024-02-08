@@ -25,6 +25,7 @@ jobs:
             OWNER_NAME="${{ secrets.OWNER_NAME }}" \
             OWNER_SLUG="${{ secrets.OWNER_SLUG }}" \
             BLOG_URL="${{ secrets.BLOG_URL }}" \
+            COMMENT_SETTINGS="${{ secrets.COMMENT_SETTINGS }}" \
             JWT_SECRET="${{ secrets.JWT_SECRET }}"
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}

@@ -11,6 +11,7 @@ OWNER_SLUG ?= test
 OWNER_EMAIL ?= test@example.com
 OWNER_PASSWORD ?= password
 JWT_SECRET ?= a543a2c76c05e0f9cbc3fa07b19ffb79af59a0b8d2d3971ac202e57853cb8cfa
+COMMENT_SETTINGS ?= all
 
 # Container name
 CONTAINER_NAME ?= smooth-jazz-container
@@ -38,6 +39,7 @@ run:
 	-e ENVIRONMENT=$(ENVIRONMENT) \
 	-e BLOG_URL=$(BLOG_URL) \
 	-e JWT_SECRET=$(JWT_SECRET) \
+	-e COMMENT_SETTINGS=$(COMMENT_SETTINGS) \
 	$(IMAGE_NAME)
 
 clean:
