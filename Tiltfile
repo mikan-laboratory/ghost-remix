@@ -10,7 +10,7 @@ local_resource(
 # Generate Prisma Client
 local_resource(
     name='gen-prisma-client',
-    cmd='npx prisma generate',
+    cmd='prisma generate',
     auto_init=True,
     deps=['./prisma/schema.prisma'],
     resource_deps=['install-packages']

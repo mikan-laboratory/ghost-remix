@@ -1,7 +1,8 @@
 //External Library Imports
-import { Box, Flex, Text, Button } from '@chakra-ui/react';
+import { Box, Flex, Text, Button, Spacer } from '@chakra-ui/react';
 import { formatDistanceToNow } from 'date-fns';
 import { Prisma } from '@prisma/client';
+import { FaThumbsUp, FaReply } from 'react-icons/fa';
 //Internal Module Imports
 import { BasicMember } from '~/types/member';
 
@@ -24,6 +25,9 @@ export default function Comments({ validComments, onDeleteComment, member }: Com
   const handleDeleteComment = (commentId: string) => {
     onDeleteComment(commentId);
   };
+  const handleCommentLike = (comment: CommentWithRelations) => {
+    console.log(comment.comment_likes);
+  };
   return validComments.map((comment) => (
     <Box key={comment.id} p={4} borderWidth="1px" borderRadius="lg" mb={4} borderColor="primary" w="100%">
       <Flex justifyContent="space-between" w="100%">
@@ -44,7 +48,25 @@ export default function Comments({ validComments, onDeleteComment, member }: Com
           </Button>
         )}
       </Flex>
-      {/* need to figure out likes and replies logic. UI below would go here */}
+      <Flex mt={2} align="center">
+        <Button
+          size="sm"
+          leftIcon={<FaThumbsUp />}
+          variant="ghost"
+          color="text1"
+          onClick={() => handleCommentLike(comment)}
+          // isDisabled={!member}
+        >
+          Like
+        </Button>
+        {/* <Button size="sm" leftIcon={<FaReply />} variant="ghost" ml={2} color="text1">
+          Reply
+        </Button> */}
+        <Spacer />
+        <Text fontSize="sm" color="gray.500">
+          {comment.comment_likes.length || 0} likes
+        </Text>
+      </Flex>
     </Box>
   ));
 }

@@ -39,7 +39,14 @@ export default function CommentsList({ comments, postId, postSlug }: CommentsPro
   };
 
   return (
-    <Box display="flex" flexDirection="column" borderTopWidth="1px" borderTopColor="secondary" alignItems="center">
+    <Box
+      display="flex"
+      flexDirection="column"
+      borderTopWidth="1px"
+      borderTopColor="secondary"
+      alignItems="center"
+      color="text1"
+    >
       <Text fontSize={{ base: '3xl', sm: '4xl' }} py={5} w="100%" textAlign="center">
         Join the Discussion ({comments.length})
       </Text>
