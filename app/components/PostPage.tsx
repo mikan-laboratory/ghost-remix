@@ -58,7 +58,7 @@ export const PostPage = ({ post, comments, commentSettings }: PostPageProps): JS
         </Box>
         {commentSettings !== 'off' && (
           <Box>
-            <CommentsList comments={comments as any} postId={post.id} postSlug={post.slug} />
+            <CommentsList comments={comments} postId={post.id} postSlug={post.slug} />
           </Box>
         )}
       </Box>

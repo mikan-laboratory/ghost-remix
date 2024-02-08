@@ -21,9 +21,10 @@ interface CommentsProps {
 }
 
 export default function Comments({ validComments, onDeleteComment, member }: CommentsProps) {
-  const handleDeleteComment = (commentId: string) => {
+  const handleDeleteComment = (commentId: string): void => {
     onDeleteComment(commentId);
   };
+
   return validComments.map((comment) => (
     <Box key={comment.id} p={4} borderWidth="1px" borderRadius="lg" mb={4} borderColor="primary" w="100%">
       <Flex justifyContent="space-between" w="100%">
