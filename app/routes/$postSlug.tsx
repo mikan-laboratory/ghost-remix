@@ -79,26 +79,27 @@ const handleDeleteComment = async ({ memberId, formData }: { memberId: string; f
 export const action: ActionFunction = async ({ request, params }) => {
   try {
     const maybeMember = await authenticateCookie(request);
-    const memberFromJson = await maybeMember.json();
     const commentSettings = await getCommentSettings();
 
     if (commentSettings === 'off') {
       throw new Error('Comments are disabled');
     }
 
-    if (!memberFromJson.member) {
+    if (!maybeMember.member) {
       throw new Error('Unauthorized');
     }
 
     const formData = await request.formData();
     const actionType = formData.get('actionType');
 
+    const memberId = maybeMember.member.id;
+
     switch (actionType) {
       case 'postComment':
-        await handlePostComment({ memberId: memberFromJson.member.id, formData });
+        await handlePostComment({ memberId, formData });
         break;
       case 'deleteComment':
-        await handleDeleteComment({ formData, memberId: memberFromJson.member.id });
+        await handleDeleteComment({ memberId, formData });
         break;
       default:
         throw new Error('Invalid action type');
