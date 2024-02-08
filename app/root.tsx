@@ -3,23 +3,19 @@ import React, { useContext, useEffect } from 'react';
 import { withEmotionCache } from '@emotion/react';
 import { ChakraProvider } from '@chakra-ui/react';
 import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
-import { MetaFunction, LinksFunction } from '@remix-run/node'; // Depends on the runtime you choose
+import { LinksFunction, json } from '@remix-run/node'; // Depends on the runtime you choose
 import theme from './theme/theme';
 import { LoaderFunction } from '@remix-run/node';
 import { ServerStyleContext, ClientStyleContext } from './context';
-import { authenticateCookie } from './authentication.server';
+import { authenticateCookie } from './authenticateCookie.server';
+import { getBasicBlogInfo } from './getBasicBlogInfo.server';
 
 export const loader: LoaderFunction = async ({ request }) => {
-  return authenticateCookie(request);
-};
+  const authCookie = await authenticateCookie(request);
+  const blogInfo = await getBasicBlogInfo();
 
-export const meta: MetaFunction = () => [
-  {
-    charset: 'utf-8',
-    title: 'New Remix App',
-    viewport: 'width=device-width,initial-scale=1',
-  },
-];
+  return json({ ...authCookie, ...blogInfo });
+};
 
 export let links: LinksFunction = () => {
   return [
@@ -57,6 +53,8 @@ const Document = withEmotionCache(({ children }: DocumentProps, emotionCache) =>
   return (
     <html lang="en">
       <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
         <Links />
         {serverStyleData?.map(({ key, ids, css }) => (

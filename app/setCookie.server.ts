@@ -1,47 +1,11 @@
-import { TypedResponse, json, redirect } from '@remix-run/node';
-import { parse, serialize } from 'cookie';
+import { json, redirect } from '@remix-run/node';
+import ObjectID from 'bson-objectid';
+import { serialize } from 'cookie';
+import { randomUUID } from 'crypto';
+import dayjs from 'dayjs';
 import { prisma } from './db.server';
 import { env } from './env';
 import jwt from 'jsonwebtoken';
-import dayjs from 'dayjs';
-import { BasicMember } from './types/member';
-import { randomUUID } from 'crypto';
-import ObjectID from 'bson-objectid';
-
-export const authenticateCookie = async (request: Request): Promise<TypedResponse<{ member: BasicMember | null }>> => {
-  const defaultReturn = json({ member: null });
-
-  try {
-    const cookieHeader = request.headers.get('Cookie');
-
-    if (!cookieHeader) return defaultReturn;
-
-    const cookies = parse(cookieHeader);
-
-    const token = cookies.token;
-
-    if (!token) return defaultReturn;
-
-    const decoded = jwt.verify(token, env.JWT_SECRET) as BasicMember;
-
-    const member = await prisma.members.findUnique({
-      where: { id: decoded.id },
-      select: {
-        id: true,
-        email: true,
-        name: true,
-      },
-    });
-
-    if (!member) return defaultReturn;
-
-    return json({ member });
-  } catch (error) {
-    console.error(error);
-
-    return defaultReturn;
-  }
-};
 
 export const setCookie = async (request: Request) => {
   try {
@@ -67,7 +31,7 @@ export const setCookie = async (request: Request) => {
 
     if (!dbToken?.data) throw new Error('Invalid token');
 
-    if (dayjs().diff(dayjs(dbToken.created_at), 'day') > 1) {
+    if (dayjs().diff(dayjs(dbToken.created_at), 'minute') > 3) {
       throw new Error('Token expired');
     }
 
@@ -84,22 +48,67 @@ export const setCookie = async (request: Request) => {
 
     const parsed = JSON.parse(dbToken.data);
 
+    const newsletter = await prisma.newsletters.findFirst();
+
+    const memberNewsletter = newsletter
+      ? {
+          members_subscribe_events: {
+            create: {
+              id: ObjectID().toHexString(),
+              newsletter_id: newsletter.id,
+              subscribed: true,
+              source: 'member',
+              created_at: new Date(),
+            },
+          },
+          members_newsletters: {
+            create: {
+              id: ObjectID().toHexString(),
+              newsletter_id: newsletter.id,
+            },
+          },
+        }
+      : {};
+
+    const memberId = ObjectID().toHexString();
+
     const member = await prisma.members.upsert({
       where: {
         email: parsed.email,
       },
       create: {
-        id: ObjectID().toHexString(),
+        id: memberId,
         uuid: randomUUID(),
         transient_id: ObjectID().toHexString(),
         email: parsed.email,
         name: parsed.name,
         created_at: new Date(),
         updated_at: new Date(),
-        created_by: '1',
+        created_by: memberId,
+        updated_by: memberId,
+        members_created_events: {
+          create: {
+            id: ObjectID().toHexString(),
+            referrer_source: 'Direct',
+            attribution_type: 'url',
+            attribution_url: '/',
+            source: 'member',
+            created_at: new Date(),
+            batch_id: ObjectID().toHexString(),
+          },
+        },
+        members_status_events: {
+          create: {
+            id: ObjectID().toHexString(),
+            to_status: 'free',
+            created_at: new Date(),
+          },
+        },
+        ...memberNewsletter,
       },
       update: {
         updated_at: new Date(),
+        last_seen_at: new Date(),
       },
       select: {
         id: true,

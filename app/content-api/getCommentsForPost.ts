@@ -1,7 +1,5 @@
 //External Library Imports
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { prisma } from '~/db.server';
 
 export const getCommentsForPost = async (postId: string) => {
   const comments = await prisma.comments.findMany({
@@ -18,6 +16,8 @@ export const getCommentsForPost = async (postId: string) => {
       other_comments: true,
     },
   });
+
+  console.log('comments', comments);
 
   return comments;
 };

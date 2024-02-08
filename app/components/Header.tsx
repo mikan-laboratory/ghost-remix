@@ -8,9 +8,11 @@ import { BasicMember } from '~/types/member';
 
 export default function Header() {
   const navigate = useNavigate();
-  const loaderData = useRouteLoaderData<{ member: BasicMember | null }>('root');
+  const loaderData = useRouteLoaderData<{ member: BasicMember | null; title: string }>('root');
+
+  console.log(loaderData?.title, 'HELLO');
   const member = loaderData?.member;
-  const blogTitle = 'BLOG TITLE';
+  const blogTitle = loaderData?.title ?? 'Blog';
 
   const [isSmallScreen] = useMediaQuery('(max-width: 600px)');
   const [isLargeScreen] = useMediaQuery('(max-width: 992px)');

@@ -7,7 +7,7 @@ import { BasicMember } from '~/types/member';
 interface CommentBoxProps {
   member: BasicMember | null;
   onLogin: () => void;
-  onPostComment: (comment: string, memberId: string) => void;
+  onPostComment: (comment: string) => void;
 }
 
 export default function CommentBox({ member, onLogin, onPostComment }: CommentBoxProps) {
@@ -25,9 +25,9 @@ export default function CommentBox({ member, onLogin, onPostComment }: CommentBo
     );
   }
 
-  const handlePostAndClear = (commentText: string, memberId: string) => {
-    onPostComment(commentText, memberId);
-    setComment(''); // Reset comment field after posting
+  const handlePostAndClear = (commentText: string) => {
+    onPostComment(commentText);
+    setComment('');
   };
 
   return (
@@ -45,7 +45,7 @@ export default function CommentBox({ member, onLogin, onPostComment }: CommentBo
       />
       <Button
         colorScheme="blue"
-        onClick={() => handlePostAndClear(comment, member.id)}
+        onClick={() => handlePostAndClear(comment)}
         isDisabled={!comment}
         w={{ base: '100%', sm: 'unset' }}
       >

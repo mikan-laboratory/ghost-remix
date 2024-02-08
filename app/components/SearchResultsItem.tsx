@@ -23,7 +23,7 @@ export default function SearchResultsItem({ post }: BlogListItemProps) {
       <Text borderBottom="2px solid" borderColor="secondary" width="50%" pl={5} pb={1} textColor="text2">
         {dayjs(post.published_at).format('MM-DD-YY')} - {time} - {post.authors?.[0]?.name ?? 'Anonymous'}
       </Text>
-      <Link to={`/posts/${post.slug}`}>
+      <Link to={`/${post.slug}`}>
         {post.feature_image && (
           <Box
             position="relative"

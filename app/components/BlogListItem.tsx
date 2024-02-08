@@ -30,7 +30,7 @@ export default function BlogListItem({ post }: BlogListItemProps) {
         {post.published_at ? dayjs(post.published_at).format('MM-DD-YY') : 'Some Date'} - {time} -{' '}
         {post.authors?.[0]?.name ?? 'Someone'}
       </Text>
-      <Link to={`/posts/${post.slug}`}>
+      <Link to={`/${post.slug}`}>
         {post.feature_image && (
           <Box
             position="relative"

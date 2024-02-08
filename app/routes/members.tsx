@@ -7,16 +7,17 @@ import { useEffect, useState } from 'react';
 import { useToast } from '@chakra-ui/react';
 //Internal Module Imports
 import { env } from '~/env';
-import { setCookie } from '~/authentication.server';
+import { setCookie } from '~/setCookie.server';
+import { GhostSignInErrorResponse, GhostSignInResponse, GhostAPIError } from './types';
 
 export const meta: MetaFunction = () => {
   return [
     {
-      title: 'TITLE',
+      title: 'Members',
     },
     {
       name: 'description',
-      content: 'description',
+      content: 'Sign in page for members',
     },
   ];
 };
@@ -32,17 +33,31 @@ export const action: ActionFunction = async ({ request }) => {
       return json({ success: true, error: 'Name is required for signup' }, { status: 400 });
     }
 
-    const response = await axios.post<string>(`${env.GHOST_URL}/members/api/send-magic-link/`, {
-      autoRedirect: false,
-      email,
-      ...(name && { name }),
-      emailType,
-    });
+    const response = await axios.post<GhostSignInResponse>(
+      `${env.GHOST_URL}/members/api/send-magic-link/`,
+      {
+        autoRedirect: false,
+        email,
+        ...(name && { name }),
+        emailType,
+      },
+      {
+        validateStatus: () => true,
+      },
+    );
 
-    return json({ success: response.data === 'Created.' });
+    if ((response.data as GhostSignInErrorResponse).errors) {
+      throw new GhostAPIError((response.data as GhostSignInErrorResponse).errors[0].message);
+    }
+
+    return json({ success: response.status === 201 });
   } catch (error) {
     console.log(error);
-    return json({ success: false, error: 'Something went wrong' }, { status: 400 });
+
+    return json(
+      { success: false, error: error instanceof GhostAPIError ? error.message : 'Something went wrong' },
+      { status: 400 },
+    );
   }
 };
 
@@ -53,7 +68,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 export default function MembersPage() {
   const fetcher = useFetcher<{ success: boolean; error?: string }>();
   const data = useLoaderData<{ authenticated: boolean; error?: string }>();
-  const [formMode, setFormMode] = useState<'signin' | 'signup'>('signin');
+  const [formMode, setFormMode] = useState<'signin' | 'signup'>('signup');
   const toast = useToast();
 
   useEffect(() => {
@@ -105,7 +120,7 @@ export default function MembersPage() {
       >
         <Link to="/">
           <Heading mb={4} color="primary" sx={{ _hover: { color: 'text1' } }}>
-            TEST
+            Members
           </Heading>
         </Link>
         <Stack w="100%">

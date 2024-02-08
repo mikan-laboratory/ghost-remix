@@ -4,24 +4,12 @@ import { Box, VStack } from '@chakra-ui/react';
 import type { MetaFunction, LoaderFunction } from '@remix-run/node';
 import { useLoaderData, useNavigate } from '@remix-run/react';
 import { PostOrPage } from '@tryghost/content-api';
-
 // Internal module imports
 import { getPostsAndPagination } from '~/content-api/getPostsAndPagination';
 import Header from '~/components/Header';
 import PaginationNavigation from '~/components/PaginationNavigation';
 import BlogListItem from '~/components/BlogListItem';
-
-export const meta: MetaFunction = () => {
-  return [
-    {
-      title: 'TITLE',
-    },
-    {
-      name: 'description',
-      content: 'description',
-    },
-  ];
-};
+import { getBasicBlogInfo } from '~/getBasicBlogInfo.server';
 
 export const loader: LoaderFunction = async ({ request }) => {
   // Parse the current page from the URL query parameters
@@ -29,7 +17,22 @@ export const loader: LoaderFunction = async ({ request }) => {
   const page = parseInt(url.searchParams.get('page') || '1', 10);
 
   // Fetch posts and pagination data for the current page
-  return getPostsAndPagination(page, 5);
+  const postsAndPagination = await getPostsAndPagination(page, 5);
+  const blogInfo = await getBasicBlogInfo();
+
+  return { ...postsAndPagination, ...blogInfo };
+};
+
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
+  return [
+    {
+      title: data.title,
+    },
+    {
+      name: 'description',
+      content: data.description,
+    },
+  ];
 };
 
 export default function Index() {

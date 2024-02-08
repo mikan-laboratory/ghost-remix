@@ -44,6 +44,26 @@ export const seedSettings = async ({ user, prisma }: SecondarySeedParams): Promi
     },
   });
 
+  await prisma.settings.upsert({
+    create: {
+      id: ObjectID().toHexString(),
+      key: 'comments_enabled',
+      value: process.env.COMMENT_SETTINGS as string,
+      type: 'string',
+      flags: 'PUBLIC',
+      created_at: new Date(),
+      updated_at: new Date(),
+      created_by: firstUserId,
+    },
+    update: {
+      value: process.env.COMMENT_SETTINGS as string,
+      updated_at: new Date(),
+    },
+    where: {
+      key: 'comments_enabled',
+    },
+  });
+
   const hasMailgun = process.env.MAILGUN_API_KEY && process.env.MAILGUN_DOMAIN && process.env.MAILGUN_BASE_URL;
 
   if (!hasMailgun) {
