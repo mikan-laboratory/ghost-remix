@@ -3,6 +3,7 @@ import { Box, Flex, Text, Button, Spacer } from '@chakra-ui/react';
 import { formatDistanceToNow } from 'date-fns';
 import { Prisma } from '@prisma/client';
 import { FaThumbsUp, FaReply } from 'react-icons/fa';
+import { useState, useEffect } from 'react';
 //Internal Module Imports
 import { BasicMember } from '~/types/member';
 
@@ -18,16 +19,21 @@ type CommentWithRelations = Prisma.commentsGetPayload<{
 interface CommentsProps {
   validComments: CommentWithRelations[];
   onDeleteComment: (commentId: string) => void;
+  onToggleLikeComment: (commentId: string) => void;
   member: BasicMember | null;
 }
 
-export default function Comments({ validComments, onDeleteComment, member }: CommentsProps) {
+export default function Comments({ validComments, onDeleteComment, onToggleLikeComment, member }: CommentsProps) {
+  const [comments, setComments] = useState(validComments);
+
   const handleDeleteComment = (commentId: string) => {
     onDeleteComment(commentId);
   };
-  const handleCommentLike = (comment: CommentWithRelations) => {
-    console.log(comment.comment_likes);
+
+  const handleToggleLikeComment = (commentId: string) => {
+    onToggleLikeComment(commentId);
   };
+
   return validComments.map((comment) => (
     <Box key={comment.id} p={4} borderWidth="1px" borderRadius="lg" mb={4} borderColor="primary" w="100%">
       <Flex justifyContent="space-between" w="100%">
@@ -54,14 +60,14 @@ export default function Comments({ validComments, onDeleteComment, member }: Com
           leftIcon={<FaThumbsUp />}
           variant="ghost"
           color="text1"
-          onClick={() => handleCommentLike(comment)}
-          // isDisabled={!member}
+          onClick={() => handleToggleLikeComment(comment.id)}
+          isDisabled={!member}
         >
           Like
         </Button>
-        {/* <Button size="sm" leftIcon={<FaReply />} variant="ghost" ml={2} color="text1">
+        <Button size="sm" leftIcon={<FaReply />} variant="ghost" ml={2} color="text1" isDisabled={!member}>
           Reply
-        </Button> */}
+        </Button>
         <Spacer />
         <Text fontSize="sm" color="gray.500">
           {comment.comment_likes.length || 0} likes

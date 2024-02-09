@@ -20,7 +20,7 @@ export default function CommentBox({ member, onLogin, onPostComment }: CommentBo
   if (!member) {
     return (
       <Box my={4}>
-        <Button onClick={onLogin}>Log In to Comment</Button>
+        <Button onClick={onLogin}>Log In to Comment, Like, and Reply</Button>
       </Box>
     );
   }

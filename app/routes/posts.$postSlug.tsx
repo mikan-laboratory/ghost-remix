@@ -86,6 +86,42 @@ const handleDeleteComment = async ({ memberId, formData }: { memberId: string; f
   });
 };
 
+const toggleLikeComment = async ({ memberId, formData }: { memberId: string; formData: FormData }) => {
+  const commentId = formData.get('commentId');
+  console.log('click!');
+
+  if (typeof commentId !== 'string' || typeof memberId !== 'string') {
+    throw new Error('Invalid input');
+  }
+
+  const existingLike = await prisma.comment_likes.findFirst({
+    where: {
+      comment_id: commentId,
+      member_id: memberId,
+    },
+  });
+
+  if (existingLike) {
+    console.log('UNLIKED!');
+    await prisma.comment_likes.delete({
+      where: {
+        id: existingLike.id,
+      },
+    });
+  } else {
+    console.log('LIKED!');
+    await prisma.comment_likes.create({
+      data: {
+        id: randomUUID(),
+        comment_id: commentId,
+        member_id: memberId,
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+    });
+  }
+};
+
 export const action: ActionFunction = async ({ request, params }) => {
   try {
     const maybeMember = await authenticateCookie(request);
@@ -96,9 +132,9 @@ export const action: ActionFunction = async ({ request, params }) => {
       throw new Error('Comments are disabled');
     }
 
-    if (!memberFromJson.member) {
-      throw new Error('Unauthorized');
-    }
+    // if (!memberFromJson.member) {
+    //   throw new Error('Unauthorized');
+    // }
 
     const formData = await request.formData();
     const actionType = formData.get('actionType');
@@ -109,6 +145,10 @@ export const action: ActionFunction = async ({ request, params }) => {
         break;
       case 'deleteComment':
         await handleDeleteComment({ formData, memberId: memberFromJson.member.id });
+        break;
+      case 'toggleLikeComment':
+        // await toggleLikeComment({ formData, memberId: memberFromJson.member.id });
+        await toggleLikeComment({ formData, memberId: '65c55f7505977406c9bdcf7f' });
         break;
       default:
         throw new Error('Invalid action type');

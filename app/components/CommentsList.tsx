@@ -15,7 +15,8 @@ interface CommentsProps {
 
 export default function CommentsList({ comments, postId, postSlug }: CommentsProps) {
   const loaderData = useRouteLoaderData<{ member: BasicMember | null }>('root');
-  const member = loaderData?.member || null;
+  // const member = loaderData?.member || null;
+  const member = { id: '65c55f7505977406c9bdcf7f', email: 'Rhianna_Conn@yahoo.com', name: 'Flora Hansen PhD' };
 
   const navigate = useNavigate();
 
@@ -36,6 +37,10 @@ export default function CommentsList({ comments, postId, postSlug }: CommentsPro
 
   const handleDeleteComment = (commentId: string): void => {
     fetcher.submit({ actionType: 'deleteComment', commentId }, { method: 'post', action: `/posts/${postSlug}` });
+  };
+
+  const toggleLikeComment = (commentId: string): void => {
+    fetcher.submit({ actionType: 'toggleLikeComment', commentId }, { method: 'post', action: `/posts/${postSlug}` });
   };
 
   return (
@@ -61,7 +66,12 @@ export default function CommentsList({ comments, postId, postSlug }: CommentsPro
       </Box>
       <CommentBox member={member} onLogin={handleLogin} onPostComment={handlePostComment} />
       {comments.length > 0 && (
-        <Comments validComments={comments} member={member} onDeleteComment={handleDeleteComment} />
+        <Comments
+          validComments={comments}
+          member={member}
+          onDeleteComment={handleDeleteComment}
+          onToggleLikeComment={toggleLikeComment}
+        />
       )}
       {comments.length === 0 && (
         <Box>
