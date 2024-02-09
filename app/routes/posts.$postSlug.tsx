@@ -50,10 +50,15 @@ export const loader: LoaderFunction = async ({ params }) => {
   return json({ post, comments, commentSettings });
 };
 
-const handlePostComment = async ({ memberId, formData }: { memberId: string; formData: FormData }) => {
-  const postId = formData.get('postId');
-  const commentHtml = formData.get('comment');
-
+const handlePostComment = async ({
+  memberId,
+  commentHtml,
+  postId,
+}: {
+  memberId: string;
+  commentHtml: string;
+  postId: string;
+}) => {
   if (typeof commentHtml !== 'string' || typeof postId !== 'string') {
     throw new Error('Invalid form data');
   }
@@ -74,9 +79,7 @@ const handlePostComment = async ({ memberId, formData }: { memberId: string; for
   });
 };
 
-const handleDeleteComment = async ({ memberId, formData }: { memberId: string; formData: FormData }) => {
-  const commentId = formData.get('commentId');
-
+const handleDeleteComment = async ({ commentId, memberId }: { commentId: string; memberId: string }) => {
   if (typeof commentId !== 'string') {
     throw new Error("Invalid input for 'commentId'");
   }
@@ -86,8 +89,7 @@ const handleDeleteComment = async ({ memberId, formData }: { memberId: string; f
   });
 };
 
-const toggleLikeComment = async ({ memberId, formData }: { memberId: string; formData: FormData }) => {
-  const commentId = formData.get('commentId');
+const toggleLikeComment = async ({ commentId, memberId }: { commentId: string; memberId: string }) => {
   console.log('click!');
 
   if (typeof commentId !== 'string' || typeof memberId !== 'string') {
@@ -135,20 +137,28 @@ export const action: ActionFunction = async ({ request, params }) => {
     // if (!memberFromJson.member) {
     //   throw new Error('Unauthorized');
     // }
-
-    const formData = await request.formData();
-    const actionType = formData.get('actionType');
+    const requestBody = await request.json();
+    // const formData = await request.formData();
+    // const actionType = formData?.get('actionType')
+    const actionType = requestBody.actionType;
+    const commentId = requestBody.commentId;
 
     switch (actionType) {
       case 'postComment':
-        await handlePostComment({ memberId: memberFromJson.member.id, formData });
+        // await handlePostComment({ memberId: memberFromJson.member.id, formData });
+        await handlePostComment({
+          memberId: '65c55f7505977406c9bdcf7f',
+          commentHtml: requestBody.comment,
+          postId: requestBody.postId,
+        });
         break;
       case 'deleteComment':
-        await handleDeleteComment({ formData, memberId: memberFromJson.member.id });
+        // await handleDeleteComment({ commentId, memberId: memberFromJson.member.id });
+        await handleDeleteComment({ commentId, memberId: '65c55f7505977406c9bdcf7f' });
         break;
       case 'toggleLikeComment':
         // await toggleLikeComment({ formData, memberId: memberFromJson.member.id });
-        await toggleLikeComment({ formData, memberId: '65c55f7505977406c9bdcf7f' });
+        await toggleLikeComment({ commentId, memberId: '65c55f7505977406c9bdcf7f' });
         break;
       default:
         throw new Error('Invalid action type');

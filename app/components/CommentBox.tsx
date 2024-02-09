@@ -7,10 +7,11 @@ import { BasicMember } from '~/types/member';
 interface CommentBoxProps {
   member: BasicMember | null;
   onLogin: () => void;
-  onPostComment: (comment: string, memberId: string) => void;
+  postId: string;
+  postSlug: string;
 }
 
-export default function CommentBox({ member, onLogin, onPostComment }: CommentBoxProps) {
+export default function CommentBox({ member, onLogin, postId, postSlug }: CommentBoxProps) {
   const [comment, setComment] = React.useState('');
 
   const handleCommentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,9 +26,31 @@ export default function CommentBox({ member, onLogin, onPostComment }: CommentBo
     );
   }
 
-  const handlePostAndClear = (commentText: string, memberId: string) => {
-    onPostComment(commentText, memberId);
-    setComment(''); // Reset comment field after posting
+  const handlePostAndClear = (commentText: string) => {
+    if (!member.id) return;
+
+    fetch(`/posts/${postSlug}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        actionType: 'postComment',
+        comment: commentText,
+        postId: postId,
+      }),
+    })
+      .then((response) => {
+        if (response.ok) {
+          setComment('');
+          window.location.reload();
+        } else {
+          console.error('Failed to post the comment');
+        }
+      })
+      .catch((error) => {
+        console.error('Network error:', error);
+      });
   };
 
   return (
@@ -45,7 +68,7 @@ export default function CommentBox({ member, onLogin, onPostComment }: CommentBo
       />
       <Button
         colorScheme="blue"
-        onClick={() => handlePostAndClear(comment, member.id)}
+        onClick={() => handlePostAndClear(comment)}
         isDisabled={!comment}
         w={{ base: '100%', sm: 'unset' }}
       >
