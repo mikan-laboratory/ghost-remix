@@ -93,8 +93,6 @@ const handleDeleteComment = async ({ commentId, memberId }: { commentId: string;
 };
 
 const toggleLikeComment = async ({ commentId, memberId }: { commentId: string; memberId: string }) => {
-  console.log('click!');
-
   if (typeof commentId !== 'string' || typeof memberId !== 'string') {
     throw new Error('Invalid input');
   }
@@ -107,14 +105,12 @@ const toggleLikeComment = async ({ commentId, memberId }: { commentId: string; m
   });
 
   if (existingLike) {
-    console.log('UNLIKED!');
     await prisma.comment_likes.delete({
       where: {
         id: existingLike.id,
       },
     });
   } else {
-    console.log('LIKED!');
     await prisma.comment_likes.create({
       data: {
         id: randomUUID(),
@@ -137,9 +133,9 @@ export const action: ActionFunction = async ({ request, params }) => {
       throw new Error('Comments are disabled');
     }
 
-    // if (!memberFromJson.member) {
-    //   throw new Error('Unauthorized');
-    // }
+    if (!memberFromJson.member) {
+      throw new Error('Unauthorized');
+    }
     const requestBody = await request.json();
     const actionType = requestBody.actionType;
     const commentId = requestBody.commentId;
@@ -147,17 +143,17 @@ export const action: ActionFunction = async ({ request, params }) => {
     switch (actionType) {
       case 'postCommentOrReply':
         await handlePostCommentOrReply({
-          memberId: '65c55f7505977406c9bdcf7f',
+          memberId: memberFromJson.member.id,
           commentHtml: requestBody.comment,
           postId: requestBody.postId,
           parentId: requestBody.parentId,
         });
         break;
       case 'deleteComment':
-        await handleDeleteComment({ commentId, memberId: '65c55f7505977406c9bdcf7f' });
+        await handleDeleteComment({ commentId, memberId: memberFromJson.member.id });
         break;
       case 'toggleLikeComment':
-        await toggleLikeComment({ commentId, memberId: '65c55f7505977406c9bdcf7f' });
+        await toggleLikeComment({ commentId, memberId: memberFromJson.member.id });
         break;
       default:
         throw new Error('Invalid action type');

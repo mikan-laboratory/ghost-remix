@@ -1,7 +1,8 @@
 import { useState } from 'react';
 
-const useCommentActions = (postSlug: string) => {
+const useCommentOrReplyActions = (postSlug: string) => {
   const [isProcessing, setIsProcessing] = useState(false);
+  const [error, setError] = useState(false);
 
   const deleteComment = async (commentId: string) => {
     setIsProcessing(true);
@@ -24,7 +25,8 @@ const useCommentActions = (postSlug: string) => {
         }
       })
       .catch((error) => {
-        console.error('Network error:', error);
+        setError(true);
+        console.log(error);
       });
     setIsProcessing(false);
   };
@@ -54,7 +56,32 @@ const useCommentActions = (postSlug: string) => {
     setIsProcessing(false);
   };
 
-  return { deleteComment, toggleLikeComment, isProcessing };
+  const postCommentOrReply = (postId: string, commentText: string, type: string) => {
+    fetch(`/posts/${postSlug}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        actionType: 'postCommentOrReply',
+        comment: commentText,
+        postId: postId,
+        parentId: null,
+      }),
+    })
+      .then((response) => {
+        if (response.ok) {
+          window.location.reload();
+        } else {
+          console.error(`Failed to post the ${type}`);
+        }
+      })
+      .catch((error) => {
+        console.error('Network error:', error);
+      });
+  };
+
+  return { deleteComment, toggleLikeComment, postCommentOrReply, isProcessing, error };
 };
 
-export default useCommentActions;
+export default useCommentOrReplyActions;

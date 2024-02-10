@@ -3,7 +3,6 @@ import { Box, Text } from '@chakra-ui/react';
 import { useNavigate, useRouteLoaderData } from '@remix-run/react';
 //Internal Module Imports
 import Comment from './Comment';
-import CommentBox from './CommentBox';
 import CommentOrReplyBox from './CommentOrReplyBox';
 import EngagementLogin from './EngagementLogIn';
 import { BasicMember } from '~/types/member';
@@ -17,8 +16,7 @@ interface CommentsProps {
 
 export default function CommentsList({ comments, postId, postSlug }: CommentsProps) {
   const loaderData = useRouteLoaderData<{ member: BasicMember | null }>('root');
-  // const member = loaderData?.member || null;
-  const member = { id: '65c55f7505977406c9bdcf7f', email: 'Rhianna_Conn@yahoo.com', name: 'Flora Hansen PhD' };
+  const member = loaderData?.member || null;
 
   const navigate = useNavigate();
 

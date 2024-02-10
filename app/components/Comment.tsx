@@ -1,5 +1,5 @@
 //External Library Imports
-import { Box, Flex, Text, Button, Spacer } from '@chakra-ui/react';
+import { Box, Flex, Text, Button, Spacer, Alert, AlertIcon } from '@chakra-ui/react';
 import { formatDistanceToNow } from 'date-fns';
 import { Prisma, comment_likes as prismaCommentLikes } from '@prisma/client';
 import { FaThumbsUp, FaReply } from 'react-icons/fa';
@@ -34,8 +34,15 @@ export default function Comment({ comment, member, postSlug, parentId, comments 
   const [likedCount, setLikedCount] = useState(comment.comment_likes.length);
   const [replyActive, setReplyActive] = useState(false);
   const [seeReplies, setSeeReplies] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const { deleteComment, toggleLikeComment, isProcessing } = useCommentActions(postSlug);
+  const { deleteComment, toggleLikeComment, isProcessing, error } = useCommentActions(postSlug);
+
+  useEffect(() => {
+    if (error) {
+      setErrorMessage('An error occuered while processing your request.');
+    }
+  }, [error]);
 
   const handleDeleteComment = () => {
     deleteComment(comment.id);
@@ -75,6 +82,12 @@ export default function Comment({ comment, member, postSlug, parentId, comments 
       display="flex"
       flexDirection="column"
     >
+      {errorMessage && (
+        <Alert status="error" mb={4}>
+          <AlertIcon />
+          {errorMessage}
+        </Alert>
+      )}
       <Flex justifyContent="space-between" w="100%">
         <Flex align="center">
           <Box ml={3}>
@@ -92,7 +105,7 @@ export default function Comment({ comment, member, postSlug, parentId, comments 
           </Box>
         </Flex>
         {comment.member_id === member?.id && (
-          <Button colorScheme="red" onClick={() => handleDeleteComment(comment.id)}>
+          <Button colorScheme="red" onClick={() => handleDeleteComment()}>
             Delete
           </Button>
         )}
@@ -104,7 +117,7 @@ export default function Comment({ comment, member, postSlug, parentId, comments 
           variant="ghost"
           color={isLiked ? 'secondary' : 'primary'}
           onClick={() => handleToggleLikeComment()}
-          isDisabled={!member}
+          isDisabled={!member || isProcessing}
         >
           Like
         </Button>
@@ -115,6 +128,7 @@ export default function Comment({ comment, member, postSlug, parentId, comments 
           ml={2}
           color={replyActive ? 'secondary' : 'primary'}
           onClick={() => handleReplyClick()}
+          isDisabled={isProcessing}
         >
           Reply
         </Button>

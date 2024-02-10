@@ -1,8 +1,10 @@
 //External Library Imports
 import React from 'react';
-import { Button, Box, Input } from '@chakra-ui/react';
+import { Button, Box, Input, Alert, AlertIcon } from '@chakra-ui/react';
+import { useState, useEffect } from 'react';
 //Internal Module Imports
 import { BasicMember } from '~/types/member';
+import useCommentActions from '~/hooks/useCommentOrReplyActions';
 
 interface CommentBoxProps {
   member: BasicMember | null;
@@ -13,6 +15,14 @@ interface CommentBoxProps {
 
 export default function CommentOrReplyBox({ member, postId, postSlug, type }: CommentBoxProps) {
   const [commentOrReply, setCommentOrReply] = React.useState('');
+  const { postCommentOrReply, isProcessing, error } = useCommentActions(postSlug);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  useEffect(() => {
+    if (error) {
+      setErrorMessage('An error occuered while processing your request.');
+    }
+  }, [error]);
 
   const handleCommentOrReplyChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCommentOrReply(event.target.value);
@@ -20,34 +30,18 @@ export default function CommentOrReplyBox({ member, postId, postSlug, type }: Co
 
   const handlePostAndClear = (commentText: string) => {
     if (!member?.id) return;
-
-    fetch(`/posts/${postSlug}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        actionType: 'postCommentOrReply',
-        comment: commentText,
-        postId: postId,
-        parentId: null,
-      }),
-    })
-      .then((response) => {
-        if (response.ok) {
-          setCommentOrReply('');
-          window.location.reload();
-        } else {
-          console.error(`Failed to post the ${type}`);
-        }
-      })
-      .catch((error) => {
-        console.error('Network error:', error);
-      });
+    postCommentOrReply(postId, commentText, type);
+    setCommentOrReply('');
   };
 
   return (
     <Box display="flex" my={4} alignItems="center" w="100%" flexDirection={{ base: 'column', sm: 'row' }} gap={2}>
+      {errorMessage && (
+        <Alert status="error" mb={4}>
+          <AlertIcon />
+          {errorMessage}
+        </Alert>
+      )}
       <Input
         borderRadius="lg"
         border="solid"
