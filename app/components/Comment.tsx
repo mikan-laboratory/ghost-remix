@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react';
 //Internal Module Imports
 import { BasicMember } from '~/types/member';
 import CommentOrReplyBox from './CommentOrReplyBox';
+import useCommentActions from '~/hooks/useCommentOrReplyActions';
 
 type CommentWithRelations = Prisma.commentsGetPayload<{
   include: {
@@ -34,31 +35,14 @@ export default function Comment({ comment, member, postSlug, parentId, comments 
   const [replyActive, setReplyActive] = useState(false);
   const [seeReplies, setSeeReplies] = useState(false);
 
+  const { deleteComment, toggleLikeComment, isProcessing } = useCommentActions(postSlug);
+
   const handleDeleteComment = () => {
-    fetch(`/posts/${postSlug}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        actionType: 'deleteComment',
-        commentId: comment.id,
-        parentId: null,
-      }),
-    })
-      .then((response) => {
-        if (response.ok) {
-          window.location.reload();
-        } else {
-          console.error('Failed to delete the comment');
-        }
-      })
-      .catch((error) => {
-        console.error('Network error:', error);
-      });
+    deleteComment(comment.id);
   };
 
   const handleToggleLikeComment = async () => {
+    //optimistic UI update
     if (isLiked) {
       const newLikedCount = likedCount - 1;
       setLikedCount(newLikedCount);
@@ -68,24 +52,7 @@ export default function Comment({ comment, member, postSlug, parentId, comments 
       setLikedCount(newLikedCount);
       setIsLiked(!isLiked);
     }
-    try {
-      const response = await fetch(`/posts/${postSlug}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          actionType: 'toggleLikeComment',
-          commentId: comment.id,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-    } catch (error) {
-      console.error('Fetch error:', error);
-    }
+    toggleLikeComment(comment.id);
   };
 
   const handleReplyClick = () => {
@@ -125,7 +92,7 @@ export default function Comment({ comment, member, postSlug, parentId, comments 
           </Box>
         </Flex>
         {comment.member_id === member?.id && (
-          <Button colorScheme="red" onClick={() => handleDeleteComment()}>
+          <Button colorScheme="red" onClick={() => handleDeleteComment(comment.id)}>
             Delete
           </Button>
         )}
