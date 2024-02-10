@@ -4,18 +4,18 @@ import { Button, Box, Input } from '@chakra-ui/react';
 //Internal Module Imports
 import { BasicMember } from '~/types/member';
 
-interface ReplyBoxProps {
+interface CommentBoxProps {
   member: BasicMember | null;
   postId: string;
   postSlug: string;
-  commentId: string;
+  type: string;
 }
 
-export default function ReplyBox({ member, postId, postSlug, commentId }: ReplyBoxProps) {
-  const [reply, setReply] = React.useState('');
+export default function CommentOrReplyBox({ member, postId, postSlug, type }: CommentBoxProps) {
+  const [commentOrReply, setCommentOrReply] = React.useState('');
 
-  const handleReplyChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setReply(event.target.value);
+  const handleCommentOrReplyChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setCommentOrReply(event.target.value);
   };
 
   const handlePostAndClear = (commentText: string) => {
@@ -27,18 +27,18 @@ export default function ReplyBox({ member, postId, postSlug, commentId }: ReplyB
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        actionType: 'postReply',
+        actionType: 'postCommentOrReply',
         comment: commentText,
         postId: postId,
-        parentId: commentId,
+        parentId: null,
       }),
     })
       .then((response) => {
         if (response.ok) {
-          setReply('');
+          setCommentOrReply('');
           window.location.reload();
         } else {
-          console.error('Failed to post the reply');
+          console.error(`Failed to post the ${type}`);
         }
       })
       .catch((error) => {
@@ -54,18 +54,18 @@ export default function ReplyBox({ member, postId, postSlug, commentId }: ReplyB
         borderWidth="2px"
         borderColor="secondary"
         placeholder="Write a comment..."
-        value={reply}
-        onChange={handleReplyChange}
+        value={commentOrReply}
+        onChange={handleCommentOrReplyChange}
         flex={1}
         mr={2}
       />
       <Button
         colorScheme="blue"
-        onClick={() => handlePostAndClear(reply)}
-        isDisabled={!reply}
+        onClick={() => handlePostAndClear(commentOrReply)}
+        isDisabled={!commentOrReply}
         w={{ base: '100%', sm: 'unset' }}
       >
-        Reply
+        {type === 'comment' ? 'Comment' : 'Reply'}
       </Button>
     </Box>
   );

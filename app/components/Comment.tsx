@@ -6,7 +6,7 @@ import { FaThumbsUp, FaReply } from 'react-icons/fa';
 import { useState, useEffect } from 'react';
 //Internal Module Imports
 import { BasicMember } from '~/types/member';
-import ReplyBox from './ReplyBox';
+import CommentOrReplyBox from './CommentOrReplyBox';
 
 type CommentWithRelations = Prisma.commentsGetPayload<{
   include: {
@@ -26,7 +26,6 @@ interface CommentProps {
 }
 
 export default function Comment({ comment, member, postSlug, parentId, comments }: CommentProps) {
-  console.log(comment);
   if (comment.parent_id !== parentId) return; //remove replies
   const [isLiked, setIsLiked] = useState(
     comment.comment_likes.some((like: prismaCommentLikes) => like.member_id === member?.id),
@@ -44,6 +43,7 @@ export default function Comment({ comment, member, postSlug, parentId, comments 
       body: JSON.stringify({
         actionType: 'deleteComment',
         commentId: comment.id,
+        parentId: null,
       }),
     })
       .then((response) => {
@@ -156,11 +156,15 @@ export default function Comment({ comment, member, postSlug, parentId, comments 
           {likedCount} likes
         </Text>
       </Flex>
-      {replyActive && <ReplyBox member={member} postId={comment.post_id} postSlug={postSlug} commentId={comment.id} />}
+      {replyActive && <CommentOrReplyBox member={member} postId={comment.post_id} postSlug={postSlug} type="reply" />}
       <Box>
         {comment.other_comments.length > 0 && (
           <Button onClick={() => handleSeeRepliesClick()} variant="link">
-            {seeReplies ? 'Hide Replies' : 'See Replies'}
+            {seeReplies
+              ? 'Hide Replies'
+              : comment.other_comments.length === 1
+              ? 'See 1 reply'
+              : `See ${comment.other_comments.length} Replies`}
           </Button>
         )}
         {comment.other_comments.length > 0 &&

@@ -4,6 +4,8 @@ import { useNavigate, useRouteLoaderData } from '@remix-run/react';
 //Internal Module Imports
 import Comment from './Comment';
 import CommentBox from './CommentBox';
+import CommentOrReplyBox from './CommentOrReplyBox';
+import EngagementLogin from './EngagementLogIn';
 import { BasicMember } from '~/types/member';
 import { CommentWithRelations } from './types';
 
@@ -15,7 +17,8 @@ interface CommentsProps {
 
 export default function CommentsList({ comments, postId, postSlug }: CommentsProps) {
   const loaderData = useRouteLoaderData<{ member: BasicMember | null }>('root');
-  const member = loaderData?.member || null;
+  // const member = loaderData?.member || null;
+  const member = { id: '65c55f7505977406c9bdcf7f', email: 'Rhianna_Conn@yahoo.com', name: 'Flora Hansen PhD' };
 
   const navigate = useNavigate();
 
@@ -44,7 +47,8 @@ export default function CommentsList({ comments, postId, postSlug }: CommentsPro
           grow together in this engaging and supportive community!
         </Text>
       </Box>
-      <CommentBox member={member} onLogin={handleLogin} postId={postId} postSlug={postSlug} />
+      {!member && <EngagementLogin onLogin={handleLogin} />}
+      {member && <CommentOrReplyBox member={member} postId={postId} postSlug={postSlug} type="comment" />}
       {comments.length > 0 &&
         comments.map((comment) => (
           <Comment

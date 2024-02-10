@@ -50,36 +50,7 @@ export const loader: LoaderFunction = async ({ params }) => {
   return json({ post, comments, commentSettings });
 };
 
-const handlePostComment = async ({
-  memberId,
-  commentHtml,
-  postId,
-}: {
-  memberId: string;
-  commentHtml: string;
-  postId: string;
-}) => {
-  if (typeof commentHtml !== 'string' || typeof postId !== 'string') {
-    throw new Error('Invalid form data');
-  }
-
-  if (typeof postId !== 'string') {
-    throw new Error("Invalid input for 'postId'");
-  }
-
-  await prisma.comments.create({
-    data: {
-      id: randomUUID(),
-      post_id: postId,
-      member_id: memberId,
-      html: commentHtml,
-      created_at: new Date(),
-      updated_at: new Date(),
-    },
-  });
-};
-
-const handlePostReply = async ({
+const handlePostCommentOrReply = async ({
   memberId,
   commentHtml,
   postId,
@@ -88,10 +59,10 @@ const handlePostReply = async ({
   memberId: string;
   commentHtml: string;
   postId: string;
-  parentId: string;
+  parentId: string | null;
 }) => {
   if (typeof commentHtml !== 'string' || typeof postId !== 'string') {
-    throw new Error('Invalid data');
+    throw new Error('Invalid form data');
   }
 
   if (typeof postId !== 'string') {
@@ -166,34 +137,27 @@ export const action: ActionFunction = async ({ request, params }) => {
       throw new Error('Comments are disabled');
     }
 
-    if (!memberFromJson.member) {
-      throw new Error('Unauthorized');
-    }
+    // if (!memberFromJson.member) {
+    //   throw new Error('Unauthorized');
+    // }
     const requestBody = await request.json();
     const actionType = requestBody.actionType;
     const commentId = requestBody.commentId;
 
     switch (actionType) {
-      case 'postComment':
-        await handlePostComment({
-          memberId: memberFromJson.member?.id,
-          commentHtml: requestBody.comment,
-          postId: requestBody.postId,
-        });
-        break;
-      case 'postReply':
-        await handlePostReply({
-          memberId: memberFromJson.member?.id,
+      case 'postCommentOrReply':
+        await handlePostCommentOrReply({
+          memberId: '65c55f7505977406c9bdcf7f',
           commentHtml: requestBody.comment,
           postId: requestBody.postId,
           parentId: requestBody.parentId,
         });
         break;
       case 'deleteComment':
-        await handleDeleteComment({ commentId, memberId: memberFromJson.member?.id });
+        await handleDeleteComment({ commentId, memberId: '65c55f7505977406c9bdcf7f' });
         break;
       case 'toggleLikeComment':
-        await toggleLikeComment({ commentId, memberId: memberFromJson.member?.id });
+        await toggleLikeComment({ commentId, memberId: '65c55f7505977406c9bdcf7f' });
         break;
       default:
         throw new Error('Invalid action type');
