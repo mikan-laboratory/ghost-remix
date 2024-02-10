@@ -6,6 +6,7 @@ import { FaThumbsUp, FaReply } from 'react-icons/fa';
 import { useState, useEffect } from 'react';
 //Internal Module Imports
 import { BasicMember } from '~/types/member';
+import ReplyBox from './ReplyBox';
 
 type CommentWithRelations = Prisma.commentsGetPayload<{
   include: {
@@ -20,13 +21,19 @@ interface CommentProps {
   comment: CommentWithRelations;
   member: BasicMember | null;
   postSlug: string;
+  parentId: string | null;
+  comments: CommentWithRelations[];
 }
 
-export default function Comment({ comment, member, postSlug }: CommentProps) {
+export default function Comment({ comment, member, postSlug, parentId, comments }: CommentProps) {
+  console.log(comment);
+  if (comment.parent_id !== parentId) return; //remove replies
   const [isLiked, setIsLiked] = useState(
     comment.comment_likes.some((like: prismaCommentLikes) => like.member_id === member?.id),
   );
   const [likedCount, setLikedCount] = useState(comment.comment_likes.length);
+  const [replyActive, setReplyActive] = useState(false);
+  const [seeReplies, setSeeReplies] = useState(false);
 
   const handleDeleteComment = () => {
     fetch(`/posts/${postSlug}`, {
@@ -81,13 +88,35 @@ export default function Comment({ comment, member, postSlug }: CommentProps) {
     }
   };
 
+  const handleReplyClick = () => {
+    setReplyActive(!replyActive);
+  };
+
+  const handleSeeRepliesClick = () => {
+    setSeeReplies(!seeReplies);
+  };
+
   return (
-    <Box p={4} borderWidth="1px" borderRadius="lg" mb={4} borderColor="primary" w="100%">
+    <Box
+      p={4}
+      borderWidth="1px"
+      borderRadius="lg"
+      mb={4}
+      borderColor="primary"
+      w="100%"
+      gap={2}
+      display="flex"
+      flexDirection="column"
+    >
       <Flex justifyContent="space-between" w="100%">
         <Flex align="center">
           <Box ml={3}>
             <Text fontWeight="bold">
-              {comment.members?.name ? comment.members.name : 'Anonymous'}
+              {comment.members?.name === member?.name
+                ? 'You'
+                : comment.members?.name
+                ? comment.members.name
+                : 'Anonymous'}
               <Text as="span" fontWeight="normal" color="gray.500" ml={2}>
                 {formatDistanceToNow(new Date(comment.created_at), { addSuffix: true })}
               </Text>
@@ -112,29 +141,43 @@ export default function Comment({ comment, member, postSlug }: CommentProps) {
         >
           Like
         </Button>
-        {/* reply button here */}
+        <Button
+          size="sm"
+          leftIcon={<FaReply />}
+          variant="ghost"
+          ml={2}
+          color={replyActive ? 'secondary' : 'primary'}
+          onClick={() => handleReplyClick()}
+        >
+          Reply
+        </Button>
         <Spacer />
         <Text fontSize="sm" color="gray.500">
           {likedCount} likes
         </Text>
       </Flex>
-      {/* replies here */}
+      {replyActive && <ReplyBox member={member} postId={comment.post_id} postSlug={postSlug} commentId={comment.id} />}
+      <Box>
+        {comment.other_comments.length > 0 && (
+          <Button onClick={() => handleSeeRepliesClick()} variant="link">
+            {seeReplies ? 'Hide Replies' : 'See Replies'}
+          </Button>
+        )}
+        {comment.other_comments.length > 0 &&
+          seeReplies &&
+          comment.other_comments.map((oc: CommentWithRelations) => (
+            <Comment
+              comment={(() => {
+                const foundComment = comments.find((comment) => comment.id === oc.id);
+                return foundComment;
+              })()}
+              member={member}
+              postSlug={postSlug}
+              parentId={comment.id}
+              comments={comments}
+            />
+          ))}
+      </Box>
     </Box>
   );
 }
-
-/* 
-
-       
-        <Button size="sm" leftIcon={<FaReply />} variant="ghost" ml={2} color="text1">
-          Reply
-        </Button>
-
-
-      {comment.other_comments.length > 0 && (
-        <Box mt={4} pl={8} borderLeftWidth="1px">
-          need to figure out replies
-          <Comments validComments={comment.other_comments} member={member} />
-        </Box>
-      )} 
-      */

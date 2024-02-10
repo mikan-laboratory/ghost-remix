@@ -47,7 +47,16 @@ export default function CommentsList({ comments, postId, postSlug }: CommentsPro
       </Box>
       <CommentBox member={member} onLogin={handleLogin} postId={postId} postSlug={postSlug} />
       {comments.length > 0 &&
-        comments.map((comment) => <Comment key={comment.id} comment={comment} member={member} postSlug={postSlug} />)}
+        comments.map((comment) => (
+          <Comment
+            key={comment.id}
+            comment={comment}
+            member={member}
+            postSlug={postSlug}
+            parentId={null}
+            comments={comments}
+          />
+        ))}
       {comments.length === 0 && (
         <Box>
           <Text>Be the first to start a conversation!</Text>
