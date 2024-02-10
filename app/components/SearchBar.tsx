@@ -36,6 +36,7 @@ export default function SearchBar() {
             textColor="secondary"
             border="solid"
             borderColor="secondary"
+            isDisabled={!query}
             sx={{
               ':hover': {
                 bg: 'secondary',
