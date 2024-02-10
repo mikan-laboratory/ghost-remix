@@ -15,8 +15,7 @@ interface CommentsProps {
 
 export default function CommentsList({ comments, postId, postSlug }: CommentsProps) {
   const loaderData = useRouteLoaderData<{ member: BasicMember | null }>('root');
-  // const member = loaderData?.member || null;
-  const member = { id: '65c55f7505977406c9bdcf7f', email: 'Rhianna_Conn@yahoo.com', name: 'Flora Hansen PhD' };
+  const member = loaderData?.member || null;
 
   const navigate = useNavigate();
 
