@@ -17,7 +17,5 @@ export const getCommentsForPost = async (postId: string) => {
     },
   });
 
-  console.log('comments', comments);
-
   return comments;
 };

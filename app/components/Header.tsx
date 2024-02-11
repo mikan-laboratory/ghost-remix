@@ -10,7 +10,6 @@ export default function Header() {
   const navigate = useNavigate();
   const loaderData = useRouteLoaderData<{ member: BasicMember | null; title: string }>('root');
 
-  console.log(loaderData?.title, 'HELLO');
   const member = loaderData?.member;
   const blogTitle = loaderData?.title ?? 'Blog';
 
