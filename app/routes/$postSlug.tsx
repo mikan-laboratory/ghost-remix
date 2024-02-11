@@ -3,9 +3,7 @@ import { useLoaderData } from '@remix-run/react';
 import { LoaderFunction, json, MetaFunction } from '@remix-run/node';
 import { PostOrPage } from '@tryghost/content-api';
 // Internal Module Imports
-import { prisma } from '../db.server';
 import { CommentWithRelations } from '~/components/types';
-import ObjectID from 'bson-objectid';
 import { PostPage } from '~/components/PostPage';
 import { getPostCommentsAndCommentSettings } from '~/content-api/getPostAndComments';
 

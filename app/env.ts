@@ -9,8 +9,6 @@ export const env = createEnv({
     JWT_SECRET: z.string().min(1),
     ENVIRONMENT: z.enum(['local', 'production']).optional(),
   },
-  client: {
-    PUBLIC_SITE_TITLE: z.string().min(1).optional(),
-  },
+  client: {},
   runtimeEnv: process.env,
 });

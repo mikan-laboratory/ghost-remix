@@ -4,7 +4,6 @@ import { Box, VStack, Text } from '@chakra-ui/react';
 import type { MetaFunction, LoaderFunction } from '@remix-run/node';
 import { useLoaderData, useNavigate, useSearchParams } from '@remix-run/react';
 import { PostOrPage } from '@tryghost/content-api';
-
 // Internal module imports
 import { getSearchResults } from '~/content-api/getSearchResults';
 import Header from '~/components/Header';
