@@ -36,7 +36,7 @@ export default function CommentBox({ member, parentId }: CommentBoxProps): JSX.E
   if (!member) {
     return (
       <Box my={4}>
-        <Button onClick={handleLogin}>Log In to Comment</Button>
+        <Button onClick={handleLogin}>Log In to Comment, Like, or Reply</Button>
       </Box>
     );
   }
@@ -44,22 +44,24 @@ export default function CommentBox({ member, parentId }: CommentBoxProps): JSX.E
   const isDisabled = fetcher.state !== 'idle';
 
   return (
-    <Box display="flex" my={4} alignItems="center" w="100%" flexDirection={{ base: 'column', sm: 'row' }} gap={2}>
+    <Box w="100%" my={4} alignItems="center">
       <fetcher.Form method="post" action={`/${postSlug}/comments/`} preventScrollReset>
-        <Input
-          name="comment"
-          borderRadius="lg"
-          border="solid"
-          borderWidth="2px"
-          borderColor="secondary"
-          placeholder={parentId ? 'Reply to this comment' : 'Write a comment'}
-          flex={1}
-          mr={2}
-        />
-        <Button colorScheme="blue" type="submit" isDisabled={isDisabled} w={{ base: '100%', sm: 'unset' }}>
-          {parentId ? 'Reply' : 'Comment'}
-        </Button>
-        {parentId && <Input type="hidden" name="parentId" value={parentId} />}
+        <Box display="flex" w="100%" flexDirection={{ base: 'column', sm: 'row' }} gap={2}>
+          <Input
+            name="comment"
+            borderRadius="lg"
+            border="solid"
+            borderWidth="2px"
+            borderColor="secondary"
+            placeholder={parentId ? 'Reply to this comment' : 'Write a comment'}
+            flex={1}
+            mr={2}
+          />
+          <Button colorScheme="blue" type="submit" isDisabled={isDisabled} w={{ base: '100%', sm: 'unset' }}>
+            {parentId ? 'Reply' : 'Comment'}
+          </Button>
+          {parentId && <Input type="hidden" name="parentId" value={parentId} />}
+        </Box>
       </fetcher.Form>
     </Box>
   );

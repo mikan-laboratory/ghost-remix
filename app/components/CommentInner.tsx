@@ -1,4 +1,4 @@
-import { Flex, Button, Spacer, Box, Text, useToast, useUpdateEffect } from '@chakra-ui/react';
+import { Flex, Button, Spacer, Box, Text, useToast, useUpdateEffect, Tooltip } from '@chakra-ui/react';
 import { useParams, useFetcher } from '@remix-run/react';
 import { formatDistanceToNow } from 'date-fns';
 import { useCallback, useState } from 'react';
@@ -35,7 +35,7 @@ export const CommentInner = ({ comment, member }: CommentInnerProps): JSX.Elemen
     );
   };
 
-  const handleLikeComment = useCallback(() => {
+  const handleLikeComment = useCallback(async () => {
     fetcher.submit(
       { commentId: commentId.toString() },
       {
@@ -49,16 +49,21 @@ export const CommentInner = ({ comment, member }: CommentInnerProps): JSX.Elemen
   }, [isLiked, commentId, fetcher, postSlug]);
 
   return (
-    <Flex justifyContent="space-between" w="100%">
+    <Flex justifyContent="space-between" alignItems="start" w="100%">
       <Flex align="center">
         <Box ml={3}>
-          <Text fontWeight="bold">
-            {comment.members?.name ? comment.members.name : 'Anonymous'}
-            <Text as="span" fontWeight="normal" color="gray.500" ml={2}>
+          <Text
+            fontWeight="bold"
+            color="text1"
+            display={{ base: 'flex', md: 'unset' }}
+            flexDirection={{ base: 'column' }}
+          >
+            {comment.member_id === member?.id ? 'You' : comment.members?.name ? comment.members.name : 'Anonymous'}
+            <Text as="span" fontWeight="normal" color="text2" ml={{ base: 0, md: 4 }}>
               {formatDistanceToNow(new Date(comment.created_at), { addSuffix: true })}
             </Text>
           </Text>
-          <Box dangerouslySetInnerHTML={{ __html: comment.html || '<></>' }} mt={2}></Box>
+          <Box dangerouslySetInnerHTML={{ __html: comment.html || '<></>' }} mt={2} color="text1"></Box>
         </Box>
       </Flex>
       {comment.member_id === member?.id && (
@@ -66,20 +71,23 @@ export const CommentInner = ({ comment, member }: CommentInnerProps): JSX.Elemen
           Delete
         </Button>
       )}
-      <Flex mt={2} align="center">
-        <Text fontSize="sm" color="gray.500">
+      <Flex align="center">
+        <Tooltip label={member ? '' : 'Log In to Like'} hasArrow>
+          <Button
+            size="sm"
+            leftIcon={<FaThumbsUp />}
+            variant="ghost"
+            color={isLiked ? 'secondary' : 'primary'}
+            onClick={handleLikeComment}
+            isDisabled={!member}
+          >
+            Like
+          </Button>
+        </Tooltip>
+        <Spacer />
+        <Text fontSize="sm" color="primary">
           {comment.comment_likes.length} likes
         </Text>
-        <Spacer />
-        <Button
-          size="sm"
-          leftIcon={<FaThumbsUp />}
-          variant="ghost"
-          color={isLiked ? 'secondary' : 'primary'}
-          onClick={handleLikeComment}
-        >
-          Like
-        </Button>
       </Flex>
     </Flex>
   );

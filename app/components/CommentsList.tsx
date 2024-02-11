@@ -19,11 +19,11 @@ export default function CommentsList({ comments }: CommentsProps) {
 
   return (
     <Box display="flex" flexDirection="column" borderTopWidth="1px" borderTopColor="secondary" alignItems="center">
-      <Text fontSize={{ base: '3xl', sm: '4xl' }} py={5} w="100%" textAlign="center">
+      <Text fontSize={{ base: '3xl', sm: '4xl' }} py={5} w="100%" textAlign="center" color="primary">
         Join the Discussion ({comments.length})
       </Text>
       <Box display="flex" alignItems="center" justifyContent="center" pb={5}>
-        <Text w="100%">
+        <Text w="100%" color="text1">
           Welcome to the discussion of this post! Here in the comments section, we value your thoughts and encourage you
           to share them with us. We believe in fostering a positive and respectful environment where everyone can feel
           comfortable to express themselves. Remember, your words have the power to inspire and enlighten. Let's make
@@ -37,7 +37,7 @@ export default function CommentsList({ comments }: CommentsProps) {
       ))}
       {comments.length === 0 && (
         <Box>
-          <Text>Be the first to start a conversation!</Text>
+          <Text color="white">Be the first to start a conversation!</Text>
         </Box>
       )}
     </Box>

@@ -68,7 +68,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 export default function MembersPage() {
   const fetcher = useFetcher<{ success: boolean; error?: string }>();
   const data = useLoaderData<{ authenticated: boolean; error?: string }>();
-  const [formMode, setFormMode] = useState<'signin' | 'signup'>('signup');
+  const [formMode, setFormMode] = useState<'signin' | 'signup'>('signin');
   const toast = useToast();
 
   useEffect(() => {
