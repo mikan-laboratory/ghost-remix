@@ -16,9 +16,32 @@ export const getPreviewPost = async (uuid: string) => {
     throw new Error('Post not found');
   }
 
+  const [authors, tags] = await Promise.all([
+    prisma.users.findMany({
+      where: {
+        id: {
+          in: post.posts_authors.map((author) => author.author_id),
+        },
+      },
+      select: {
+        name: true,
+      },
+    }),
+    prisma.tags.findMany({
+      where: {
+        id: {
+          in: post.posts_tags.map((tag) => tag.tag_id),
+        },
+      },
+      select: {
+        name: true,
+      },
+    }),
+  ]);
+
   return {
     ...post,
-    tags: post.posts_tags,
-    authors: post.posts_authors,
+    tags,
+    authors,
   };
 };
