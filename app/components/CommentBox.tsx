@@ -45,7 +45,7 @@ export default function CommentBox({ member, parentId }: CommentBoxProps): JSX.E
 
   return (
     <Box display="flex" my={4} alignItems="center" w="100%" flexDirection={{ base: 'column', sm: 'row' }} gap={2}>
-      <fetcher.Form method="post" action={`/${postSlug}/comments/`}>
+      <fetcher.Form method="post" action={`/${postSlug}/comments/`} preventScrollReset>
         <Input
           name="comment"
           borderRadius="lg"

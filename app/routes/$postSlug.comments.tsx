@@ -44,11 +44,12 @@ export const action: ActionFunction = async ({ params, request }) => {
     const formData = await request.formData();
 
     const commentHtml = formData.get('comment');
-    const parentId = formData.get('parentId');
 
-    if (typeof commentHtml !== 'string') {
+    if (!commentHtml || typeof commentHtml !== 'string') {
       throw new Error('Invalid form data');
     }
+
+    const parentId = formData.get('parentId');
 
     await prisma.comments.create({
       data: {

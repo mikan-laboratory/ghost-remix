@@ -7,8 +7,10 @@ import { CommentInnerProps } from './types';
 
 export const CommentInner = ({ comment, member }: CommentInnerProps): JSX.Element => {
   const commentId = comment.id;
+  const memberLikedComment = Boolean(comment.comment_likes.find((like) => like.member_id === member?.id));
 
-  const [isLiked, setIsLiked] = useState(comment.comment_likes.some((like) => like.member_id === member?.id));
+  const [isLiked, setIsLiked] = useState(memberLikedComment);
+
   const params = useParams();
   const postSlug = params.postSlug;
   const fetcher = useFetcher<{ error: string }>();
@@ -27,16 +29,24 @@ export const CommentInner = ({ comment, member }: CommentInnerProps): JSX.Elemen
   }, [fetcher.data]);
 
   const handleDeleteComment = (): void => {
-    fetcher.submit({ commentId }, { method: 'DELETE', action: `/${postSlug}/comments/${commentId}` });
+    fetcher.submit(
+      { commentId },
+      { method: 'DELETE', action: `/${postSlug}/comments/${commentId}`, preventScrollReset: true },
+    );
   };
 
-  const handleLikeComment = useCallback((): void => {
-    if (isLiked) {
-      fetcher.submit({ commentId }, { method: 'POST', action: `/${postSlug}/comments/${commentId}/likes` });
-    } else {
-      fetcher.submit({ commentId }, { method: 'DELETE', action: `/${postSlug}/comments/${commentId}/likes` });
-    }
-  }, [commentId, fetcher, postSlug, setIsLiked, isLiked]);
+  const handleLikeComment = useCallback(() => {
+    fetcher.submit(
+      { commentId: commentId.toString() },
+      {
+        method: isLiked ? 'DELETE' : 'POST',
+        action: `/${postSlug}/comments/${commentId}/likes`,
+        preventScrollReset: true,
+      },
+    );
+
+    setIsLiked(!isLiked);
+  }, [isLiked, commentId, fetcher, postSlug]);
 
   return (
     <Flex justifyContent="space-between" w="100%">

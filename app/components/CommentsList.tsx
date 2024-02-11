@@ -15,6 +15,8 @@ export default function CommentsList({ comments }: CommentsProps) {
   const loaderData = useRouteLoaderData<{ member: BasicMember | null }>('root');
   const member = loaderData?.member || null;
 
+  const validComments = comments.filter((comment) => !comment.parent_id);
+
   return (
     <Box display="flex" flexDirection="column" borderTopWidth="1px" borderTopColor="secondary" alignItems="center">
       <Text fontSize={{ base: '3xl', sm: '4xl' }} py={5} w="100%" textAlign="center">
@@ -30,7 +32,7 @@ export default function CommentsList({ comments }: CommentsProps) {
         </Text>
       </Box>
       <CommentBox member={member} />
-      {comments.map((comment) => (
+      {validComments.map((comment) => (
         <Comment key={comment.id} comment={comment} member={member} />
       ))}
       {comments.length === 0 && (
