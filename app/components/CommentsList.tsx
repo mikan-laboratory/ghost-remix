@@ -28,11 +28,11 @@ export default function CommentsList({ comments, postId, postSlug }: CommentsPro
   const handlePostComment = (comment: string): void => {
     if (!member) return;
 
-    fetcher.submit({ actionType: 'postComment', comment, postId: postId }, { method: 'post', action: `/${postSlug}` });
+    fetcher.submit({ comment }, { method: 'POST', action: `/${postSlug}/comments/` });
   };
 
   const handleDeleteComment = (commentId: string): void => {
-    fetcher.submit({ actionType: 'deleteComment', commentId }, { method: 'post', action: `/${postSlug}` });
+    fetcher.submit({ commentId }, { method: 'DELETE', action: `/${postSlug}/comments/${commentId}` });
   };
 
   return (

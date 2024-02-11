@@ -1,26 +1,30 @@
 //External Library Imports
 import { useLoaderData } from '@remix-run/react';
-import { LoaderFunction, ActionFunction, json, redirect, MetaFunction } from '@remix-run/node';
+import { LoaderFunction, json, MetaFunction } from '@remix-run/node';
 import { PostOrPage } from '@tryghost/content-api';
 // Internal Module Imports
 import { prisma } from '../db.server';
-import { getCommentSettings } from '~/content-api/getCommentSettings';
 import { CommentWithRelations } from '~/components/types';
 import ObjectID from 'bson-objectid';
 import { PostPage } from '~/components/PostPage';
-import { authenticateCookie } from '~/authenticateCookie.server';
 import { getPostCommentsAndCommentSettings } from '~/content-api/getPostAndComments';
 
 export const loader: LoaderFunction = async ({ params }) => {
-  const postSlug = params.postSlug;
+  try {
+    const postSlug = params.postSlug;
 
-  if (!postSlug) {
-    throw new Response('Not Found', { status: 404 });
+    if (!postSlug) {
+      throw new Error('Not Found');
+    }
+
+    const getPostResult = await getPostCommentsAndCommentSettings(postSlug);
+
+    return json(getPostResult);
+  } catch (error) {
+    console.log(error);
+
+    return json({ error: (error as Error).message }, { status: 400 });
   }
-
-  const getPostResult = await getPostCommentsAndCommentSettings(postSlug);
-
-  return json(getPostResult);
 };
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
@@ -74,43 +78,6 @@ const handleDeleteComment = async ({ memberId, formData }: { memberId: string; f
   await prisma.comments.delete({
     where: { id: commentId, member_id: memberId },
   });
-};
-
-export const action: ActionFunction = async ({ request, params }) => {
-  try {
-    const maybeMember = await authenticateCookie(request);
-    const commentSettings = await getCommentSettings();
-
-    if (commentSettings === 'off') {
-      throw new Error('Comments are disabled');
-    }
-
-    if (!maybeMember.member) {
-      throw new Error('Unauthorized');
-    }
-
-    const formData = await request.formData();
-    const actionType = formData.get('actionType');
-
-    const memberId = maybeMember.member.id;
-
-    switch (actionType) {
-      case 'postComment':
-        await handlePostComment({ memberId, formData });
-        break;
-      case 'deleteComment':
-        await handleDeleteComment({ memberId, formData });
-        break;
-      default:
-        throw new Error('Invalid action type');
-    }
-
-    return redirect(`/${params.postSlug}`);
-  } catch (error) {
-    console.error(error);
-
-    return json({ error: (error as Error).message }, { status: 400 });
-  }
 };
 
 export default function Post() {
