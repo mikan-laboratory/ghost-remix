@@ -66,11 +66,6 @@ export const CommentInner = ({ comment, member }: CommentInnerProps): JSX.Elemen
           <Box dangerouslySetInnerHTML={{ __html: comment.html || '<></>' }} mt={2} color="text1"></Box>
         </Box>
       </Flex>
-      {comment.member_id === member?.id && (
-        <Button colorScheme="red" onClick={handleDeleteComment}>
-          Delete
-        </Button>
-      )}
       <Flex align="center">
         <Tooltip label={member ? '' : 'Log In to Like'} hasArrow>
           <Button
@@ -81,14 +76,15 @@ export const CommentInner = ({ comment, member }: CommentInnerProps): JSX.Elemen
             onClick={handleLikeComment}
             isDisabled={!member}
           >
-            Like
+            {comment.comment_likes.length} likes
           </Button>
         </Tooltip>
-        <Spacer />
-        <Text fontSize="sm" color="primary">
-          {comment.comment_likes.length} likes
-        </Text>
       </Flex>
+      {comment.member_id === member?.id && (
+        <Button colorScheme="red" onClick={handleDeleteComment}>
+          Delete
+        </Button>
+      )}
     </Flex>
   );
 };
