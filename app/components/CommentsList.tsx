@@ -1,39 +1,19 @@
 //External Library Imports
 import { Box, Text } from '@chakra-ui/react';
-import { useFetcher, useNavigate, useRouteLoaderData } from '@remix-run/react';
+import { useRouteLoaderData } from '@remix-run/react';
 //Internal Module Imports
-import Comments from './Comments';
+import Comment from './Comment';
 import CommentBox from './CommentBox';
 import { BasicMember } from '~/types/member';
 import { CommentWithRelations } from './types';
 
 interface CommentsProps {
   comments: CommentWithRelations[];
-  postId: string;
-  postSlug: string;
 }
 
-export default function CommentsList({ comments, postId, postSlug }: CommentsProps) {
+export default function CommentsList({ comments }: CommentsProps) {
   const loaderData = useRouteLoaderData<{ member: BasicMember | null }>('root');
   const member = loaderData?.member || null;
-
-  const navigate = useNavigate();
-
-  const handleLogin = (): void => {
-    navigate('/members');
-  };
-
-  const fetcher = useFetcher();
-
-  const handlePostComment = (comment: string): void => {
-    if (!member) return;
-
-    fetcher.submit({ comment }, { method: 'POST', action: `/${postSlug}/comments/` });
-  };
-
-  const handleDeleteComment = (commentId: string): void => {
-    fetcher.submit({ commentId }, { method: 'DELETE', action: `/${postSlug}/comments/${commentId}` });
-  };
 
   return (
     <Box display="flex" flexDirection="column" borderTopWidth="1px" borderTopColor="secondary" alignItems="center">
@@ -49,10 +29,10 @@ export default function CommentsList({ comments, postId, postSlug }: CommentsPro
           grow together in this engaging and supportive community!
         </Text>
       </Box>
-      <CommentBox member={member} onLogin={handleLogin} onPostComment={handlePostComment} />
-      {comments.length > 0 && (
-        <Comments validComments={comments} member={member} onDeleteComment={handleDeleteComment} />
-      )}
+      <CommentBox member={member} />
+      {comments.map((comment) => (
+        <Comment key={comment.id} comment={comment} member={member} />
+      ))}
       {comments.length === 0 && (
         <Box>
           <Text>Be the first to start a conversation!</Text>

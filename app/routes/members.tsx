@@ -105,7 +105,7 @@ export default function MembersPage() {
       duration: 9000,
       isClosable: true,
     });
-  }, [fetcher.data?.error]);
+  }, [fetcher.data]);
 
   return (
     <Box minHeight="100vh" backgroundColor="background" display="flex" justifyContent="center">

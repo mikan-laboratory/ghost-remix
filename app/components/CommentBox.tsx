@@ -1,56 +1,66 @@
 //External Library Imports
-import React from 'react';
-import { Button, Box, Input } from '@chakra-ui/react';
+import { Button, Box, Input, useToast, useUpdateEffect } from '@chakra-ui/react';
 //Internal Module Imports
 import { BasicMember } from '~/types/member';
+import { useFetcher, useNavigate, useParams } from '@remix-run/react';
 
 interface CommentBoxProps {
   member: BasicMember | null;
-  onLogin: () => void;
-  onPostComment: (comment: string) => void;
+  parentId?: string;
 }
 
-export default function CommentBox({ member, onLogin, onPostComment }: CommentBoxProps) {
-  const [comment, setComment] = React.useState('');
+export default function CommentBox({ member, parentId }: CommentBoxProps): JSX.Element {
+  const params = useParams();
+  const postSlug = params.postSlug;
 
-  const handleCommentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setComment(event.target.value);
+  const navigate = useNavigate();
+  const handleLogin = (): void => {
+    navigate('/members');
   };
+
+  const fetcher = useFetcher<{ error: string }>();
+  const toast = useToast();
+
+  useUpdateEffect(() => {
+    if (!fetcher.data?.error) return;
+
+    toast({
+      title: 'Error',
+      description: fetcher.data.error,
+      status: 'error',
+      duration: 9000,
+      isClosable: true,
+    });
+  }, [fetcher.data]);
 
   if (!member) {
     return (
       <Box my={4}>
-        <Button onClick={onLogin}>Log In to Comment</Button>
+        <Button onClick={handleLogin}>Log In to Comment</Button>
       </Box>
     );
   }
 
-  const handlePostAndClear = (commentText: string) => {
-    onPostComment(commentText);
-    setComment('');
-  };
+  const isDisabled = fetcher.state !== 'idle';
 
   return (
     <Box display="flex" my={4} alignItems="center" w="100%" flexDirection={{ base: 'column', sm: 'row' }} gap={2}>
-      <Input
-        borderRadius="lg"
-        border="solid"
-        borderWidth="2px"
-        borderColor="secondary"
-        placeholder="Write a comment..."
-        value={comment}
-        onChange={handleCommentChange}
-        flex={1}
-        mr={2}
-      />
-      <Button
-        colorScheme="blue"
-        onClick={() => handlePostAndClear(comment)}
-        isDisabled={!comment}
-        w={{ base: '100%', sm: 'unset' }}
-      >
-        Comment
-      </Button>
+      <fetcher.Form method="post" action={`/${postSlug}/comments/`}>
+        <Input
+          name="comment"
+          borderRadius="lg"
+          border="solid"
+          borderWidth="2px"
+          borderColor="secondary"
+          placeholder={parentId ? 'Reply to this comment' : 'Write a comment'}
+          flex={1}
+          mr={2}
+        />
+        <Button colorScheme="blue" type="submit" isDisabled={isDisabled} w={{ base: '100%', sm: 'unset' }}>
+          {parentId ? 'Reply' : 'Comment'}
+        </Button>
+        {parentId && <Input type="hidden" name="parentId" value={parentId} />}
+      </fetcher.Form>
     </Box>
   );
 }

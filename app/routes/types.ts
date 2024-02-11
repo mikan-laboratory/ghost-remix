@@ -1,3 +1,5 @@
+import { BasicMember } from '~/types/member';
+
 export interface GhostSignInErrorResponse {
   errors: {
     message: string;
@@ -11,4 +13,9 @@ export class GhostAPIError extends Error {
     super(message);
     this.name = 'GhostAPIError';
   }
+}
+
+export interface LikeCommentParams {
+  commentId: string;
+  member: BasicMember;
 }

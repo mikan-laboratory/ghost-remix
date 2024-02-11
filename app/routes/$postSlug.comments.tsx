@@ -44,6 +44,7 @@ export const action: ActionFunction = async ({ params, request }) => {
     const formData = await request.formData();
 
     const commentHtml = formData.get('comment');
+    const parentId = formData.get('parentId');
 
     if (typeof commentHtml !== 'string') {
       throw new Error('Invalid form data');
@@ -57,6 +58,7 @@ export const action: ActionFunction = async ({ params, request }) => {
         html: commentHtml,
         created_at: new Date(),
         updated_at: new Date(),
+        ...(typeof parentId === 'string' && { parent_id: parentId }),
       },
     });
 

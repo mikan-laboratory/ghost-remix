@@ -11,9 +11,13 @@ export const getCommentsForPost = async (postId: string) => {
     },
     include: {
       comment_likes: true,
-      comment_reports: true,
       members: true,
-      other_comments: true,
+      other_comments: {
+        include: {
+          comment_likes: true,
+          members: true,
+        },
+      },
     },
   });
 
