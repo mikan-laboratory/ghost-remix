@@ -2,7 +2,7 @@ import { Flex, Button, Spacer, Box, Text, useToast, useUpdateEffect, Tooltip } f
 import { useParams, useFetcher } from '@remix-run/react';
 import { formatDistanceToNow } from 'date-fns';
 import { useCallback, useState } from 'react';
-import { FaThumbsUp } from 'react-icons/fa';
+import { FaThumbsUp, FaTrash } from 'react-icons/fa';
 import { CommentInnerProps } from './types';
 
 export const CommentInner = ({ comment, member }: CommentInnerProps): JSX.Element => {
@@ -79,12 +79,12 @@ export const CommentInner = ({ comment, member }: CommentInnerProps): JSX.Elemen
             {comment.comment_likes.length} likes
           </Button>
         </Tooltip>
+        {comment.member_id === member?.id && (
+          <Button colorScheme="red" onClick={handleDeleteComment}>
+            <FaTrash />
+          </Button>
+        )}
       </Flex>
-      {comment.member_id === member?.id && (
-        <Button colorScheme="red" onClick={handleDeleteComment}>
-          Delete
-        </Button>
-      )}
     </Flex>
   );
 };
