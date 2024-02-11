@@ -23,6 +23,12 @@ interface CommentsProps {
 
 export default function Comment({ comment, member }: CommentsProps): JSX.Element {
   const [showReply, setShowReply] = useState(false);
+  const [accordionIndex, setAccordionIndex] = useState<number>(-1);
+
+  const handleReply = (): void => {
+    if (!showReply) setAccordionIndex(0);
+    setShowReply(!showReply);
+  };
 
   return (
     <Box p={4} borderWidth="1px" borderRadius="lg" mb={4} borderColor="primary" w="100%">
@@ -33,13 +39,13 @@ export default function Comment({ comment, member }: CommentsProps): JSX.Element
         variant="ghost"
         ml={2}
         color={showReply ? 'secondary' : 'primary'}
-        onClick={() => setShowReply(!showReply)}
+        onClick={handleReply}
       >
         Reply
       </Button>
       {showReply && <CommentBox member={member} parentId={comment.id} />}
       {comment.other_comments.length > 0 && (
-        <Accordion allowToggle>
+        <Accordion allowToggle index={accordionIndex} onChange={(index) => setAccordionIndex(index as number)}>
           <AccordionItem>
             <h2>
               <AccordionButton>
