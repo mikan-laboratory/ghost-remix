@@ -23,7 +23,7 @@
     "@prisma/client": "^5.8.1",
     "@remix-run/css-bundle": "^2.5.1",
     "@remix-run/node": "^2.5.1",
-    "@remix-run/react": "^2.4.0",
+    "@remix-run/react": "^2.6.0",
     "@remix-run/serve": "^2.6.0",
     "@t3-oss/env-core": "^0.7.1",
     "@tryghost/content-api": "^1.11.20",
