@@ -9,7 +9,8 @@ interface BlogListItemProps {
 }
 
 export default function BlogListItem({ post }: BlogListItemProps) {
-  let time = post.published_at ? new Date(post.published_at).toLocaleTimeString() : 'Sometime';
+  const time = post.published_at ? new Date(post.published_at).toLocaleTimeString() : 'Sometime';
+
   return (
     <Box key={post.id} borderLeft="2px solid" borderColor="secondary" overflow="hidden" p={0} pb={10} w="full">
       <Flex alignItems="center">

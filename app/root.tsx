@@ -17,7 +17,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   return json({ ...authCookie, ...blogInfo });
 };
 
-export let links: LinksFunction = () => {
+export const links: LinksFunction = () => {
   return [
     { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
     { rel: 'preconnect', href: 'https://fonts.gstatic.com' },
