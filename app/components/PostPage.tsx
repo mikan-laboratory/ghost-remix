@@ -17,6 +17,14 @@ export const PostPage = ({ post, comments, commentSettings }: PostPageProps): JS
   const authors = post.authors ?? [];
   const tags = post.tags ?? [];
 
+  const parseFeatureImage = (featureImageURL: string): string => {
+    if (featureImageURL.includes('__GHOST_URL__')) {
+      return featureImageURL.replace('__GHOST_URL__', '');
+    }
+
+    return featureImageURL;
+  };
+
   return (
     <Box minHeight="100vh" backgroundColor="background" display="flex" justifyContent="center">
       <Box py="5%" px={{ base: 5, sm: 10 }} maxWidth="70em">
@@ -36,7 +44,7 @@ export const PostPage = ({ post, comments, commentSettings }: PostPageProps): JS
               borderRadius="xl"
             >
               <Image
-                src={post.feature_image}
+                src={parseFeatureImage(post.feature_image)}
                 alt={post.feature_image_alt || 'image'}
                 position="absolute"
                 top="50%"
