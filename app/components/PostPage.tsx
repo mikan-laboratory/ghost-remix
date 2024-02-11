@@ -61,7 +61,7 @@ export const PostPage = ({ post, comments, commentSettings }: PostPageProps): JS
             {tags.length > 0 && <TopicsList topics={tags} />}
           </Flex>
         </Box>
-        <Box py={5} textColor="text2">
+        <Box py={5} textColor="text1">
           <PostContent html={post.html ?? ''} />
         </Box>
         {commentSettings !== 'off' && (
