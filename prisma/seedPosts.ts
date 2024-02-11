@@ -19,6 +19,7 @@ export const seedPosts = async ({ user, prisma }: SecondarySeedParams): Promise<
         plaintext: faker.lorem.text(),
         created_at: new Date(),
         updated_at: new Date(),
+        published_at: new Date(),
         created_by: user.id,
         status: 'published',
         posts_authors: {
