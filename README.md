@@ -8,8 +8,8 @@ Ghost as a headless CMS with Remix and Chakra UI. Easy deployment to Fly.io.
   - [Dependencies](#dependencies)
   - [Local Development](#local-development)
   - [Deploy to Fly.io](#deploy-to-flyio)
-    - [Automated](#automated)
-    - [Manual](#manual)
+    - [GitHub Actions](#github-actions)
+    - [Command Line](#command-line)
 
 ## Dependencies
 
@@ -35,6 +35,34 @@ Don't worry about the $35 a month price tag, immediately after signing up for th
 4. Scroll down and select API Keys. Create a new API key and copy the key.
 
 5. Find the correct base URL [here](https://documentation.mailgun.com/en/latest/api-intro.html#base-url).
+
+### Get the code
+
+Use the template to create your own repository.
+
+#### GitHub UI
+
+- Navigate to the [repository](https://github.com/mikan-laboratory/ghost-remix), click `Use this template`, and follow the instructions.
+
+#### GitHub CLI
+
+- Get the [GitHub CLI](https://cli.github.com/)
+
+```bash
+# Step 1: Clone the template repository
+
+git clone https://github.com/mikab-laboratory/ghost-remix.git new-project
+
+cd new-project
+
+# Step 2: Create a new repository on GitHub
+
+gh repo create username/new-project --private --source=.
+
+# Step 3: Push the cloned contents to the new repository
+
+git push --set-upstream origin main
+```
 
 ### Basics
 
