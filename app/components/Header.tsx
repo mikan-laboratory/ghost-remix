@@ -5,6 +5,7 @@ import {
   Flex,
   HStack,
   Heading,
+  IconButton,
   Menu,
   MenuButton,
   MenuItem,
@@ -13,6 +14,7 @@ import {
 } from '@chakra-ui/react';
 import { Link, useNavigate, useRouteLoaderData } from '@remix-run/react';
 import { FaSignInAlt, FaSignOutAlt } from 'react-icons/fa';
+import { MdMenu } from 'react-icons/md';
 //Internal Module Imports
 import SearchBar from './SearchBar';
 import { RootLoaderData } from '~/types/root';
@@ -72,7 +74,7 @@ export default function Header() {
           )}
           {pages.length > 0 && (
             <Menu>
-              <MenuButton as={Button}>Menu</MenuButton>
+              <MenuButton as={IconButton} aria-label="Options" icon={<MdMenu />} />{' '}
               <MenuList>
                 {pages.map((page) => (
                   <MenuItem key={page.slug}>
