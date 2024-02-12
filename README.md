@@ -46,7 +46,7 @@ Don't worry about the $35 a month price tag, immediately after signing up for th
 
    - If you want to inspect the database, you can manually trigger a GUI from the Tilt UI.
 
-4. The Node engine is set to 18.19 in package.json to match the production runtime. Using a different version locally shouldn't be an issue, but you will see a warning when you run `npm install`. If you want to use this version in development, you can use a tool like [nvm](https://github.com/nvm-sh/nvm?tab=readme-ov-file#install--update-script) to manage multiple Node versions.
+4. The Node engine is set to 18.19 in package.json to match the production runtime. This follows the Ghost team's advice. You can find more information [here](https://ghost.org/docs/faq/node-versions/#why-follow-lts). Using a different version locally shouldn't be an issue, but you will see a warning when you run `npm install`. If you want to use this version in development, you can use a tool like [nvm](https://github.com/nvm-sh/nvm?tab=readme-ov-file#install--update-script) to manage multiple Node versions.
 
 ### Theme
 
