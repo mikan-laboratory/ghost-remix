@@ -1,14 +1,15 @@
 import { Heading, Flex, Box, Image } from '@chakra-ui/react';
-import { PostOrPage } from '@tryghost/content-api';
 import AuthorsList from './AuthorsList';
 import CommentsList from './CommentsList';
 import Header from './Header';
 import PostContent from './PostContent';
 import TopicsList from './TopicsList';
 import { CommentWithRelations } from './types';
+import { GetPostOutput } from '~/content-api/types';
+import { useMemo } from 'react';
 
 interface PostPageProps {
-  post: PostOrPage;
+  post: GetPostOutput;
   comments: CommentWithRelations[];
   commentSettings: string;
 }
@@ -24,6 +25,13 @@ export const PostPage = ({ post, comments, commentSettings }: PostPageProps): JS
 
     return featureImageURL;
   };
+
+  const commentsOn = useMemo(() => {
+    if (post.type === 'page') return false;
+    if (commentSettings === 'off') return false;
+
+    return true;
+  }, [commentSettings, post.type]);
 
   return (
     <Box minHeight="100vh" backgroundColor="background" display="flex" justifyContent="center">
@@ -64,7 +72,7 @@ export const PostPage = ({ post, comments, commentSettings }: PostPageProps): JS
         <Box py={5} textColor="text1">
           <PostContent html={post.html ?? ''} />
         </Box>
-        {commentSettings !== 'off' && (
+        {commentsOn && (
           <Box>
             <CommentsList comments={comments} />
           </Box>
