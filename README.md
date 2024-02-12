@@ -1,10 +1,10 @@
-# Smooth Jazz
+# GhostRemix
 
 Ghost as a headless CMS with Remix and Chakra UI. Easy deployment to Fly.io.
 
 ## Table of Contents
 
-- [Smooth Jazz](#smooth-jazz)
+- [GhostRemix](#GhostRemix)
   - [Dependencies](#dependencies)
   - [Local Development](#local-development)
   - [Deploy to Fly.io](#deploy-to-flyio)
@@ -45,6 +45,8 @@ Don't worry about the $35 a month price tag, immediately after signing up for th
 3. Seed database with button in Ghost section of Tilt UI
 
    - If you want to inspect the database, you can manually trigger a GUI from the Tilt UI.
+
+4. The Node engine is set to 18.19 in package.json to match the production runtime. Using a different version locally shouldn't be an issue, but you will see a warning when you run `npm install`. If you want to use this version in development, you can use a tool like [nvm](https://github.com/nvm-sh/nvm?tab=readme-ov-file#install--update-script) to manage multiple Node versions.
 
 ### Theme
 
