@@ -14,7 +14,7 @@ export default function Header() {
   const blogTitle = loaderData?.title ?? 'Blog';
 
   const [isSmallScreen] = useMediaQuery('(max-width: 600px)');
-  const [isLargeScreen] = useMediaQuery('(max-width: 992px)');
+  const [isLargeScreen] = useMediaQuery('(min-width: 992px)');
 
   const login = (): void => navigate('/members');
   const logout = async (): Promise<void> => {
