@@ -5,7 +5,11 @@ import ObjectID from 'bson-objectid';
 export const seedComments = async (prisma: PrismaClient): Promise<void> => {
   await prisma.comments.deleteMany();
 
-  const posts = await prisma.posts.findMany();
+  const posts = await prisma.posts.findMany({
+    where: {
+      type: 'post',
+    },
+  });
   const members = await prisma.members.findMany();
 
   for (const post of posts) {
