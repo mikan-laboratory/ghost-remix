@@ -48,7 +48,7 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^8.4.0",
-    "@remix-run/dev": "^2.5.1",
+    "@remix-run/dev": "^2.6.0",
     "@types/bcrypt": "^5.0.2",
     "@types/dompurify": "^3.0.5",
     "@types/fs-extra": "^11.0.4",
