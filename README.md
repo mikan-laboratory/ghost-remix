@@ -94,13 +94,13 @@ You can change the theme colors in `app/theme/theme.ts`.
 
 2. Authenticate with `flyctl auth login`.
 
-3. Create app with `flyctl launch`.
+3. Create app with `flyctl launch --no-deploy`.
 
 ### GitHub Actions
 
-1. Get Deploy API Token from Fly dashboard
+1. Navigate to the newly created application in the Fly.io dashboard and get a deploy token.
 
-2. Set secrets in GitHub repository settings
+2. Set secrets in GitHub repository settings.
 
 3. Manually trigger by going to Actions tab and selecting `Fly Deploy`. Click `Run workflow` and enter the branch name to deploy.
    - You can update this action to trigger on push to `main` by changing the `on` section of the workflow file to `push: [main]`
@@ -111,21 +111,22 @@ You can change the theme colors in `app/theme/theme.ts`.
 
 ```
 flyctl secrets set GHOST_CONTENT_API_KEY="my-api-key-value" \
-OWNER_EMAIL="my-email-value" \
-OWNER_PASSWORD="my-password-value" \
-MAILGUN_DOMAIN="somedomain" \
-MAILGUN_API_KEY="somekey" \
-MAILGUN_BASE_URL="mailgunbase" \
-JWT_SECRET="somejwtsecret"
+   OWNER_EMAIL="my-email-value" \
+   OWNER_PASSWORD="my-password-value" \
+   MAILGUN_DOMAIN="somedomain" \
+   MAILGUN_API_KEY="somekey" \
+   MAILGUN_BASE_URL="mailgunbase" \
+   JWT_SECRET="somejwtsecret" \
+   SITE_TITLE="My Site" \
+   SITE_DESCRIPTION="My website" \
+   OWNER_NAME="Admin" \
+   OWNER_SLUG="admin" \
+   BLOG_URL="https://mysite.com" \
+   COMMENT_SETTINGS="all"
 ```
 
 2. Deploy
 
 ```
-flyctl deploy --env SITE_TITLE="My Site" \
---env SITE_DESCRIPTION="My website" \
---env OWNER_NAME="Admin" \
---env OWNER_SLUG="admin" \
---env BLOG_URL="https://mysite.com" \
---env COMMENT_SETTINGS="all"
+flyctl deploy
 ```
