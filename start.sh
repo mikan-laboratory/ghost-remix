@@ -1,10 +1,5 @@
 #!/bin/sh -ex
 
-# This file is how Fly starts the server (configured in fly.toml). Before starting
-# the server though, we need to run any prisma migrations that haven't yet been
-# run, which is why this file exists in the first place.
-# Learn more: https://community.fly.io/t/sqlite-not-getting-setup-properly/4386
-
 # Allocate swap space
 if [ -w "/proc/sys/vm/swappiness" ]; then
     fallocate -l 512M /swapfile
@@ -23,6 +18,21 @@ chown -R ghostuser:ghostuser /var/www/ghost
 echo "Setting correct permissions for /var/www/ghost/content:"
 chmod -R 755 /var/www/ghost/content
 
+# Ensure the directory for ghost-local.db exists
+echo "Ensuring /var/www/ghost/content/data directory exists..."
+mkdir -p /var/www/ghost/content/data
+chown ghostuser:ghostuser /var/www/ghost/content/data
+
+# Check if ghost-local.db exists, create if not
+echo "Checking for ghost-local.db..."
+GHOST_DB_PATH="/var/www/ghost/content/data/ghost-local.db"
+if [ ! -f "$GHOST_DB_PATH" ]; then
+    echo "ghost-local.db does not exist, creating..."
+    touch "$GHOST_DB_PATH"
+    chown ghostuser:ghostuser "$GHOST_DB_PATH"
+    # Note: Additional initialization for ghost-local.db might be required here
+fi
+
 # Start Nginx
 nginx &
 
@@ -36,7 +46,7 @@ npm run seed:prod
 
 # Unlock the migrations lock in the Ghost SQLite database
 echo "Unlocking the Ghost migrations lock..."
-sqlite3 /var/www/ghost/content/data/ghost-local.db "UPDATE migrations_lock SET locked=0 WHERE lock_key='km01';"
+sqlite3 "$GHOST_DB_PATH" "UPDATE migrations_lock SET locked=0 WHERE lock_key='km01';"
 
 # Restart to apply url and theme config
 su ghostuser -c 'cd /var/www/ghost && ghost restart'
