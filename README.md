@@ -7,9 +7,17 @@ Ghost as a headless CMS with Remix and Chakra UI. Easy deployment to Fly.io.
 - [GhostRemix](#GhostRemix)
   - [Dependencies](#dependencies)
   - [Local Development](#local-development)
+    - [Mailgun](#mailgun)
+    - [Get the code](#get-the-code)
+      - [GitHub UI](#github-ui)
+      - [GitHub CLI](#github-cli)
+    - [Basics](#basics)
+    - [Theme](#theme)
+  - [Test Docker Build](#test-docker-build)
   - [Deploy to Fly.io](#deploy-to-flyio)
     - [GitHub Actions](#github-actions)
     - [Command Line](#command-line)
+    - [Custom Domains and SSL](#custom-domains-and-ssl)
 
 ## Dependencies
 
@@ -130,3 +138,18 @@ flyctl secrets set GHOST_CONTENT_API_KEY="my-api-key-value" \
 ```
 flyctl deploy
 ```
+
+### Custom Domains and SSL
+
+More details [here](https://fly.io/docs/networking/custom-domains-with-fly/)
+
+1. List your app ip addreses with `flyctl ips list`.
+
+2. Create SSL certificates.
+
+```
+flyctl certs create mysite.com
+flyctl certs create www.mysite.com
+```
+
+3. Use the ipv4 address to create an A record in your DNS provider, and the ipv6 address to create a AAAA record. Create a CNAME record for `www`.
