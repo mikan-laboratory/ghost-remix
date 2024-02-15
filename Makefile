@@ -1,6 +1,6 @@
 ENVIRONMENT ?= local
 # Default image name
-IMAGE_NAME ?= smooth-jazz
+IMAGE_NAME ?= ghost-remix
 # Default Ghost API key
 GHOST_CONTENT_API_KEY ?= 77a7e9c49a7cc3416ab81eb233
 BLOG_URL ?= http://localhost:8080
@@ -14,7 +14,7 @@ JWT_SECRET ?= a543a2c76c05e0f9cbc3fa07b19ffb79af59a0b8d2d3971ac202e57853cb8cfa
 COMMENT_SETTINGS ?= all
 
 # Container name
-CONTAINER_NAME ?= smooth-jazz-container
+CONTAINER_NAME ?= ghost-remix-container
 
 # Phony targets
 .PHONY: build run all clean clean-image clean-all terminal
