@@ -7,10 +7,10 @@ Ghost as a headless CMS with Remix and Chakra UI. Easy deployment to Fly.io.
 - [GhostRemix](#GhostRemix)
   - [Dependencies](#dependencies)
   - [Local Development](#local-development)
-    - [Mailgun](#mailgun)
     - [Get the code](#get-the-code)
       - [GitHub UI](#github-ui)
       - [GitHub CLI](#github-cli)
+    - [Mailgun](#mailgun)
     - [Basics](#basics)
     - [Theme](#theme)
   - [Test Docker Build](#test-docker-build)
@@ -27,22 +27,6 @@ Ghost as a headless CMS with Remix and Chakra UI. Easy deployment to Fly.io.
 - [flyctl](https://fly.io/docs/flyctl/installing/)
 
 ## Local Development
-
-### Mailgun
-
-You don't need Mailgun to get started, but you'll need for email-based workflows like member sign up.
-
-Don't worry about the $35 a month price tag, immediately after signing up for the trial, you can downgrade to the flex plan.
-
-1. Create [Mailgun](https://www.mailgun.com/) account.
-
-2. Navigate to Sending -> Domains. You should see a test domain that looks like `sandbox1234567890abcdef1234567890ab.mailgun.org`
-
-3. Add your email as an authorized recipient.
-
-4. Scroll down and select API Keys. Create a new API key and copy the key.
-
-5. Find the correct base URL [here](https://documentation.mailgun.com/en/latest/api-intro.html#base-url).
 
 ### Get the code
 
@@ -72,14 +56,31 @@ gh repo create username/new-project --private --source=.
 git push --set-upstream origin main
 ```
 
+### Mailgun
+
+You don't need Mailgun to get started, but you'll need for email-based workflows like member sign up.
+
+Don't worry about the $35 a month price tag, immediately after signing up for the trial, you can downgrade to the flex plan.
+
+1. Create [Mailgun](https://www.mailgun.com/) account.
+
+2. Navigate to Sending -> Domains. You should see a test domain that looks like `sandbox1234567890abcdef1234567890ab.mailgun.org`
+
+3. Add your email as an authorized recipient.
+
+4. Scroll down and select API Keys. Create a new API key and copy the key.
+
+5. Find the correct base URL [here](https://documentation.mailgun.com/en/latest/api-intro.html#base-url).
+
 ### Basics
 
 1. Create `.env` file in root directory, using `.env.example` as a template.
 
 2. Use `tilt up` to install dependencies, generate a prisma client, and start services.
 
-3. Seed database with button in Ghost section of Tilt UI
+3. Seed database with the button in Ghost section of the Tilt UI.
 
+   - The production script seeds an owner and basic settings. The development script includes posts and comments.
    - If you want to inspect the database, you can manually trigger a GUI from the Tilt UI.
 
 4. The Node engine is set to 18.19 in package.json to match the production runtime. This follows the Ghost team's advice. You can find more information [here](https://ghost.org/docs/faq/node-versions/#why-follow-lts). Using a different version locally shouldn't be an issue, but you will see a warning when you run `npm install`. If you want to use this version in development, you can use a tool like [nvm](https://github.com/nvm-sh/nvm?tab=readme-ov-file#install--update-script) to manage multiple Node versions.
