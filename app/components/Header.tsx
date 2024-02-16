@@ -77,9 +77,9 @@ export default function Header() {
               <MenuButton as={IconButton} aria-label="Options" icon={<MdMenu />} />{' '}
               <MenuList>
                 {pages.map((page) => (
-                  <MenuItem key={page.slug}>
-                    <Link to={`/${page.slug}`}>{page.title}</Link>
-                  </MenuItem>
+                  <Link to={`/${page.slug}`}>
+                    <MenuItem key={page.slug}>{page.title}</MenuItem>
+                  </Link>
                 ))}
               </MenuList>
             </Menu>
