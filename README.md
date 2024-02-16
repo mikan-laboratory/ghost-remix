@@ -89,6 +89,10 @@ Don't worry about the $35 a month price tag, immediately after signing up for th
 
 You can change the theme colors in `app/theme/theme.ts`.
 
+### Pages
+
+Published pages are automatically added to the menu in the navigation bar.
+
 ## Test Docker Build
 
 1. Build image and run container with `make all`.
