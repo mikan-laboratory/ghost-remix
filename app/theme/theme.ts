@@ -6,11 +6,11 @@ const theme = extendTheme({
     body: '"Poppins", sans-serif',
   },
   colors: {
-    background: '#000000', //black
-    text1: '#ffffff', //white
-    text2: '#d0d0d0', //gray
-    primary: '#0bd3d3', //miami vice blue
-    secondary: '#f890e7', //miami vice pink
+    background: '#ffffff',
+    text1: '#000000',
+    text2: '#708090',
+    primary: '#f9b15c',
+    secondary: '#b4d3b2',
   },
 });
 
