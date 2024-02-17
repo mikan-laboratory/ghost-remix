@@ -1,5 +1,16 @@
 //External Library Imports
-import { Box, Button, FormControl, FormLabel, Input, Stack, Heading, Text, useUpdateEffect } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  FormControl,
+  FormLabel,
+  Input,
+  Stack,
+  Heading,
+  Text,
+  useUpdateEffect,
+  VStack,
+} from '@chakra-ui/react';
 import { json, MetaFunction, ActionFunctionArgs, TypedResponse, LoaderFunctionArgs } from '@remix-run/node';
 import { useFetcher, useLoaderData, Link } from '@remix-run/react';
 import axios from 'axios';
@@ -9,6 +20,7 @@ import { useToast } from '@chakra-ui/react';
 import { env } from '~/env';
 import { setCookie } from '~/setCookie.server';
 import { GhostSignInErrorResponse, GhostSignInResponse, GhostAPIError } from './types';
+import Footer from '~/components/Footer';
 
 export const meta: MetaFunction = () => {
   return [
@@ -122,7 +134,7 @@ export default function MembersPage() {
   }, [fetcher.data]);
 
   return (
-    <Box minHeight="100vh" backgroundColor="background" display="flex" justifyContent="center">
+    <VStack minHeight="100vh" justifyContent="space-between" spacing={0} backgroundColor="background">
       <Box
         py="5%"
         px={{ base: 5, sm: 10 }}
@@ -182,6 +194,7 @@ export default function MembersPage() {
           </fetcher.Form>
         </Stack>
       </Box>
-    </Box>
+      <Footer />
+    </VStack>
   );
 }
