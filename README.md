@@ -1,6 +1,10 @@
 # GhostRemix
 
-Ghost as a headless CMS with Remix and Chakra UI. Easy deployment to Fly.io.
+Ghost as a headless CMS with Remix and Chakra UI by [Mikan Labs](https://mikanlabs.com). Easy deployment to Fly.io.
+
+Check it out live at [Dev Design Daily](https://devdesigndaily.com).
+
+[Official Documentation Website](https://ghostremix.com)
 
 ## Table of Contents
 
