@@ -4,18 +4,12 @@ import CommentsList from './CommentsList';
 import Header from './Header';
 import PostContent from './PostContent';
 import TopicsList from './TopicsList';
-import { CommentWithRelations } from './types';
-import { GetPostOutput } from '~/content-api/types';
 import { useMemo } from 'react';
 import Footer from './Footer';
+import { GetPostOutput } from '~/content-api/types';
+import { JsonifiedPostPageProps } from './types';
 
-interface PostPageProps {
-  post: GetPostOutput;
-  comments: CommentWithRelations[];
-  commentSettings: string;
-}
-
-export const PostPage = ({ post, comments, commentSettings }: PostPageProps): JSX.Element => {
+export const PostPage = ({ post, comments, commentSettings }: JsonifiedPostPageProps): JSX.Element => {
   const authors = post.authors ?? [];
   const tags = post.tags ?? [];
 
@@ -54,7 +48,7 @@ export const PostPage = ({ post, comments, commentSettings }: PostPageProps): JS
             >
               <Image
                 src={parseFeatureImage(post.feature_image)}
-                alt={post.feature_image_alt || 'image'}
+                alt={(post as GetPostOutput).feature_image_alt ?? 'image'}
                 position="absolute"
                 top="50%"
                 left="50%"

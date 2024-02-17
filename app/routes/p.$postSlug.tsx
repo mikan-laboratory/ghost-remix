@@ -1,11 +1,10 @@
-import { LoaderFunction, json, MetaFunction } from '@remix-run/node';
+import { json, MetaFunction, LoaderFunctionArgs, TypedResponse } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
-import { PostOrPage } from '@tryghost/content-api';
 import { PostPage } from '~/components/PostPage';
-import { CommentWithRelations } from '~/components/types';
-import { getPreviewPost } from '~/getPreviewPost';
+import { GetPreviewPostAndComments } from '~/components/types';
+import { getPreviewPost } from '~/content-api/getPreviewPost';
 
-export const loader: LoaderFunction = async ({ params }) => {
+export const loader = async ({ params }: LoaderFunctionArgs): Promise<TypedResponse<GetPreviewPostAndComments>> => {
   try {
     const postSlug = params.postSlug;
 
@@ -25,14 +24,14 @@ export const loader: LoaderFunction = async ({ params }) => {
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return [
     {
-      title: data.post.title,
+      title: data?.post.title,
     },
   ];
 };
 
 export default function PreviewPost() {
-  const loaderData = useLoaderData<{ post: PostOrPage; comments: CommentWithRelations[]; commentSettings: string }>();
+  const loaderData = useLoaderData<typeof loader>();
   const { post, comments, commentSettings } = loaderData;
 
-  return <PostPage post={post} comments={comments as any} commentSettings={commentSettings} />;
+  return <PostPage post={post} comments={comments} commentSettings={commentSettings} />;
 }

@@ -1,6 +1,7 @@
-import { prisma } from './db.server';
+import { prisma } from '../db.server';
+import { GetPreviewPostOutput } from './types';
 
-export const getPreviewPost = async (uuid: string) => {
+export const getPreviewPost = async (uuid: string): Promise<GetPreviewPostOutput> => {
   const post = await prisma.posts.findFirst({
     where: {
       uuid,
@@ -25,6 +26,8 @@ export const getPreviewPost = async (uuid: string) => {
       },
       select: {
         name: true,
+        slug: true,
+        id: true,
       },
     }),
     prisma.tags.findMany({
@@ -35,6 +38,8 @@ export const getPreviewPost = async (uuid: string) => {
       },
       select: {
         name: true,
+        slug: true,
+        id: true,
       },
     }),
   ]);

@@ -1,13 +1,12 @@
 //External Library Imports
 import { useLoaderData } from '@remix-run/react';
-import { LoaderFunction, json, MetaFunction } from '@remix-run/node';
-import { PostOrPage } from '@tryghost/content-api';
+import { json, MetaFunction, LoaderFunctionArgs, TypedResponse } from '@remix-run/node';
 // Internal Module Imports
-import { CommentWithRelations } from '~/components/types';
 import { PostPage } from '~/components/PostPage';
 import { getPostCommentsAndCommentSettings } from '~/content-api/getPostAndComments';
+import { GetPostAndComments } from '~/components/types';
 
-export const loader: LoaderFunction = async ({ params }) => {
+export const loader = async ({ params }: LoaderFunctionArgs): Promise<TypedResponse<GetPostAndComments>> => {
   try {
     const postSlug = params.postSlug;
 
@@ -21,21 +20,21 @@ export const loader: LoaderFunction = async ({ params }) => {
   } catch (error) {
     console.log(error);
 
-    return json({ error: (error as Error).message }, { status: 400 });
+    throw new Response('Post not found', { status: 404 });
   }
 };
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return [
     {
-      title: data.post.title,
+      title: data?.post.title,
     },
   ];
 };
 
 export default function Post() {
-  const loaderData = useLoaderData<{ post: PostOrPage; comments: CommentWithRelations[]; commentSettings: string }>();
+  const loaderData = useLoaderData<typeof loader>();
   const { post, comments, commentSettings } = loaderData;
 
-  return <PostPage post={post} comments={comments as any} commentSettings={commentSettings} />;
+  return <PostPage post={post} comments={comments} commentSettings={commentSettings} />;
 }

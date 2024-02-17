@@ -11,14 +11,14 @@ import {
 } from '@chakra-ui/react';
 //Internal Module Imports
 import { BasicMember } from '~/types/member';
-import { CommentWithRelations } from './types';
+import { JsonifiedPostPageProps } from './types';
 import { useState } from 'react';
 import { FaReply } from 'react-icons/fa';
 import { CommentInner } from './CommentInner';
 import CommentBox from './CommentBox';
 
 interface CommentsProps {
-  comment: CommentWithRelations;
+  comment: Pick<JsonifiedPostPageProps, 'comments'>['comments'][number];
   member: BasicMember | null;
 }
 

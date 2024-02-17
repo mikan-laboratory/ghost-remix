@@ -12,7 +12,15 @@ import BlogListItem from '~/components/BlogListItem';
 import Footer from '~/components/Footer';
 
 export const meta: MetaFunction = () => {
-  return [{ title: 'Tech Bro Lifestyle' }, { name: 'description', content: 'Welcome to Tech!' }];
+  return [
+    {
+      title: 'Search',
+    },
+    {
+      name: 'description',
+      content: 'Search blog content',
+    },
+  ];
 };
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -24,7 +32,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 };
 
 export default function Index() {
-  const { posts, totalPages, totalPosts } = useLoaderData<typeof loader>();
+  const { posts, totalPages } = useLoaderData<typeof loader>();
   const [searchParams] = useSearchParams();
   const currentSearchQuery = searchParams.get('query');
 

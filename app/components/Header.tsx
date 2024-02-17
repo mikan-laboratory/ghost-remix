@@ -78,7 +78,7 @@ export default function Header() {
               <MenuList>
                 {pages.map((page) => (
                   <Link key={page.slug} to={`/${page.slug}`}>
-                    <MenuItem>{page.title}</MenuItem>
+                    <MenuItem sx={{ _hover: { color: 'primary' } }}>{page.title}</MenuItem>
                   </Link>
                 ))}
               </MenuList>

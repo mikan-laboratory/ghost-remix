@@ -1,8 +1,9 @@
+import { GetPostAndComments } from '~/components/types';
 import { getCommentSettings } from './getCommentSettings';
 import { getCommentsForPost } from './getCommentsForPost';
 import { getPost } from './getPost';
 
-export const getPostCommentsAndCommentSettings = async (slug: string) => {
+export const getPostCommentsAndCommentSettings = async (slug: string): Promise<GetPostAndComments> => {
   const post = await getPost(slug);
   const commentSettings = await getCommentSettings();
 

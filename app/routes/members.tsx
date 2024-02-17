@@ -1,6 +1,6 @@
 //External Library Imports
 import { Box, Button, FormControl, FormLabel, Input, Stack, Heading, Text, useUpdateEffect } from '@chakra-ui/react';
-import { ActionFunction, LoaderFunction, json, MetaFunction } from '@remix-run/node';
+import { json, MetaFunction, ActionFunctionArgs, TypedResponse, LoaderFunctionArgs } from '@remix-run/node';
 import { useFetcher, useLoaderData, Link } from '@remix-run/react';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -22,7 +22,14 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-export const action: ActionFunction = async ({ request }) => {
+export const action = async ({
+  request,
+}: ActionFunctionArgs): Promise<
+  TypedResponse<{
+    success: boolean;
+    error?: string;
+  }>
+> => {
   try {
     const body = await request.formData();
     const email = body.get('email');
@@ -61,13 +68,20 @@ export const action: ActionFunction = async ({ request }) => {
   }
 };
 
-export const loader: LoaderFunction = async ({ request }) => {
+export const loader = async ({
+  request,
+}: LoaderFunctionArgs): Promise<
+  TypedResponse<{
+    authenticated: boolean;
+    error?: string;
+  }>
+> => {
   return setCookie(request);
 };
 
 export default function MembersPage() {
-  const fetcher = useFetcher<{ success: boolean; error?: string }>();
-  const data = useLoaderData<{ authenticated: boolean; error?: string }>();
+  const fetcher = useFetcher<typeof action>();
+  const data = useLoaderData<typeof loader>();
   const [formMode, setFormMode] = useState<'signin' | 'signup'>('signin');
   const toast = useToast();
 
