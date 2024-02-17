@@ -1,7 +1,7 @@
 // External library imports
 import { useState } from 'react';
 import { Box, VStack, Text } from '@chakra-ui/react';
-import type { MetaFunction, LoaderFunction } from '@remix-run/node';
+import type { MetaFunction, LoaderFunctionArgs } from '@remix-run/node';
 import { useLoaderData, useNavigate, useSearchParams } from '@remix-run/react';
 import { PostOrPage } from '@tryghost/content-api';
 // Internal module imports
@@ -10,6 +10,7 @@ import Header from '~/components/Header';
 import PaginationNavigation from '~/components/PaginationNavigation';
 import BlogListItem from '~/components/BlogListItem';
 import Footer from '~/components/Footer';
+import { GetSearchResultsOutput } from '~/content-api/types';
 
 export const meta: MetaFunction = () => {
   return [
@@ -23,7 +24,7 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-export const loader: LoaderFunction = async ({ request }) => {
+export const loader = async ({ request }: LoaderFunctionArgs): Promise<GetSearchResultsOutput> => {
   const url = new URL(request.url);
   const page = parseInt(url.searchParams.get('page') || '1', 10);
   const query = url.searchParams.get('query') || '';
@@ -31,7 +32,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   return getSearchResults(query, page, 5);
 };
 
-export default function Index() {
+export default function Search() {
   const { posts, totalPages } = useLoaderData<typeof loader>();
   const [searchParams] = useSearchParams();
   const currentSearchQuery = searchParams.get('query');
