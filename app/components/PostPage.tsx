@@ -7,6 +7,7 @@ import TopicsList from './TopicsList';
 import { CommentWithRelations } from './types';
 import { GetPostOutput } from '~/content-api/types';
 import { useMemo } from 'react';
+import Footer from './Footer';
 
 interface PostPageProps {
   post: GetPostOutput;
@@ -34,7 +35,7 @@ export const PostPage = ({ post, comments, commentSettings }: PostPageProps): JS
   }, [commentSettings, post.type]);
 
   return (
-    <Box minHeight="100vh" backgroundColor="background" display="flex" justifyContent="center">
+    <Box minHeight="100vh" backgroundColor="background" display="flex" flexDirection="column" alignItems="center">
       <Box py="5%" px={{ base: 5, sm: 10 }} maxWidth="70em">
         <Header />
         <Box pb={5} borderBottom="2px solid" borderColor="secondary">
@@ -78,6 +79,7 @@ export const PostPage = ({ post, comments, commentSettings }: PostPageProps): JS
           </Box>
         )}
       </Box>
+      <Footer />
     </Box>
   );
 };

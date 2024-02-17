@@ -8,6 +8,7 @@ import { PostOrPage } from '@tryghost/content-api';
 import { getPostsAndPagination } from '~/content-api/getPostsAndPagination';
 import Header from '~/components/Header';
 import PaginationNavigation from '~/components/PaginationNavigation';
+import Footer from '~/components/Footer';
 import BlogListItem from '~/components/BlogListItem';
 import { getBasicBlogInfo } from '~/getBasicBlogInfo.server';
 
@@ -53,7 +54,7 @@ export default function Index() {
   };
 
   return (
-    <Box minHeight="100vh" backgroundColor="background" alignItems="center" display="flex" justifyContent="center">
+    <Box minHeight="100vh" backgroundColor="background" alignItems="center" display="flex" flexDirection="column">
       <Box py="5%" px={{ base: 5, sm: 10 }} maxWidth="70em">
         <Header />
         <VStack spacing={0}>
@@ -63,6 +64,7 @@ export default function Index() {
         </VStack>
         <PaginationNavigation currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
       </Box>
+      <Footer />
     </Box>
   );
 }

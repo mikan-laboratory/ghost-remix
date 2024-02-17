@@ -16,9 +16,11 @@ export default function BlogListItem({ post }: BlogListItemProps) {
       <Flex alignItems="center">
         <Square size="20px" bg="secondary" position="relative" left="-11px" transform="rotate(45deg)" />
 
-        <Text fontSize="4xl" fontWeight="bolder" textColor="primary">
-          {post.published_at ? `${dayjs(post.published_at).format('dddd')}` : 'Someday'}
-        </Text>
+        <Link to={`/${post.slug}`}>
+          <Text fontSize="4xl" fontWeight="bolder" textColor="primary" sx={{ _hover: { color: 'secondary' } }}>
+            {post.title}
+          </Text>
+        </Link>
       </Flex>
       <Text
         borderBottom="2px solid"
@@ -56,9 +58,6 @@ export default function BlogListItem({ post }: BlogListItemProps) {
             />
           </Box>
         )}
-        <Heading size="md" mt={2} ml={5} fontStyle="italic" textColor="text1" sx={{ _hover: { color: 'primary' } }}>
-          {post.title}
-        </Heading>
       </Link>
       <Text mt={2} ml={5} textColor="text2" width={{ base: '95%', md: '80%' }}>
         {post.excerpt}...

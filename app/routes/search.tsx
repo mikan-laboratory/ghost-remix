@@ -9,6 +9,7 @@ import { getSearchResults } from '~/content-api/getSearchResults';
 import Header from '~/components/Header';
 import PaginationNavigation from '~/components/PaginationNavigation';
 import BlogListItem from '~/components/BlogListItem';
+import Footer from '~/components/Footer';
 
 export const meta: MetaFunction = () => {
   return [{ title: 'Tech Bro Lifestyle' }, { name: 'description', content: 'Welcome to Tech!' }];
@@ -37,8 +38,16 @@ export default function Index() {
   };
 
   return (
-    <Box minHeight="100vh" backgroundColor="background" display="flex" justifyContent="center">
-      <Box py="5%" px={{ base: 5, sm: 10 }} maxWidth="70em">
+    <Box
+      minHeight="100vh"
+      backgroundColor="background"
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      justifyContent="space-between"
+      w="100%"
+    >
+      <Box py="5%" px={{ base: 5, sm: 10 }} maxWidth="70em" width="100%">
         <Header />
         <VStack spacing={0}>
           {posts.length > 0 && posts.map((post: PostOrPage) => <BlogListItem key={post.id} post={post} />)}
@@ -50,6 +59,7 @@ export default function Index() {
         </VStack>
         <PaginationNavigation currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
       </Box>
+      <Footer />
     </Box>
   );
 }
