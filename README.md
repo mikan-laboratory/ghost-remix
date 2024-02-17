@@ -89,6 +89,10 @@ Don't worry about the $35 a month price tag, immediately after signing up for th
 
 You can change the theme colors in `app/theme/theme.ts`.
 
+### Favicon
+
+You can replace the favicon.ico with your own in the public folder. If you are using a PNG, you will need to add "<link rel="icon" href="/favicon.png" type="image/png" />" to the <head> component under <Meta /> in the root.tsx file. If you are unsure about turning your logo into a favicon, we used [favicon.io](https://favicon.io/) to do it for free.
+
 ### Pages
 
 Published pages are automatically added to the menu in the navigation bar.
