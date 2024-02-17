@@ -11,8 +11,10 @@ import PaginationNavigation from '~/components/PaginationNavigation';
 import Footer from '~/components/Footer';
 import BlogListItem from '~/components/BlogListItem';
 import { getBasicBlogInfo } from '~/getBasicBlogInfo.server';
+import { BasicBlogInfo } from '~/types/blog';
+import { PostsAndPagination } from '~/content-api/types';
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
+export const loader = async ({ request }: LoaderFunctionArgs): Promise<PostsAndPagination & BasicBlogInfo> => {
   // Parse the current page from the URL query parameters
   const url = new URL(request.url);
   const page = parseInt(url.searchParams.get('page') || '1', 10);

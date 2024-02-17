@@ -1,12 +1,6 @@
 //External Library Imports
-import { PostsOrPages } from '@tryghost/content-api';
 import { ghostContentAPI } from './ghostContentAPI';
-
-interface PostsAndPagination {
-  posts: PostsOrPages;
-  totalPages: number;
-  totalPosts: number;
-}
+import { PostsAndPagination } from './types';
 
 export const getPostsAndPagination = async (page = 1, limit = 5): Promise<PostsAndPagination> => {
   const posts = await ghostContentAPI.posts.browse({

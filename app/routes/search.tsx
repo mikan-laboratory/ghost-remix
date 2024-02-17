@@ -10,7 +10,7 @@ import Header from '~/components/Header';
 import PaginationNavigation from '~/components/PaginationNavigation';
 import BlogListItem from '~/components/BlogListItem';
 import Footer from '~/components/Footer';
-import { GetSearchResultsOutput } from '~/content-api/types';
+import { PostsAndPagination } from '~/content-api/types';
 
 export const meta: MetaFunction = () => {
   return [
@@ -24,7 +24,7 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-export const loader = async ({ request }: LoaderFunctionArgs): Promise<GetSearchResultsOutput> => {
+export const loader = async ({ request }: LoaderFunctionArgs): Promise<PostsAndPagination> => {
   const url = new URL(request.url);
   const page = parseInt(url.searchParams.get('page') || '1', 10);
   const query = url.searchParams.get('query') || '';
