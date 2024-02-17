@@ -5,7 +5,7 @@ import { useRouteLoaderData } from '@remix-run/react';
 import Comment from './Comment';
 import CommentBox from './CommentBox';
 import { BasicMember } from '~/types/member';
-import { CommentWithRelations, JsonifiedPostPageProps } from './types';
+import { JsonifiedPostPageProps } from './types';
 
 export default function CommentsList({ comments }: Pick<JsonifiedPostPageProps, 'comments'>) {
   const loaderData = useRouteLoaderData<{ member: BasicMember | null }>('root');
