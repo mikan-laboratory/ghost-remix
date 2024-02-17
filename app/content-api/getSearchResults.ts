@@ -1,8 +1,8 @@
 //External Library Imports
 import { ghostContentAPI } from './ghostContentAPI';
-import { GetSearchResultsOutput } from './types';
+import { PostsAndPagination } from './types';
 
-export const getSearchResults = async (query: string = '', page = 1, limit = 5): Promise<GetSearchResultsOutput> => {
+export const getSearchResults = async (query: string = '', page = 1, limit = 5): Promise<PostsAndPagination> => {
   const queryList = query.toLowerCase().replaceAll(' ', ',');
   //Ghost API can't do partial/like filter with the current state of NQL, so this is a work around.
   const queryWords = query.split(' ');
