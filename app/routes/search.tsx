@@ -6,11 +6,10 @@ import { useLoaderData, useNavigate, useSearchParams } from '@remix-run/react';
 import { PostOrPage } from '@tryghost/content-api';
 // Internal module imports
 import { getSearchResults } from '~/content-api/getSearchResults';
-import Header from '~/components/Header';
 import PaginationNavigation from '~/components/PaginationNavigation';
 import BlogListItem from '~/components/BlogListItem';
-import Footer from '~/components/Footer';
 import { PostsAndPagination } from '~/content-api/types';
+import { PageBase } from '~/components/PageBase';
 
 export const meta: MetaFunction = () => {
   return [
@@ -47,28 +46,16 @@ export default function Search() {
   };
 
   return (
-    <Box
-      minHeight="100vh"
-      backgroundColor="background"
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-      justifyContent="space-between"
-      w="100%"
-    >
-      <Box py="5%" px={{ base: 5, sm: 10 }} maxWidth="70em" width="100%">
-        <Header />
-        <VStack spacing={0}>
-          {posts.length > 0 && posts.map((post: PostOrPage) => <BlogListItem key={post.id} post={post} />)}
-          {posts.length === 0 && (
-            <Box>
-              <Text textColor="text1">Sorry, we couldn't find anything.</Text>
-            </Box>
-          )}
-        </VStack>
-        <PaginationNavigation currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
-      </Box>
-      <Footer />
-    </Box>
+    <PageBase>
+      <VStack>
+        {posts.length > 0 && posts.map((post: PostOrPage) => <BlogListItem key={post.id} post={post} />)}
+        {posts.length === 0 && (
+          <Box>
+            <Text textColor="text1">Sorry, we couldn't find anything.</Text>
+          </Box>
+        )}
+      </VStack>
+      <PaginationNavigation currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
+    </PageBase>
   );
 }

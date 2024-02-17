@@ -1,18 +1,17 @@
 // External library imports
 import { useState, useEffect } from 'react';
-import { Box, VStack } from '@chakra-ui/react';
+import { VStack } from '@chakra-ui/react';
 import type { MetaFunction, LoaderFunctionArgs } from '@remix-run/node';
 import { useLoaderData, useNavigate } from '@remix-run/react';
 import { PostOrPage } from '@tryghost/content-api';
 // Internal module imports
 import { getPostsAndPagination } from '~/content-api/getPostsAndPagination';
-import Header from '~/components/Header';
 import PaginationNavigation from '~/components/PaginationNavigation';
-import Footer from '~/components/Footer';
 import BlogListItem from '~/components/BlogListItem';
 import { getBasicBlogInfo } from '~/getBasicBlogInfo.server';
 import { BasicBlogInfo } from '~/types/blog';
 import { PostsAndPagination } from '~/content-api/types';
+import { PageBase } from '~/components/PageBase';
 
 export const loader = async ({ request }: LoaderFunctionArgs): Promise<PostsAndPagination & BasicBlogInfo> => {
   // Parse the current page from the URL query parameters
@@ -56,17 +55,13 @@ export default function Index() {
   };
 
   return (
-    <Box minHeight="100vh" backgroundColor="background" alignItems="center" display="flex" flexDirection="column">
-      <Box py="5%" px={{ base: 5, sm: 10 }} maxWidth="70em">
-        <Header />
-        <VStack spacing={0}>
-          {posts.map((post: PostOrPage) => (
-            <BlogListItem key={post.id} post={post} />
-          ))}
-        </VStack>
-        <PaginationNavigation currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
-      </Box>
-      <Footer />
-    </Box>
+    <PageBase>
+      <VStack spacing={0}>
+        {posts.map((post: PostOrPage) => (
+          <BlogListItem key={post.id} post={post} />
+        ))}
+      </VStack>
+      <PaginationNavigation currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
+    </PageBase>
   );
 }
