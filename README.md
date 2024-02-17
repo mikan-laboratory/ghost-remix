@@ -13,6 +13,7 @@ Ghost as a headless CMS with Remix and Chakra UI. Easy deployment to Fly.io.
     - [Mailgun](#mailgun)
     - [Basics](#basics)
     - [Theme](#theme)
+    - [Favicon](#favicon)
   - [Test Docker Build](#test-docker-build)
   - [Deploy to Fly.io](#deploy-to-flyio)
     - [GitHub Actions](#github-actions)
