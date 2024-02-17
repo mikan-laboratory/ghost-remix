@@ -36,9 +36,10 @@ export async function seedMembers({
         members_created_events: {
           create: {
             id: ObjectID().toHexString(),
-            referrer_source: 'Created manually',
-            referrer_medium: 'Ghost Admin',
-            source: 'admin',
+            referrer_source: 'Direct',
+            attribution_type: 'url',
+            attribution_url: '/',
+            source: 'member',
             created_at: new Date(),
             batch_id: ObjectID().toHexString(),
           },
