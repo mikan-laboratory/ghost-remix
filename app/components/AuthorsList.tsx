@@ -10,7 +10,6 @@ type AuthorWithName = Author & { name: string };
 
 const getAuthorNames = (authors: Author[]): string => {
   const defaultName = 'Annonymous';
-
   const validAuthors = authors.filter((author) => author.name) as AuthorWithName[];
 
   if (validAuthors.length > 1) {
