@@ -13,22 +13,22 @@ const getAuthorNames = (authors: Author[]): string => {
 
   const validAuthors = authors.filter((author) => author.name) as AuthorWithName[];
 
-  if (validAuthors.length === 0) {
-    return defaultName;
+  if (validAuthors.length > 1) {
+    const allButLast = validAuthors
+      .slice(0, -1)
+      .map((author) => author.name)
+      .join(', ');
+    // Add the last author with an "&"
+    const lastAuthor = validAuthors[validAuthors.length - 1].name;
+
+    return `${allButLast} & ${lastAuthor}`;
   }
 
   if (validAuthors.length === 1) {
     return validAuthors[0].name;
   }
 
-  const allButLast = validAuthors
-    .slice(0, -1)
-    .map((author) => author.name)
-    .join(', ');
-  // Add the last author with an "&"
-  const lastAuthor = validAuthors[validAuthors.length - 1].name;
-
-  return `${allButLast} & ${lastAuthor}`;
+  return defaultName;
 };
 
 export default function AuthorsList({ authors }: AuthorsListProps) {
