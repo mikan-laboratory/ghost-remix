@@ -12,6 +12,12 @@ else
    echo "/proc/sys/vm/swappiness is not writable, skipping modification."
 fi
 
+CONFIG_TEMPLATE_PATH="/var/www/ghost/config.template.json"
+CONFIG_PATH="/var/www/ghost/config.development.json"
+
+echo "Configuring Ghost with environment variables..."
+envsubst < "$CONFIG_TEMPLATE_PATH" > "$CONFIG_PATH"
+
 echo "Ensuring correct ownership for /var/www/ghost and subdirectories:"
 chown -R ghostuser:ghostuser /var/www/ghost
 

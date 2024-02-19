@@ -88,6 +88,7 @@ COPY --from=base /var/www/ghost /var/www/ghost
 
 # Copy Nginx configuration
 COPY nginx.prod.conf /etc/nginx/nginx.conf
+COPY config.template.json /var/www/ghost/config.template.json
 
 RUN chmod +x ./start.sh
 
