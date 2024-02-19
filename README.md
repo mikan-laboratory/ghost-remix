@@ -92,7 +92,7 @@ Don't worry about the $35 a month price tag, immediately after signing up for th
 
 ### Theme
 
-You can change the theme colors in `app/theme/theme.ts`.
+You can change the theme colors for components in `app/theme/theme.ts` and for blog content in `app/public/global.css`.
 
 ### Favicon
 
