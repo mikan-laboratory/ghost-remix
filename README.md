@@ -124,7 +124,7 @@ Published pages are automatically added to the menu in the navigation bar.
 
 2. Set secrets in GitHub repository settings.
 
-3. Manually trigger by going to Actions tab and selecting `Fly Deploy`. Click `Run workflow` and enter the branch name to deploy.
+3. Manually trigger by going to Actions tab and selecting `Deploy`. Click `Run workflow` and enter the branch name to deploy.
    - You can update this action to trigger on push to `main` by changing the `on` section of the workflow file to `push: [main]`
 
 ### Command Line
