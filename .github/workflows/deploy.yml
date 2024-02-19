@@ -20,6 +20,8 @@ jobs:
             MAILGUN_DOMAIN="${{ secrets.MAILGUN_DOMAIN }}" \
             MAILGUN_API_KEY="${{ secrets.MAILGUN_API_KEY }}" \
             MAILGUN_BASE_URL="${{ secrets.MAILGUN_BASE_URL }}" \
+            MAILGUN_USER="${{ secrets.MAILGUN_USER }}" \
+            MAILGUN_PASSWORD="${{ secrets.MAILGUN_PASSWORD }}" \
             SITE_TITLE="${{ secrets.SITE_TITLE }}" \
             SITE_DESCRIPTION="${{ secrets.SITE_DESCRIPTION }}" \
             OWNER_NAME="${{ secrets.OWNER_NAME }}" \
