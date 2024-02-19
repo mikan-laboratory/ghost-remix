@@ -138,6 +138,7 @@ flyctl secrets set GHOST_CONTENT_API_KEY="my-api-key-value" \
    MAILGUN_DOMAIN="somedomain" \
    MAILGUN_API_KEY="somekey" \
    MAILGUN_BASE_URL="mailgunbase" \
+   MAILGUN_USER="postmaster@somedomain \ MAILGUN_PASSWORD="password" \
    JWT_SECRET="somejwtsecret" \
    SITE_TITLE="My Site" \
    SITE_DESCRIPTION="My website" \
