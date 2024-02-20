@@ -61,6 +61,9 @@ export const action = async ({
         emailType,
       },
       {
+        headers: {
+          'X-Forwarded-Proto': 'https',
+        },
         validateStatus: () => true,
       },
     );
