@@ -36,9 +36,9 @@ export default function BlogListItem({ post }: BlogListItemProps) {
         {post.feature_image && (
           <Box
             position="relative"
-            width="50%"
+            width={{ base: '90%', sm: '70%', md: '50%' }}
             height="0"
-            paddingBottom="25%"
+            paddingBottom={{ base: '50%', sm: '25%' }}
             overflow="hidden"
             mt={5}
             ml={5}
