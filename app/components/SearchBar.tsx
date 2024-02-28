@@ -15,26 +15,30 @@ export default function SearchBar() {
   };
 
   return (
-    <Flex mb={6} w="100%">
-      <Form method="get" action="/search" style={{ width: '100%' }} onSubmit={handleSubmit}>
-        <Stack direction="row" spacing={2} w="100%">
+    <Flex>
+      <Form method="get" action="/search" style={{ width: '24em' }} onSubmit={handleSubmit}>
+        <Stack direction="row" w="100%" gap="0">
           <Input
             type="search"
             name="query"
-            placeholder="Search blog posts by title, author, or tag"
+            placeholder="Search..."
             borderColor="secondary"
+            borderEndRadius="0"
+            borderWidth="2px"
+            // borderRight="none"
             textColor="text1"
+            fontSize="smaller"
             focusBorderColor="primary"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
           <Button
             type="submit"
-            ml={1}
-            px={{ base: '17px', sm: 5 }}
             background="background"
             textColor="secondary"
-            border="solid"
+            border="solid 2px"
+            borderStartRadius="0"
+            borderLeft="none"
             borderColor="secondary"
             sx={{
               ':hover': {
@@ -44,7 +48,7 @@ export default function SearchBar() {
               },
             }}
           >
-            {isSmallScreen ? <FaSearch /> : 'Search'}
+            <FaSearch />
           </Button>
         </Stack>
       </Form>

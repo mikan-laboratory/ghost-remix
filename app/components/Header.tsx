@@ -11,8 +11,9 @@ import {
   MenuItem,
   MenuList,
   useMediaQuery,
+  Image,
 } from '@chakra-ui/react';
-import { Link, useNavigate, useRouteLoaderData } from '@remix-run/react';
+import { Link, useNavigate, useRouteLoaderData, useParams } from '@remix-run/react';
 import { FaSignInAlt, FaSignOutAlt } from 'react-icons/fa';
 import { MdMenu } from 'react-icons/md';
 //Internal Module Imports
@@ -22,6 +23,7 @@ import { RootLoaderData } from '~/types/root';
 export default function Header() {
   const navigate = useNavigate();
   const loaderData = useRouteLoaderData<RootLoaderData>('root');
+  const params = useParams();
 
   const member = loaderData?.member;
   const blogTitle = loaderData?.title ?? 'Blog';
@@ -38,17 +40,38 @@ export default function Header() {
 
   return (
     <Box w="100%">
-      <Flex flexDirection="row" justifyContent="space-between">
+      <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
         <Link to="/">
-          <Heading mb={4} color="primary" sx={{ _hover: { color: 'text1' } }}>
-            {blogTitle}
-          </Heading>
+          <Flex display="flex" alignItems="center">
+            <Image src="/logo.png" height={14} width={14} />
+            <Box
+              width={32}
+              fontSize={blogTitle.length > 7 ? 'larger' : 'xx-large'}
+              color="primary"
+              lineHeight="100%"
+              sx={{ _hover: { color: 'text1' } }}
+            >
+              {blogTitle}
+            </Box>
+          </Flex>
         </Link>
-        {member && isLargeScreen && (
-          <Heading color="text2" mb={4}>
-            Welcome, {member.name}
-          </Heading>
+        {pages.length > 0 && (
+          <Box display="flex" gap={2}>
+            {pages.map((page) => (
+              <Link key={page.slug} to={`/${page.slug}`}>
+                <Box
+                  fontSize="smaller"
+                  textAlign="center"
+                  borderBottom={params.postSlug === page.slug ? '3px solid' : 'none'}
+                  borderColor="secondary"
+                >
+                  {page.title}
+                </Box>
+              </Link>
+            ))}
+          </Box>
         )}
+        <SearchBar />
         <HStack>
           {member ? (
             <Button onClick={logout} bg="primary" color="text1">
@@ -72,7 +95,22 @@ export default function Header() {
               {isSmallScreen ? <FaSignInAlt /> : 'Sign In'}
             </Button>
           )}
-          {pages.length > 0 && (
+        </HStack>
+      </Flex>
+    </Box>
+  );
+}
+
+{
+  /* {member && isLargeScreen && (
+          <Heading color="text2" mb={4}>
+            Welcome, {member.name}
+          </Heading>
+        )} */
+}
+
+{
+  /* {pages.length > 0 && (
             <Menu>
               <MenuButton as={IconButton} aria-label="Options" icon={<MdMenu />} />{' '}
               <MenuList>
@@ -83,10 +121,5 @@ export default function Header() {
                 ))}
               </MenuList>
             </Menu>
-          )}
-        </HStack>
-      </Flex>
-      <SearchBar />
-    </Box>
-  );
+          )} */
 }

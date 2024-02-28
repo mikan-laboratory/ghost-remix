@@ -3,7 +3,6 @@ interface PostContentProps {
 }
 
 export default function PostContent({ html }: PostContentProps) {
-  console.log(html);
   return (
     <div>
       <div

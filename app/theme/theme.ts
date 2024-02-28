@@ -6,12 +6,12 @@ const theme = extendTheme({
     body: '"Poppins", sans-serif',
   },
   colors: {
-    background: '#ffffff',
+    background: '#FFFBEC',
     background2: '#f9f9f9',
     text1: '#000000',
     text2: '#708090',
-    primary: '#f9b15c',
-    secondary: '#b4d3b2',
+    primary: '#75B3C6',
+    secondary: '#FF8551',
   },
   styles: {
     global: {
