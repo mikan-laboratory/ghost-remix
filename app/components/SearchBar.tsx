@@ -16,36 +16,37 @@ export default function SearchBar() {
 
   return (
     <Flex>
-      <Form method="get" action="/search" style={{ width: '24em' }} onSubmit={handleSubmit}>
+      <Form method="get" action="/search" style={{ width: '20em' }} onSubmit={handleSubmit}>
         <Stack direction="row" w="100%" gap="0">
           <Input
             type="search"
             name="query"
             placeholder="Search..."
-            borderColor="secondary"
+            borderColor="primary"
             borderEndRadius="0"
             borderWidth="2px"
-            // borderRight="none"
-            textColor="text1"
-            fontSize="smaller"
-            focusBorderColor="primary"
+            _hover={{ borderColor: 'secondary' }}
+            focusBorderColor="secondary"
+            textColor="gray.700"
+            fontSize="md"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
           <Button
             type="submit"
-            background="background"
-            textColor="secondary"
-            border="solid 2px"
+            background="primary"
+            textColor="background"
+            borderColor="primary"
+            borderWidth="2px"
+            borderLeft="0px"
+            fontSize="md"
             borderStartRadius="0"
-            borderLeft="none"
-            borderColor="secondary"
-            sx={{
-              ':hover': {
-                bg: 'secondary',
-                borderColor: 'secondary',
-                color: 'text1',
-              },
+            _hover={{
+              background: 'background',
+              color: 'primary',
+            }}
+            _focus={{
+              boxShadow: '0 0 0 3px rgba(66, 153, 225, 0.6)',
             }}
           >
             <FaSearch />

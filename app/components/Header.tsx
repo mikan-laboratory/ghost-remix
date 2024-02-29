@@ -40,7 +40,7 @@ export default function Header() {
 
   return (
     <Box w="100%">
-      <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+      <Flex flexDirection="row" justifyContent="space-between" alignItems="center" gap={2}>
         <Link to="/">
           <Flex display="flex" alignItems="center">
             <Image src="/logo.png" height={14} width={14} />
@@ -80,15 +80,14 @@ export default function Header() {
           ) : (
             <Button
               onClick={login}
-              bg="background"
-              color="primary"
+              bg="secondary"
+              color="background"
               border="solid"
-              borderColor="primary"
+              borderColor="secondary"
               sx={{
                 ':hover': {
-                  bg: 'primary',
-                  borderColor: 'primary',
-                  color: 'text1',
+                  bg: 'background',
+                  color: 'secondary',
                 },
               }}
             >
