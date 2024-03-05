@@ -1,15 +1,27 @@
-import { Box } from '@chakra-ui/react';
+import { Box, Image } from '@chakra-ui/react';
 import { FaGithub } from 'react-icons/fa';
 
 export default function Footer() {
   return (
-    <Box py={3} borderTop="2px solid" w="100%" display="flex" justifyContent="center">
-      <Box textColor="text2" fontSize="small" display="flex" w="auto" alignItems="center" gap={1}>
+    <Box backgroundColor="primary" w="100%" display="flex" flexDirection="column" alignItems="center">
+      <Box py={12} width="100%" alignItems="flex-end" justifyContent="flex-start" px={12} color="text3" display="flex">
+        <Image src="/logo.png" height={14} width={14} />
+        <span>© 2024</span>
+      </Box>
+      <Box
+        textColor="text1"
+        fontSize="small"
+        display="flex"
+        w="100%"
+        textAlign="center"
+        justifyContent="center"
+        gap={1}
+        backgroundColor="secondary"
+      >
         Powered by
         <a href="https://ghostremix.com" target="_blank">
-          <Box display="flex" gap={2} alignItems="center" textColor="primary" sx={{ _hover: { color: 'secondary' } }}>
+          <Box display="flex" gap={2} alignItems="center" textColor="text1" sx={{ _hover: { color: 'secondary' } }}>
             GhostRemix
-            <FaGithub />
           </Box>
         </a>
       </Box>

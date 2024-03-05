@@ -39,7 +39,7 @@ export default function Header() {
   };
 
   return (
-    <Box w="100%">
+    <Box w="100%" py={10}>
       <Flex flexDirection="row" justifyContent="space-between" alignItems="center" gap={2}>
         <Link to="/">
           <Flex display="flex" alignItems="center">
