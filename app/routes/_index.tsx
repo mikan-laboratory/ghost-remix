@@ -12,6 +12,7 @@ import { getBasicBlogInfo } from '~/getBasicBlogInfo.server';
 import { BasicBlogInfo } from '~/types/blog';
 import { PostsAndPagination } from '~/content-api/types';
 import { PageBase } from '~/components/PageBase';
+import BlogHeroItem from '~/components/BlogHeroItem';
 
 export const loader = async ({ request }: LoaderFunctionArgs): Promise<PostsAndPagination & BasicBlogInfo> => {
   // Parse the current page from the URL query parameters
@@ -56,6 +57,7 @@ export default function Index() {
 
   return (
     <PageBase>
+      <BlogHeroItem post={posts[0]} />
       <VStack spacing={0}>
         {posts.map((post: PostOrPage) => (
           <BlogListItem key={post.id} post={post} />
