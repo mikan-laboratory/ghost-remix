@@ -5,10 +5,14 @@ import { Link } from '@remix-run/react';
 import { PostOrPage } from '@tryghost/content-api';
 
 interface BlogListItemProps {
-  post: PostOrPage;
+  post?: PostOrPage;
 }
 
 export default function BlogHeroItem({ post }: BlogListItemProps) {
+  if (!post) {
+    // Render nothing or a placeholder if no post is provided
+    return null; // or <div>Loading...</div>
+  }
   const time = post.published_at ? new Date(post.published_at).toLocaleTimeString() : 'Sometime';
   console.log(post);
 
@@ -39,6 +43,7 @@ export default function BlogHeroItem({ post }: BlogListItemProps) {
         <Text mt={2} textColor="text2">
           {post.excerpt}...
         </Text>
+        {post?.tags?.[0] && <div>{post.tags[0].name}</div>}
       </Box>
     </Box>
   );

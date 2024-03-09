@@ -1,7 +1,7 @@
 // External library imports
 import { useState, useEffect } from 'react';
 import { VStack } from '@chakra-ui/react';
-import type { MetaFunction, LoaderFunctionArgs } from '@remix-run/node';
+import { MetaFunction, LoaderFunctionArgs, json } from '@remix-run/node';
 import { useLoaderData, useNavigate } from '@remix-run/react';
 import { PostOrPage } from '@tryghost/content-api';
 // Internal module imports
@@ -12,18 +12,25 @@ import { getBasicBlogInfo } from '~/getBasicBlogInfo.server';
 import { BasicBlogInfo } from '~/types/blog';
 import { PostsAndPagination } from '~/content-api/types';
 import { PageBase } from '~/components/PageBase';
-import BlogHeroItem from '~/components/BlogHeroItem';
+import BlogHero from '~/components/BlogHero';
 
-export const loader = async ({ request }: LoaderFunctionArgs): Promise<PostsAndPagination & BasicBlogInfo> => {
+export const loader = async ({ request }: LoaderFunctionArgs) => {
   // Parse the current page from the URL query parameters
   const url = new URL(request.url);
   const page = parseInt(url.searchParams.get('page') || '1', 10);
 
   // Fetch posts and pagination data for the current page
-  const postsAndPagination = await getPostsAndPagination(page, 5);
+  const heroPosts = await getPostsAndPagination(1, 3);
+  const posts1 = await getPostsAndPagination(page * 2, 3);
+  const posts2 = await getPostsAndPagination(page * 2 + 1, 3);
   const blogInfo = await getBasicBlogInfo();
 
-  return { ...postsAndPagination, ...blogInfo };
+  return json({
+    heroPosts: heroPosts.posts,
+    bodyPosts: [...posts1.posts, ...posts2.posts],
+    totalPages: heroPosts.totalPages,
+    ...blogInfo,
+  });
 };
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
@@ -40,7 +47,7 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 
 export default function Index() {
   const [currentPage, setCurrentPage] = useState(1);
-  const { posts, totalPages } = useLoaderData<typeof loader>();
+  const { heroPosts, bodyPosts, totalPages } = useLoaderData<typeof loader>();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -57,9 +64,9 @@ export default function Index() {
 
   return (
     <PageBase>
-      <BlogHeroItem post={posts[0]} />
+      <BlogHero posts={heroPosts} />
       <VStack spacing={0}>
-        {posts.map((post: PostOrPage) => (
+        {bodyPosts.map((post: PostOrPage) => (
           <BlogListItem key={post.id} post={post} />
         ))}
       </VStack>
