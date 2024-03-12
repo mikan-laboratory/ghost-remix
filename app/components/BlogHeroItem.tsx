@@ -6,9 +6,10 @@ import { PostOrPage } from '@tryghost/content-api';
 
 interface BlogListItemProps {
   post?: PostOrPage;
+  type: string;
 }
 
-export default function BlogHeroItem({ post }: BlogListItemProps) {
+export default function BlogHeroItem({ post, type }: BlogListItemProps) {
   if (!post) {
     // Render nothing or a placeholder if no post is provided
     return null; // or <div>Loading...</div>
@@ -17,9 +18,9 @@ export default function BlogHeroItem({ post }: BlogListItemProps) {
   console.log(post);
 
   return (
-    <Box display="flex" flexDirection="row" gap={4}>
+    <Box display="flex" flexDirection={type === 'main' ? 'row' : 'column'} gap={4} width="100%">
       {post.feature_image && (
-        <Box position="relative" minWidth="60%" height="0" paddingBottom="35%" overflow="hidden" borderRadius="xl">
+        <Box position="relative" minWidth="60%" height={type === 'main' ? '400px' : '300px'} overflow="hidden">
           <Image
             src={post.feature_image}
             alt={post.feature_image_alt || 'image'}
@@ -27,23 +28,32 @@ export default function BlogHeroItem({ post }: BlogListItemProps) {
             top="50%"
             left="50%"
             transform="translate(-50%, -50%)"
-            minWidth="100%"
-            minHeight="100%"
+            width="100%"
+            height="100%"
             objectFit="cover"
           />
         </Box>
       )}
-      <Box display="flex" flexDirection="column">
-        <div>{post.published_at ? dayjs(post.published_at).format('MMMM DD, YYYY') : 'Some Date'}</div>
-        <Link to={`/${post.slug}`}>
-          <Text fontSize="4xl" fontWeight="bolder" textColor="primary" sx={{ _hover: { color: 'secondary' } }}>
-            {post.title}
+      <Box display="flex" flexDirection="column" justifyContent="space-between" minHeight="200px">
+        <Box>
+          <div>{post.published_at ? dayjs(post.published_at).format('MMMM DD, YYYY') : 'Some Date'}</div>
+          <Link to={`/${post.slug}`}>
+            <Text fontSize="4xl" fontWeight="bolder" textColor="primary" sx={{ _hover: { color: 'secondary' } }}>
+              {post.title}
+            </Text>
+          </Link>
+          <Text mt={2} textColor="text2">
+            {post.excerpt}...
           </Text>
-        </Link>
-        <Text mt={2} textColor="text2">
-          {post.excerpt}...
-        </Text>
-        {post?.tags?.[0] && <div>{post.tags[0].name}</div>}
+        </Box>
+        <Box display="flex" gap={2}>
+          {post?.tags?.[0] &&
+            post.tags.map((tag) => (
+              <Box border="2px" borderColor="primary" px={2} borderLeftRadius="full" borderRightRadius="full">
+                {tag.name}
+              </Box>
+            ))}
+        </Box>
       </Box>
     </Box>
   );

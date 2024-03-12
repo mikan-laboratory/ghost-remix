@@ -8,10 +8,12 @@ interface BlogListItemProps {
 
 export default function BlogHero({ posts }: BlogListItemProps) {
   return (
-    <Box>
-      <BlogHeroItem post={posts[0]} />
-      <BlogHeroItem post={posts[1]} />
-      <BlogHeroItem post={posts[2]} />
+    <Box display="flex" flexDirection="column" gap={8}>
+      <BlogHeroItem post={posts[0]} type="main" />
+      <Box display="flex" gap={8} min-width="100%">
+        <BlogHeroItem post={posts[1]} type="secondary" />
+        <BlogHeroItem post={posts[2]} type="secondary" />
+      </Box>
     </Box>
   );
 }
