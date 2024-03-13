@@ -7,12 +7,10 @@ import { PostOrPage } from '@tryghost/content-api';
 // Internal module imports
 import { getPostsAndPagination } from '~/content-api/getPostsAndPagination';
 import PaginationNavigation from '~/components/PaginationNavigation';
-import BlogListItem from '~/components/BlogListItem';
 import { getBasicBlogInfo } from '~/getBasicBlogInfo.server';
-import { BasicBlogInfo } from '~/types/blog';
-import { PostsAndPagination } from '~/content-api/types';
 import { PageBase } from '~/components/PageBase';
 import BlogHero from '~/components/BlogHero';
+import BlogList from '~/components/BlogList';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   // Parse the current page from the URL query parameters
@@ -65,11 +63,7 @@ export default function Index() {
   return (
     <PageBase>
       <BlogHero posts={heroPosts} />
-      <VStack spacing={0}>
-        {bodyPosts.map((post: PostOrPage) => (
-          <BlogListItem key={post.id} post={post} />
-        ))}
-      </VStack>
+      <BlogList posts={bodyPosts} />
       <PaginationNavigation currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
     </PageBase>
   );

@@ -9,7 +9,7 @@ interface BlogListItemProps {
   type: string;
 }
 
-export default function BlogHeroItem({ post, type }: BlogListItemProps) {
+export default function BlogItem({ post, type }: BlogListItemProps) {
   if (!post) {
     // Render nothing or a placeholder if no post is provided
     return null; // or <div>Loading...</div>
@@ -18,9 +18,14 @@ export default function BlogHeroItem({ post, type }: BlogListItemProps) {
   console.log(post);
 
   return (
-    <Box display="flex" flexDirection={type === 'main' ? 'row' : 'column'} gap={4} width="100%">
+    <Box display="flex" flexDirection={type === 'primary' ? 'row' : 'column'} gap={4} width="100%">
       {post.feature_image && (
-        <Box position="relative" minWidth="60%" height={type === 'main' ? '400px' : '300px'} overflow="hidden">
+        <Box
+          position="relative"
+          minWidth="65%"
+          height={type === 'primary' ? '375px' : type === 'secondary' ? '300px' : '200px'}
+          overflow="hidden"
+        >
           <Image
             src={post.feature_image}
             alt={post.feature_image_alt || 'image'}
@@ -34,20 +39,36 @@ export default function BlogHeroItem({ post, type }: BlogListItemProps) {
           />
         </Box>
       )}
-      <Box display="flex" flexDirection="column" justifyContent="space-between" minHeight="200px">
+      <Box
+        display="flex"
+        flexDirection="column"
+        justifyContent="space-between"
+        minHeight={type === 'list' ? 0 : '220px'}
+      >
         <Box>
-          <div>{post.published_at ? dayjs(post.published_at).format('MMMM DD, YYYY') : 'Some Date'}</div>
+          <div>
+            {post.published_at ? dayjs(post.published_at).format('MM-DD-YY') : 'Some Date'} |{' '}
+            {post.authors?.[0]?.name ?? 'Someone'}
+          </div>
           <Link to={`/${post.slug}`}>
-            <Text fontSize="4xl" fontWeight="bolder" textColor="primary" sx={{ _hover: { color: 'secondary' } }}>
+            <Text
+              fontSize={type === 'primary' ? '4xl' : type === 'secondary' ? '3xl' : 'xl'}
+              fontWeight="bolder"
+              textColor="primary"
+              sx={{ _hover: { color: 'secondary' } }}
+            >
               {post.title}
             </Text>
           </Link>
-          <Text mt={2} textColor="text2">
-            {post.excerpt}...
-          </Text>
+          {type !== 'list' && (
+            <Text mt={1} textColor="text2">
+              {post.excerpt}...
+            </Text>
+          )}
         </Box>
         <Box display="flex" gap={2}>
-          {post?.tags?.[0] &&
+          {type !== 'list' &&
+            post?.tags?.[0] &&
             post.tags.map((tag) => (
               <Box border="2px" borderColor="primary" px={2} borderLeftRadius="full" borderRightRadius="full">
                 {tag.name}

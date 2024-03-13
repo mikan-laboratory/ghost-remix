@@ -9,18 +9,18 @@ export default function Footer() {
         <span>© 2024</span>
       </Box>
       <Box
-        textColor="text1"
+        textColor="white"
         fontSize="small"
         display="flex"
         w="100%"
         textAlign="center"
         justifyContent="center"
         gap={1}
-        backgroundColor="secondary"
+        backgroundColor="black"
       >
         Powered by
         <a href="https://ghostremix.com" target="_blank">
-          <Box display="flex" gap={2} alignItems="center" textColor="text1" sx={{ _hover: { color: 'secondary' } }}>
+          <Box display="flex" gap={2} alignItems="center" textColor="white" sx={{ _hover: { color: 'secondary' } }}>
             GhostRemix
           </Box>
         </a>
