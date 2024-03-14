@@ -8,6 +8,7 @@ const theme = extendTheme({
   colors: {
     background: '#FFFBEC',
     background2: '#f9f9f9',
+    comment: '#4A8BA02B',
     text1: '#000000',
     text2: '#708090',
     text3: '#FFFFFF',

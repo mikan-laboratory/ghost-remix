@@ -57,6 +57,26 @@ export default function Header() {
         </Link>
         {pages.length > 0 && (
           <Box display="flex" gap={2}>
+            <Link key="home" to="/">
+              <Box
+                fontSize="smaller"
+                textAlign="center"
+                borderBottom={!params.postSlug ? '3px solid' : 'none'}
+                borderColor="secondary"
+              >
+                Home
+              </Box>
+            </Link>
+            <Link key="blog" to="/blog">
+              <Box
+                fontSize="smaller"
+                textAlign="center"
+                borderBottom={params.postSlug === 'blog' ? '3px solid' : 'none'}
+                borderColor="secondary"
+              >
+                Blog
+              </Box>
+            </Link>
             {pages.map((page) => (
               <Link key={page.slug} to={`/${page.slug}`}>
                 <Box

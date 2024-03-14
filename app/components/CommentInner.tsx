@@ -1,4 +1,4 @@
-import { Flex, Button, Box, Text, useToast, useUpdateEffect, Tooltip } from '@chakra-ui/react';
+import { Flex, Button, Box, Text, useToast, useUpdateEffect, Tooltip, Image } from '@chakra-ui/react';
 import { useParams, useFetcher } from '@remix-run/react';
 import { formatDistanceToNow } from 'date-fns';
 import { useCallback, useState } from 'react';
@@ -48,8 +48,21 @@ export const CommentInner = ({ comment, member }: CommentInnerProps): JSX.Elemen
     setIsLiked(!isLiked);
   }, [isLiked, commentId, fetcher, postSlug]);
 
+  console.log(comment.members, member);
+
   return (
-    <Flex justifyContent="space-between" alignItems="start" w="100%">
+    <Flex alignItems="start" w="100%" backgroundColor="comment" borderRadius="lg">
+      <Image
+        src="/logo.png"
+        height={10}
+        width={10}
+        backgroundColor="background"
+        borderRadius="100%"
+        padding="1px"
+        position="relative"
+        top="-15px"
+        left="-22px"
+      />
       <Flex align="center">
         <Box ml={3}>
           <Text
