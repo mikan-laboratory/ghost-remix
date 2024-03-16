@@ -32,7 +32,7 @@ export const PostPage = ({ post, comments, commentSettings }: JsonifiedPostPageP
 
   return (
     <PageBase>
-      <Box pb={5} borderBottom="2px solid" borderColor="secondary">
+      <Box pb={5}>
         {post.feature_image && (
           <Box
             position="relative"
@@ -62,7 +62,7 @@ export const PostPage = ({ post, comments, commentSettings }: JsonifiedPostPageP
         <Heading fontSize={{ base: 30, sm: 40, md: 50 }} textAlign={{ base: 'center', md: 'left' }} textColor="text1">
           {post.title}
         </Heading>
-        <Flex justifyContent="space-between" alignItems="center">
+        <Flex justifyContent={tags.length > 0 ? 'space-between' : 'right'} alignItems="center">
           {tags.length > 0 && <TopicsList topics={tags} />}
           <Button
             leftIcon={rapidRead ? <FaFileAlt color="white" /> : <FaBolt color="white" />}

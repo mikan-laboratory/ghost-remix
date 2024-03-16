@@ -1,5 +1,5 @@
 //External Library Imports
-import { Text, Link, Box } from '@chakra-ui/react';
+import { Link, Box } from '@chakra-ui/react';
 import { Tag } from '@tryghost/content-api';
 
 interface TopicsListProps {
@@ -24,12 +24,15 @@ export default function TopicsList({ topics }: TopicsListProps) {
         <Link href={`/search?query=${topic.name}`} color="primary">
           #{topic.name?.toLowerCase()}
         </Link>
-        {index < topics.length - 1 ? ' | ' : ''}
       </Box>
     ));
   } else {
     topicsList = 'No topics';
   }
 
-  return <Text textColor="text1">{topicsList}</Text>;
+  return (
+    <Box textColor="text1" display="flex" gap={2}>
+      {topicsList}
+    </Box>
+  );
 }
