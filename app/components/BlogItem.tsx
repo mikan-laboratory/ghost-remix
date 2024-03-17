@@ -15,7 +15,6 @@ export default function BlogItem({ post, type }: BlogListItemProps) {
     return null; // or <div>Loading...</div>
   }
   const time = post.published_at ? new Date(post.published_at).toLocaleTimeString() : 'Sometime';
-  console.log(post);
 
   return (
     <Box display="flex" flexDirection={type === 'primary' ? 'row' : 'column'} gap={4} width="100%">
@@ -70,7 +69,14 @@ export default function BlogItem({ post, type }: BlogListItemProps) {
           {type !== 'list' &&
             post?.tags?.[0] &&
             post.tags.map((tag) => (
-              <Box border="2px" borderColor="primary" px={2} borderLeftRadius="full" borderRightRadius="full">
+              <Box
+                key={tag.id}
+                border="2px"
+                borderColor="primary"
+                px={2}
+                borderLeftRadius="full"
+                borderRightRadius="full"
+              >
                 {tag.name}
               </Box>
             ))}

@@ -1,12 +1,12 @@
 // External library imports
 import { useState, useEffect } from 'react';
-import { Box } from '@chakra-ui/react';
-import { Link } from '@remix-run/react';
+import { VStack } from '@chakra-ui/react';
 import { MetaFunction, LoaderFunctionArgs, json } from '@remix-run/node';
 import { useLoaderData, useNavigate } from '@remix-run/react';
 import { PostOrPage } from '@tryghost/content-api';
 // Internal module imports
 import { getPostsAndPagination } from '~/content-api/getPostsAndPagination';
+import PaginationNavigation from '~/components/PaginationNavigation';
 import { getBasicBlogInfo } from '~/getBasicBlogInfo.server';
 import { PageBase } from '~/components/PageBase';
 import BlogHero from '~/components/BlogHero';
@@ -18,15 +18,12 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const page = parseInt(url.searchParams.get('page') || '1', 10);
 
   // Fetch posts and pagination data for the current page
-  const heroPosts = await getPostsAndPagination(1, 3);
-  const posts1 = await getPostsAndPagination(page * 2, 3);
-  const posts2 = await getPostsAndPagination(page * 2 + 1, 3);
+  const bodyPosts = await getPostsAndPagination(page, 12);
   const blogInfo = await getBasicBlogInfo();
 
   return json({
-    heroPosts: heroPosts.posts,
-    bodyPosts: [...posts1.posts, ...posts2.posts],
-    totalPages: heroPosts.totalPages,
+    bodyPosts: bodyPosts.posts,
+    totalPages: bodyPosts.totalPages,
     ...blogInfo,
   });
 };
@@ -43,9 +40,9 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
   ];
 };
 
-export default function Index() {
+export default function Blog() {
   const [currentPage, setCurrentPage] = useState(1);
-  const { heroPosts, bodyPosts, totalPages } = useLoaderData<typeof loader>();
+  const { bodyPosts, totalPages } = useLoaderData<typeof loader>();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -57,20 +54,13 @@ export default function Index() {
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
-    navigate(`/?page=${newPage}`);
+    navigate(`/blog/?page=${newPage}`);
   };
 
   return (
     <PageBase>
-      <BlogHero posts={heroPosts} />
       <BlogList posts={bodyPosts} />
-      <Box width="100%" display="flex" alignContent="center" justifyContent="center">
-        <Link key="blog" to="/blog">
-          <Box border="2px" px="8px" borderStartRadius="full" borderEndRadius="full">
-            See More
-          </Box>
-        </Link>
-      </Box>
+      <PaginationNavigation currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
     </PageBase>
   );
 }

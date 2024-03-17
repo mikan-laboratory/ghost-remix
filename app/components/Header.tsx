@@ -13,7 +13,7 @@ import {
   useMediaQuery,
   Image,
 } from '@chakra-ui/react';
-import { Link, useNavigate, useRouteLoaderData, useParams } from '@remix-run/react';
+import { Link, useNavigate, useRouteLoaderData, useParams, useLocation } from '@remix-run/react';
 import { FaSignInAlt, FaSignOutAlt } from 'react-icons/fa';
 import { MdMenu } from 'react-icons/md';
 //Internal Module Imports
@@ -24,6 +24,9 @@ export default function Header() {
   const navigate = useNavigate();
   const loaderData = useRouteLoaderData<RootLoaderData>('root');
   const params = useParams();
+  const location = useLocation();
+
+  console.log(location);
 
   const member = loaderData?.member;
   const blogTitle = loaderData?.title ?? 'Blog';
@@ -61,7 +64,7 @@ export default function Header() {
               <Box
                 fontSize="smaller"
                 textAlign="center"
-                borderBottom={!params.postSlug ? '3px solid' : 'none'}
+                borderBottom={!params.postSlug && location.pathname === '/' ? '3px solid' : 'none'}
                 borderColor="secondary"
               >
                 Home
@@ -71,7 +74,7 @@ export default function Header() {
               <Box
                 fontSize="smaller"
                 textAlign="center"
-                borderBottom={params.postSlug === 'blog' ? '3px solid' : 'none'}
+                borderBottom={!params.postSlug && location.pathname === '/blog' ? '3px solid' : 'none'}
                 borderColor="secondary"
               >
                 Blog
