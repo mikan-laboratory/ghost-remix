@@ -20,7 +20,7 @@
     "@emotion/react": "^11.11.1",
     "@emotion/server": "^11.11.0",
     "@emotion/styled": "^11.11.0",
-    "@prisma/client": "^5.9.1",
+    "@prisma/client": "^5.11.0",
     "@remix-run/css-bundle": "^2.6.0",
     "@remix-run/node": "^2.5.1",
     "@remix-run/react": "^2.6.0",
