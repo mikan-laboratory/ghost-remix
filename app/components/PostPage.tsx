@@ -69,16 +69,19 @@ export const PostPage = ({ post, comments, commentSettings }: JsonifiedPostPageP
           gap={2}
         >
           {tags.length > 0 && <TopicsList topics={tags} />}
-          <Button
-            leftIcon={rapidRead ? <FaFileAlt color="white" /> : <FaBolt color="white" />}
-            backgroundColor={rapidRead ? 'primary' : 'secondary'}
-            color="white"
-            _hover={{ bg: `${rapidRead ? 'primary' : 'secondary'}` }}
-            _active={{ bg: `${rapidRead ? 'primary' : 'secondary'}` }}
-            onClick={() => setRapidRead(!rapidRead)}
-          >
-            {rapidRead ? 'FullRead' : 'RapidRead'}
-          </Button>
+          {/* Once the rapid read functionality is added, this can be uncommented */}
+          {/* {post.type !== 'page' && (
+            <Button
+              leftIcon={rapidRead ? <FaFileAlt color="white" /> : <FaBolt color="white" />}
+              backgroundColor={rapidRead ? 'primary' : 'secondary'}
+              color="white"
+              _hover={{ bg: `${rapidRead ? 'primary' : 'secondary'}` }}
+              _active={{ bg: `${rapidRead ? 'primary' : 'secondary'}` }}
+              onClick={() => setRapidRead(!rapidRead)}
+            >
+              {rapidRead ? 'FullRead' : 'RapidRead'}
+            </Button>
+          )} */}
         </Flex>
       </Box>
       <Box py={5} px={5} textColor="text1">
