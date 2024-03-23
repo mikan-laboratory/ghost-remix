@@ -11,18 +11,22 @@ interface BlogListItemProps {
 
 export default function BlogItem({ post, type }: BlogListItemProps) {
   if (!post) {
-    // Render nothing or a placeholder if no post is provided
-    return null; // or <div>Loading...</div>
+    return <div>Loading...</div>;
   }
   const time = post.published_at ? new Date(post.published_at).toLocaleTimeString() : 'Sometime';
 
   return (
-    <Box display="flex" flexDirection={type === 'primary' ? 'row' : 'column'} gap={4} width="100%">
+    <Box
+      display="flex"
+      flexDirection={{ base: 'column', sm: type === 'primary' ? 'row' : 'column' }}
+      gap={4}
+      width="100%"
+    >
       {post.feature_image && (
         <Box
           position="relative"
           minWidth="65%"
-          height={type === 'primary' ? '375px' : type === 'secondary' ? '300px' : '200px'}
+          height={{ base: '220px', sm: type === 'primary' ? '375px' : type === 'secondary' ? '300px' : '200px' }}
           overflow="hidden"
         >
           <Image
@@ -42,7 +46,7 @@ export default function BlogItem({ post, type }: BlogListItemProps) {
         display="flex"
         flexDirection="column"
         justifyContent="space-between"
-        minHeight={type === 'list' ? 0 : '220px'}
+        minHeight={{ base: 0, sm: type === 'list' ? 0 : '220px' }}
       >
         <Box>
           <div>
@@ -51,7 +55,7 @@ export default function BlogItem({ post, type }: BlogListItemProps) {
           </div>
           <Link to={`/${post.slug}`}>
             <Text
-              fontSize={type === 'primary' ? '4xl' : type === 'secondary' ? '3xl' : 'xl'}
+              fontSize={{ base: '3xl', sm: type === 'primary' ? '4xl' : type === 'secondary' ? '3xl' : 'xl' }}
               fontWeight="bolder"
               textColor="primary"
               sx={{ _hover: { color: 'secondary' } }}
@@ -65,7 +69,7 @@ export default function BlogItem({ post, type }: BlogListItemProps) {
             </Text>
           )}
         </Box>
-        <Box display="flex" gap={2}>
+        <Box display="flex" gap={2} pt="2">
           {type !== 'list' &&
             post?.tags?.[0] &&
             post.tags.map((tag) => (

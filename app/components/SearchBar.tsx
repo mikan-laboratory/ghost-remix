@@ -15,7 +15,7 @@ export default function SearchBar() {
   };
 
   return (
-    <Flex>
+    <Flex display="flex">
       <Form method="get" action="/search" style={{ width: '20em' }} onSubmit={handleSubmit}>
         <Stack direction="row" w="100%" gap="0">
           <Input
@@ -25,6 +25,7 @@ export default function SearchBar() {
             borderColor="primary"
             borderEndRadius="0"
             borderWidth="2px"
+            backgroundColor="background"
             _hover={{ borderColor: 'secondary' }}
             focusBorderColor="secondary"
             textColor="gray.700"
@@ -34,16 +35,16 @@ export default function SearchBar() {
           />
           <Button
             type="submit"
-            background="primary"
+            background="secondary"
             textColor="background"
-            borderColor="primary"
+            borderColor="secondary"
             borderWidth="2px"
             borderLeft="0px"
             fontSize="md"
             borderStartRadius="0"
             _hover={{
               background: 'background',
-              color: 'primary',
+              color: 'secondary',
             }}
             _focus={{
               boxShadow: '0 0 0 3px rgba(66, 153, 225, 0.6)',

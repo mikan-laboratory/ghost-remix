@@ -55,7 +55,7 @@ export default function Comment({ comment, member }: CommentsProps): JSX.Element
   }, [isLiked, commentId, fetcher, postSlug]);
 
   return (
-    <Box ps={4} mb={4} w="100%">
+    <Box px={9} mb={4} w="100%">
       <CommentInner comment={comment} member={member} />
       <Box display="flex" alignItems="center">
         <Tooltip label={member ? '' : 'Log In to Like'} hasArrow>

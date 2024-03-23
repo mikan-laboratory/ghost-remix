@@ -14,6 +14,7 @@ import {
   Image,
 } from '@chakra-ui/react';
 import { Link, useNavigate, useRouteLoaderData, useParams, useLocation } from '@remix-run/react';
+import { useState } from 'react';
 import { FaSignInAlt, FaSignOutAlt } from 'react-icons/fa';
 import { MdMenu } from 'react-icons/md';
 //Internal Module Imports
@@ -26,7 +27,7 @@ export default function Header() {
   const params = useParams();
   const location = useLocation();
 
-  console.log(location);
+  const [viewMenu, setViewMenu] = useState(false);
 
   const member = loaderData?.member;
   const blogTitle = loaderData?.title ?? 'Blog';
@@ -42,7 +43,7 @@ export default function Header() {
   };
 
   return (
-    <Box w="100%" py={10}>
+    <Box w="100%" py={{ base: 2, sm: 10 }} px="5">
       <Flex flexDirection="row" justifyContent="space-between" alignItems="center" gap={2}>
         <Link to="/">
           <Flex display="flex" alignItems="center">
@@ -59,7 +60,7 @@ export default function Header() {
           </Flex>
         </Link>
         {pages.length > 0 && (
-          <Box display="flex" gap={2}>
+          <Box display={{ base: 'none', sm: 'flex' }} gap={2}>
             <Link key="home" to="/">
               <Box
                 fontSize="smaller"
@@ -94,8 +95,18 @@ export default function Header() {
             ))}
           </Box>
         )}
-        <SearchBar />
+        {!isSmallScreen && <SearchBar />}
         <HStack>
+          {pages.length > 0 && (
+            <Button
+              display={{ base: 'unset', sm: 'none' }}
+              color={!viewMenu ? 'white' : 'primary'}
+              backgroundColor={viewMenu ? 'white' : 'primary'}
+              onClick={() => setViewMenu(!viewMenu)}
+            >
+              <MdMenu />
+            </Button>
+          )}
           {member ? (
             <Button onClick={logout} bg="primary" color="text1">
               {isSmallScreen ? <FaSignOutAlt /> : 'Sign Out'}
@@ -119,6 +130,56 @@ export default function Header() {
           )}
         </HStack>
       </Flex>
+      <Box
+        display={{ base: viewMenu ? 'flex' : 'none', sm: 'none' }}
+        flexDirection="column"
+        minHeight="90vh"
+        minWidth="100vw"
+        backgroundColor="primary"
+        mt="5"
+        px={5}
+      >
+        <Box height="60vh" display="flex" flexDirection="column" justifyContent="center" gap={5}>
+          <Link key="home" to="/">
+            <Box
+              fontSize="2xl"
+              textAlign="left"
+              borderBottom={!params.postSlug && location.pathname === '/' ? '3px solid' : 'none'}
+              borderColor="secondary"
+              color="white"
+              display="flex"
+            >
+              Home
+            </Box>
+          </Link>
+          <Link key="blog" to="/blog">
+            <Box
+              fontSize="2xl"
+              textAlign="left"
+              borderBottom={!params.postSlug && location.pathname === '/blog' ? '3px solid' : 'none'}
+              borderColor="secondary"
+              color="white"
+            >
+              Blog
+            </Box>
+          </Link>
+          {pages.length > 0 &&
+            pages.map((page) => (
+              <Link key={page.slug} to={`/${page.slug}`}>
+                <Box
+                  fontSize="2xl"
+                  textAlign="left"
+                  borderBottom={params.postSlug === page.slug ? '3px solid' : 'none'}
+                  borderColor="secondary"
+                  color="white"
+                >
+                  {page.title}
+                </Box>
+              </Link>
+            ))}
+        </Box>
+        <SearchBar />
+      </Box>
     </Box>
   );
 }
@@ -132,16 +193,4 @@ export default function Header() {
 }
 
 {
-  /* {pages.length > 0 && (
-            <Menu>
-              <MenuButton as={IconButton} aria-label="Options" icon={<MdMenu />} />{' '}
-              <MenuList>
-                {pages.map((page) => (
-                  <Link key={page.slug} to={`/${page.slug}`}>
-                    <MenuItem sx={{ _hover: { color: 'primary' } }}>{page.title}</MenuItem>
-                  </Link>
-                ))}
-              </MenuList>
-            </Menu>
-          )} */
 }

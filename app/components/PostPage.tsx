@@ -32,13 +32,13 @@ export const PostPage = ({ post, comments, commentSettings }: JsonifiedPostPageP
 
   return (
     <PageBase>
-      <Box pb={5}>
+      <Box pb={5} px={5}>
         {post.feature_image && (
           <Box
             position="relative"
             width="100%"
             height="0"
-            paddingBottom="40%"
+            paddingBottom={{ base: '70%', sm: '40%' }}
             overflow="hidden"
             mt={5}
             borderRadius="xl"
@@ -56,13 +56,18 @@ export const PostPage = ({ post, comments, commentSettings }: JsonifiedPostPageP
             />
           </Box>
         )}
-        <Flex justifyContent="space-between" mt={5}>
+        <Flex justifyContent="space-between" mt={{ base: 2, sm: 5 }}>
           <AuthorsList authors={authors} />
         </Flex>
-        <Heading fontSize={{ base: 30, sm: 40, md: 50 }} textAlign={{ base: 'center', md: 'left' }} textColor="text1">
+        <Heading fontSize={{ base: 40, sm: 40, md: 50 }} textAlign={{ base: 'center', md: 'left' }} textColor="text1">
           {post.title}
         </Heading>
-        <Flex justifyContent={tags.length > 0 ? 'space-between' : 'right'} alignItems="center">
+        <Flex
+          justifyContent={tags.length > 0 ? 'space-between' : 'right'}
+          alignItems={{ base: 'left', sm: 'center' }}
+          flexDirection={{ base: 'column', sm: 'row' }}
+          gap={2}
+        >
           {tags.length > 0 && <TopicsList topics={tags} />}
           <Button
             leftIcon={rapidRead ? <FaFileAlt color="white" /> : <FaBolt color="white" />}
@@ -76,7 +81,7 @@ export const PostPage = ({ post, comments, commentSettings }: JsonifiedPostPageP
           </Button>
         </Flex>
       </Box>
-      <Box py={5} textColor="text1">
+      <Box py={5} px={5} textColor="text1">
         <PostContent html={post.html ?? ''} />
       </Box>
       {commentsOn && (

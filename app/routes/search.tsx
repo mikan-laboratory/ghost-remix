@@ -47,7 +47,7 @@ export default function Search() {
 
   return (
     <PageBase>
-      <Grid templateColumns="repeat(3, 1fr)" gap={6} py={8}>
+      <Grid templateColumns={{ base: '1fr', sm: 'repeat(3, 1fr)' }} gap={6} py={8} px={5}>
         {posts.length > 0 && posts.map((post: PostOrPage) => <BlogItem key={post.id} post={post} type="list" />)}
         {posts.length === 0 && (
           <Box>
