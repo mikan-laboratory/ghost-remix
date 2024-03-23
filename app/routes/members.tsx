@@ -7,6 +7,7 @@ import {
   Input,
   Stack,
   Heading,
+  Image,
   Text,
   useUpdateEffect,
   VStack,
@@ -20,6 +21,7 @@ import { useToast } from '@chakra-ui/react';
 import { env } from '~/env';
 import { setCookie } from '~/setCookie.server';
 import { GhostSignInErrorResponse, GhostSignInResponse, GhostAPIError } from './types';
+import Header from '~/components/Header';
 import Footer from '~/components/Footer';
 
 export const meta: MetaFunction = () => {
@@ -148,9 +150,7 @@ export default function MembersPage() {
         alignItems={{ base: 'center', sm: 'start' }}
       >
         <Link to="/">
-          <Heading mb={4} color="primary" sx={{ _hover: { color: 'text1' } }}>
-            Members
-          </Heading>
+          <Image src="/logo.png" height={14} width={14} />
         </Link>
         <Stack w="100%">
           <fetcher.Form method="post">

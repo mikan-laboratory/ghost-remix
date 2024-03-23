@@ -1,5 +1,5 @@
 //External Library Imports
-import { Button, Box, Input, useToast, useUpdateEffect } from '@chakra-ui/react';
+import { Button, Box, Input, Textarea, useToast, useUpdateEffect, background } from '@chakra-ui/react';
 //Internal Module Imports
 import { BasicMember } from '~/types/member';
 import { useFetcher, useNavigate, useParams } from '@remix-run/react';
@@ -36,7 +36,17 @@ export default function CommentBox({ member, parentId }: CommentBoxProps): JSX.E
   if (!member) {
     return (
       <Box my={4}>
-        <Button onClick={handleLogin}>Log In to Comment, Like, or Reply</Button>
+        <Button
+          border="2px"
+          borderColor="primary"
+          borderStartRadius="full"
+          borderEndRadius="full"
+          onClick={handleLogin}
+          backgroundColor="background"
+          color="primary"
+        >
+          Log In to Comment, Like, or Reply
+        </Button>
       </Box>
     );
   }
@@ -46,18 +56,25 @@ export default function CommentBox({ member, parentId }: CommentBoxProps): JSX.E
   return (
     <Box w="100%" my={4} alignItems="center">
       <fetcher.Form method="post" action={`/${postSlug}/comments/`} preventScrollReset>
-        <Box display="flex" w="100%" flexDirection={{ base: 'column', sm: 'row' }} gap={2}>
-          <Input
+        <Box display="flex" w="100%" flexDirection={{ base: 'column' }} gap={2} alignItems="end">
+          <Textarea
             name="comment"
-            borderRadius="lg"
+            borderRadius="xl"
             border="solid"
             borderWidth="2px"
-            borderColor="secondary"
-            placeholder={parentId ? 'Reply to this comment' : 'Write a comment'}
+            borderColor="lightgrey"
+            backgroundColor="white"
+            placeholder={parentId ? 'Reply to this comment...' : 'Add a comment...'}
             flex={1}
-            mr={2}
+            size="sm"
           />
-          <Button colorScheme="blue" type="submit" isDisabled={isDisabled} w={{ base: '100%', sm: 'unset' }}>
+          <Button
+            backgroundColor="secondary"
+            color="white"
+            type="submit"
+            isDisabled={isDisabled}
+            w={{ base: '100%', sm: 'unset' }}
+          >
             {parentId ? 'Reply' : 'Comment'}
           </Button>
           {parentId && <Input type="hidden" name="parentId" value={parentId} />}

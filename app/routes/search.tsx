@@ -1,13 +1,13 @@
 // External library imports
 import { useState } from 'react';
-import { Box, VStack, Text } from '@chakra-ui/react';
+import { Box, Grid, Text } from '@chakra-ui/react';
 import type { MetaFunction, LoaderFunctionArgs } from '@remix-run/node';
 import { useLoaderData, useNavigate, useSearchParams } from '@remix-run/react';
 import { PostOrPage } from '@tryghost/content-api';
 // Internal module imports
 import { getSearchResults } from '~/content-api/getSearchResults';
 import PaginationNavigation from '~/components/PaginationNavigation';
-import BlogListItem from '~/components/BlogListItem';
+import BlogItem from '~/components/BlogItem';
 import { PostsAndPagination } from '~/content-api/types';
 import { PageBase } from '~/components/PageBase';
 
@@ -47,14 +47,14 @@ export default function Search() {
 
   return (
     <PageBase>
-      <VStack>
-        {posts.length > 0 && posts.map((post: PostOrPage) => <BlogListItem key={post.id} post={post} />)}
+      <Grid templateColumns={{ base: '1fr', md: 'repeat(3, 1fr)' }} gap={6} py={8} px={5}>
+        {posts.length > 0 && posts.map((post: PostOrPage) => <BlogItem key={post.id} post={post} type="list" />)}
         {posts.length === 0 && (
           <Box>
             <Text textColor="text1">Sorry, we couldn't find anything.</Text>
           </Box>
         )}
-      </VStack>
+      </Grid>
       <PaginationNavigation currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
     </PageBase>
   );

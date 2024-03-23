@@ -6,7 +6,7 @@ export const getPostsAndPagination = async (page = 1, limit = 5): Promise<PostsA
   const posts = await ghostContentAPI.posts.browse({
     limit: limit,
     page: page,
-    include: 'authors',
+    include: ['authors', 'tags'],
     fields: 'published_at,id,feature_image,feature_image_alt,title,excerpt,slug',
   });
 

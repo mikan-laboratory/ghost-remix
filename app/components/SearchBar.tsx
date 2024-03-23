@@ -15,36 +15,42 @@ export default function SearchBar() {
   };
 
   return (
-    <Flex mb={6} w="100%">
-      <Form method="get" action="/search" style={{ width: '100%' }} onSubmit={handleSubmit}>
-        <Stack direction="row" spacing={2} w="100%">
+    <Flex display="flex">
+      <Form method="get" action="/search" style={{ width: '20em' }} onSubmit={handleSubmit}>
+        <Stack direction="row" w="100%" gap="0">
           <Input
             type="search"
             name="query"
-            placeholder="Search blog posts by title, author, or tag"
-            borderColor="secondary"
-            textColor="text1"
-            focusBorderColor="primary"
+            placeholder="Search..."
+            borderColor="primary"
+            borderEndRadius="0"
+            borderWidth="2px"
+            backgroundColor="background"
+            _hover={{ borderColor: 'secondary' }}
+            focusBorderColor="secondary"
+            textColor="gray.700"
+            fontSize="md"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
           <Button
             type="submit"
-            ml={1}
-            px={{ base: '17px', sm: 5 }}
-            background="background"
-            textColor="secondary"
-            border="solid"
+            background="secondary"
+            textColor="background"
             borderColor="secondary"
-            sx={{
-              ':hover': {
-                bg: 'secondary',
-                borderColor: 'secondary',
-                color: 'text1',
-              },
+            borderWidth="2px"
+            borderLeft="0px"
+            fontSize="md"
+            borderStartRadius="0"
+            _hover={{
+              background: 'background',
+              color: 'secondary',
+            }}
+            _focus={{
+              boxShadow: '0 0 0 3px rgba(66, 153, 225, 0.6)',
             }}
           >
-            {isSmallScreen ? <FaSearch /> : 'Search'}
+            <FaSearch />
           </Button>
         </Stack>
       </Form>

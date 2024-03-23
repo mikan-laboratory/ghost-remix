@@ -1,15 +1,11 @@
-import { Flex, Button, Box, Text, useToast, useUpdateEffect, Tooltip } from '@chakra-ui/react';
+import { Flex, Button, Box, Text, useToast, useUpdateEffect, Tooltip, Image } from '@chakra-ui/react';
 import { useParams, useFetcher } from '@remix-run/react';
 import { formatDistanceToNow } from 'date-fns';
-import { useCallback, useState } from 'react';
-import { FaThumbsUp, FaTrash } from 'react-icons/fa';
+import { FaTrash } from 'react-icons/fa';
 import { CommentInnerProps } from './types';
 
 export const CommentInner = ({ comment, member }: CommentInnerProps): JSX.Element => {
   const commentId = comment.id;
-  const memberLikedComment = Boolean(comment.comment_likes.find((like) => like.member_id === member?.id));
-
-  const [isLiked, setIsLiked] = useState(memberLikedComment);
 
   const params = useParams();
   const postSlug = params.postSlug;
@@ -35,23 +31,21 @@ export const CommentInner = ({ comment, member }: CommentInnerProps): JSX.Elemen
     );
   };
 
-  const handleLikeComment = useCallback(async () => {
-    fetcher.submit(
-      { commentId: commentId.toString() },
-      {
-        method: isLiked ? 'DELETE' : 'POST',
-        action: `/${postSlug}/comments/${commentId}/likes`,
-        preventScrollReset: true,
-      },
-    );
-
-    setIsLiked(!isLiked);
-  }, [isLiked, commentId, fetcher, postSlug]);
-
   return (
-    <Flex justifyContent="space-between" alignItems="start" w="100%">
+    <Flex alignItems="start" w="100%" backgroundColor="comment" py="12px" borderRadius="lg">
+      <Image
+        src="/logo.png"
+        height={12}
+        width={12}
+        backgroundColor="background"
+        borderRadius="100%"
+        padding="1px"
+        position="relative"
+        top="-22px"
+        left="-22px"
+      />
       <Flex align="center">
-        <Box ml={3}>
+        <Box ml={-3}>
           <Text
             fontWeight="bold"
             color="text1"
@@ -67,18 +61,6 @@ export const CommentInner = ({ comment, member }: CommentInnerProps): JSX.Elemen
         </Box>
       </Flex>
       <Flex align="center">
-        <Tooltip label={member ? '' : 'Log In to Like'} hasArrow>
-          <Button
-            size="sm"
-            leftIcon={<FaThumbsUp />}
-            variant="ghost"
-            color={isLiked ? 'secondary' : 'primary'}
-            onClick={handleLikeComment}
-            isDisabled={!member}
-          >
-            {comment.comment_likes.length} likes
-          </Button>
-        </Tooltip>
         {comment.member_id === member?.id && (
           <Button colorScheme="red" onClick={handleDeleteComment}>
             <FaTrash />
