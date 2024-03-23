@@ -6,7 +6,7 @@ export const PageBase = ({ children }: { children: React.ReactNode }): JSX.Eleme
   return (
     <Box
       minHeight="100vh"
-      width="100vw"
+      width="100%"
       backgroundColor="background"
       display="flex"
       flexDirection="column"

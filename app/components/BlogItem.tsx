@@ -18,7 +18,7 @@ export default function BlogItem({ post, type }: BlogListItemProps) {
   return (
     <Box
       display="flex"
-      flexDirection={{ base: 'column', sm: type === 'primary' ? 'row' : 'column' }}
+      flexDirection={{ base: 'column', md: type === 'primary' ? 'row' : 'column' }}
       gap={4}
       width="100%"
     >
@@ -26,27 +26,29 @@ export default function BlogItem({ post, type }: BlogListItemProps) {
         <Box
           position="relative"
           minWidth="65%"
-          height={{ base: '220px', sm: type === 'primary' ? '375px' : type === 'secondary' ? '300px' : '200px' }}
+          height={{ base: '220px', md: type === 'primary' ? '375px' : type === 'secondary' ? '300px' : '200px' }}
           overflow="hidden"
         >
-          <Image
-            src={post.feature_image}
-            alt={post.feature_image_alt || 'image'}
-            position="absolute"
-            top="50%"
-            left="50%"
-            transform="translate(-50%, -50%)"
-            width="100%"
-            height="100%"
-            objectFit="cover"
-          />
+          <Link to={`/${post.slug}`}>
+            <Image
+              src={post.feature_image}
+              alt={post.feature_image_alt || 'image'}
+              position="absolute"
+              top="50%"
+              left="50%"
+              transform="translate(-50%, -50%)"
+              width="100%"
+              height="100%"
+              objectFit="cover"
+            />
+          </Link>
         </Box>
       )}
       <Box
         display="flex"
         flexDirection="column"
         justifyContent="space-between"
-        minHeight={{ base: 0, sm: type === 'list' ? 0 : '220px' }}
+        minHeight={{ base: 0, md: type === 'list' ? 0 : '220px' }}
       >
         <Box>
           <div>
@@ -55,7 +57,7 @@ export default function BlogItem({ post, type }: BlogListItemProps) {
           </div>
           <Link to={`/${post.slug}`}>
             <Text
-              fontSize={{ base: '3xl', sm: type === 'primary' ? '4xl' : type === 'secondary' ? '3xl' : 'xl' }}
+              fontSize={{ base: '3xl', md: type === 'primary' ? '4xl' : type === 'secondary' ? '3xl' : 'xl' }}
               fontWeight="bolder"
               textColor="primary"
               sx={{ _hover: { color: 'secondary' } }}

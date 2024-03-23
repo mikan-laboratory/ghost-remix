@@ -38,7 +38,7 @@ export const PostPage = ({ post, comments, commentSettings }: JsonifiedPostPageP
             position="relative"
             width="100%"
             height="0"
-            paddingBottom={{ base: '70%', sm: '40%' }}
+            paddingBottom={{ base: '70%', md: '40%' }}
             overflow="hidden"
             mt={5}
             borderRadius="xl"
@@ -56,16 +56,16 @@ export const PostPage = ({ post, comments, commentSettings }: JsonifiedPostPageP
             />
           </Box>
         )}
-        <Flex justifyContent="space-between" mt={{ base: 2, sm: 5 }}>
+        <Flex justifyContent="space-between" mt={{ base: 2, md: 5 }}>
           <AuthorsList authors={authors} />
         </Flex>
-        <Heading fontSize={{ base: 40, sm: 40, md: 50 }} textAlign={{ base: 'center', md: 'left' }} textColor="text1">
+        <Heading fontSize={{ base: 40, md: 40, lg: 50 }} textAlign={{ base: 'center', md: 'left' }} textColor="text1">
           {post.title}
         </Heading>
         <Flex
           justifyContent={tags.length > 0 ? 'space-between' : 'right'}
-          alignItems={{ base: 'left', sm: 'center' }}
-          flexDirection={{ base: 'column', sm: 'row' }}
+          alignItems={{ base: 'left', md: 'center' }}
+          flexDirection={{ base: 'column', md: 'row' }}
           gap={2}
         >
           {tags.length > 0 && <TopicsList topics={tags} />}

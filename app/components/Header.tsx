@@ -33,7 +33,7 @@ export default function Header() {
   const blogTitle = loaderData?.title ?? 'Blog';
   const pages = loaderData?.pages ?? [];
 
-  const [isSmallScreen] = useMediaQuery('(max-width: 600px)');
+  const [isSmallScreen] = useMediaQuery('(max-width: 768px)');
   const [isLargeScreen] = useMediaQuery('(min-width: 992px)');
 
   const login = (): void => navigate('/members');
@@ -43,7 +43,7 @@ export default function Header() {
   };
 
   return (
-    <Box w="100%" py={{ base: 2, sm: 10 }} px="5">
+    <Box w="100%" py={{ base: 2, md: 10 }} px="5">
       <Flex flexDirection="row" justifyContent="space-between" alignItems="center" gap={2}>
         <Link to="/">
           <Flex display="flex" alignItems="center">
@@ -60,7 +60,7 @@ export default function Header() {
           </Flex>
         </Link>
         {pages.length > 0 && (
-          <Box display={{ base: 'none', sm: 'flex' }} gap={2}>
+          <Box display={{ base: 'none', md: 'flex' }} gap={2}>
             <Link key="home" to="/">
               <Box
                 fontSize="smaller"
@@ -99,7 +99,7 @@ export default function Header() {
         <HStack>
           {pages.length > 0 && (
             <Button
-              display={{ base: 'unset', sm: 'none' }}
+              display={{ base: 'unset', md: 'none' }}
               color={!viewMenu ? 'white' : 'primary'}
               backgroundColor={viewMenu ? 'white' : 'primary'}
               onClick={() => setViewMenu(!viewMenu)}
@@ -131,10 +131,9 @@ export default function Header() {
         </HStack>
       </Flex>
       <Box
-        display={{ base: viewMenu ? 'flex' : 'none', sm: 'none' }}
+        display={{ base: viewMenu ? 'flex' : 'none', md: 'none' }}
         flexDirection="column"
         minHeight="90vh"
-        minWidth="100vw"
         backgroundColor="primary"
         mt="5"
         px={5}
@@ -144,10 +143,10 @@ export default function Header() {
             <Box
               fontSize="2xl"
               textAlign="left"
-              borderBottom={!params.postSlug && location.pathname === '/' ? '3px solid' : 'none'}
+              borderLeft={!params.postSlug && location.pathname === '/' ? '3px solid' : 'none'}
               borderColor="secondary"
               color="white"
-              display="flex"
+              pl={5}
             >
               Home
             </Box>
@@ -156,9 +155,10 @@ export default function Header() {
             <Box
               fontSize="2xl"
               textAlign="left"
-              borderBottom={!params.postSlug && location.pathname === '/blog' ? '3px solid' : 'none'}
+              borderLeft={!params.postSlug && location.pathname === '/blog' ? '3px solid' : 'none'}
               borderColor="secondary"
               color="white"
+              pl={5}
             >
               Blog
             </Box>
@@ -169,9 +169,10 @@ export default function Header() {
                 <Box
                   fontSize="2xl"
                   textAlign="left"
-                  borderBottom={params.postSlug === page.slug ? '3px solid' : 'none'}
+                  borderLeft={params.postSlug === page.slug ? '3px solid' : 'none'}
                   borderColor="secondary"
                   color="white"
+                  pl={5}
                 >
                   {page.title}
                 </Box>

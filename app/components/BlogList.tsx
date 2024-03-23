@@ -8,12 +8,7 @@ interface BlogListProps {
 
 export default function BlogList({ posts }: BlogListProps) {
   return (
-    <Grid
-      templateColumns={{ base: '1fr', sm: 'repeat(3, 1fr)' }}
-      gap={{ base: 8, sm: 6 }}
-      py={8}
-      px={{ base: 5, sm: 0 }}
-    >
+    <Grid templateColumns={{ base: '1fr', md: 'repeat(3, 1fr)' }} gap={{ base: 8, sm: 6 }} py={8} px={5}>
       {posts.map((post: PostOrPage) => (
         <BlogItem key={post.id} post={post} type="list" />
       ))}
