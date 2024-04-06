@@ -10,7 +10,8 @@
     "start": "remix-serve ./build/index.js",
     "typecheck": "tsc",
     "seed:dev": "npx esno prisma/seed.dev.ts",
-    "seed:prod": "npx esno prisma/seed.prod.ts"
+    "seed:prod": "npx esno prisma/seed.prod.ts",
+    "summarize": "npx esno prisma/summarize.ts"
   },
   "prisma": {
     "seed": "npx esno prisma/seed.dev.ts"
