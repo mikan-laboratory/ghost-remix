@@ -1,10 +1,8 @@
 // External library imports
-import { useState, useEffect } from 'react';
 import { Box } from '@chakra-ui/react';
 import { Link } from '@remix-run/react';
 import { MetaFunction, LoaderFunctionArgs, json } from '@remix-run/node';
-import { useLoaderData, useNavigate } from '@remix-run/react';
-import { PostOrPage } from '@tryghost/content-api';
+import { useLoaderData } from '@remix-run/react';
 // Internal module imports
 import { getPostsAndPagination } from '~/content-api/getPostsAndPagination';
 import { getBasicBlogInfo } from '~/getBasicBlogInfo.server';
@@ -44,21 +42,7 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 };
 
 export default function Index() {
-  const [currentPage, setCurrentPage] = useState(1);
-  const { heroPosts, bodyPosts, totalPages } = useLoaderData<typeof loader>();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    //Find and set current page of posts based on URL params
-    const url = new URL(window.location.href);
-    const initialPage = parseInt(url.searchParams.get('page') || '1', 10);
-    setCurrentPage(initialPage);
-  }, []);
-
-  const handlePageChange = (newPage: number) => {
-    setCurrentPage(newPage);
-    navigate(`/?page=${newPage}`);
-  };
+  const { heroPosts, bodyPosts } = useLoaderData<typeof loader>();
 
   return (
     <PageBase>

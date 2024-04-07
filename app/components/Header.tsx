@@ -1,18 +1,5 @@
 //External Library Imports
-import {
-  Box,
-  Button,
-  Flex,
-  HStack,
-  Heading,
-  IconButton,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  useMediaQuery,
-  Image,
-} from '@chakra-ui/react';
+import { Box, Button, Flex, HStack, useMediaQuery, Image } from '@chakra-ui/react';
 import { Link, useNavigate, useRouteLoaderData, useParams, useLocation } from '@remix-run/react';
 import { useState } from 'react';
 import { FaSignInAlt, FaSignOutAlt } from 'react-icons/fa';
@@ -183,15 +170,4 @@ export default function Header() {
       </Box>
     </Box>
   );
-}
-
-{
-  /* {member && isLargeScreen && (
-          <Heading color="text2" mb={4}>
-            Welcome, {member.name}
-          </Heading>
-        )} */
-}
-
-{
 }

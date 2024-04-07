@@ -1,15 +1,12 @@
 // External library imports
 import { useState, useEffect } from 'react';
-import { VStack } from '@chakra-ui/react';
 import { MetaFunction, LoaderFunctionArgs, json } from '@remix-run/node';
 import { useLoaderData, useNavigate } from '@remix-run/react';
-import { PostOrPage } from '@tryghost/content-api';
 // Internal module imports
 import { getPostsAndPagination } from '~/content-api/getPostsAndPagination';
 import PaginationNavigation from '~/components/PaginationNavigation';
 import { getBasicBlogInfo } from '~/getBasicBlogInfo.server';
 import { PageBase } from '~/components/PageBase';
-import BlogHero from '~/components/BlogHero';
 import BlogList from '~/components/BlogList';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {

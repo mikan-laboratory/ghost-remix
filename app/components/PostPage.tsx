@@ -1,13 +1,19 @@
-import { Heading, Flex, Box, Image, Button } from '@chakra-ui/react';
+import { Heading, Flex, Box, Image, Button, useToast, useUpdateEffect, Spinner } from '@chakra-ui/react';
 import AuthorsList from './AuthorsList';
 import CommentsList from './CommentsList';
 import PostContent from './PostContent';
 import TopicsList from './TopicsList';
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { GetPostOutput } from '~/content-api/types';
-import { JsonifiedPostPageProps } from './types';
+import {
+  JsonifiedPostPageProps,
+  SummarizePostFailureResponse,
+  SummarizePostResponse,
+  SummarizePostSuccessResponse,
+} from './types';
 import { PageBase } from './PageBase';
 import { FaBolt, FaFileAlt } from 'react-icons/fa';
+import { useFetcher } from '@remix-run/react';
 
 export const PostPage = ({ post, comments, commentSettings }: JsonifiedPostPageProps): JSX.Element => {
   const authors = post.authors ?? [];
@@ -21,7 +27,54 @@ export const PostPage = ({ post, comments, commentSettings }: JsonifiedPostPageP
     return featureImageURL;
   };
 
+  const fetcher = useFetcher<SummarizePostResponse>();
+  const toast = useToast();
+
   const [rapidRead, setRapidRead] = useState(false);
+  const [summary, setSummary] = useState<string | undefined>();
+  const [postContent, setPostContent] = useState(post.html);
+
+  const handleSummarize = useCallback((): void => {
+    if (rapidRead) {
+      setRapidRead(false);
+      setPostContent(post.html);
+      return;
+    }
+
+    if (!rapidRead && summary) {
+      setRapidRead(true);
+      setPostContent(summary);
+      return;
+    }
+
+    fetcher.submit(
+      {
+        post: post.html as string,
+      },
+      {
+        method: 'POST',
+        action: '/summarizePost',
+      },
+    );
+  }, [summary, rapidRead]);
+
+  useUpdateEffect(() => {
+    if ((fetcher.data as SummarizePostSuccessResponse)?.result) {
+      setSummary((fetcher.data as SummarizePostSuccessResponse).result);
+      setPostContent((fetcher.data as SummarizePostSuccessResponse).result);
+      setRapidRead(true);
+    }
+
+    if ((fetcher.data as SummarizePostFailureResponse)?.error) {
+      toast({
+        title: 'Error',
+        description: (fetcher.data as SummarizePostFailureResponse).error,
+        status: 'error',
+        duration: 9000,
+        isClosable: true,
+      });
+    }
+  }, [fetcher.data]);
 
   const commentsOn = useMemo(() => {
     if (post.type === 'page') return false;
@@ -69,23 +122,26 @@ export const PostPage = ({ post, comments, commentSettings }: JsonifiedPostPageP
           gap={2}
         >
           {tags.length > 0 && <TopicsList topics={tags} />}
-          {/* Once the rapid read functionality is added, this can be uncommented */}
-          {/* {post.type !== 'page' && (
+          {post.type !== 'page' && (
             <Button
               leftIcon={rapidRead ? <FaFileAlt color="white" /> : <FaBolt color="white" />}
               backgroundColor={rapidRead ? 'primary' : 'secondary'}
               color="white"
               _hover={{ bg: `${rapidRead ? 'primary' : 'secondary'}` }}
               _active={{ bg: `${rapidRead ? 'primary' : 'secondary'}` }}
-              onClick={() => setRapidRead(!rapidRead)}
+              onClick={handleSummarize}
             >
               {rapidRead ? 'FullRead' : 'RapidRead'}
             </Button>
-          )} */}
+          )}
         </Flex>
       </Box>
       <Box py={5} px={5} textColor="text1">
-        <PostContent html={post.html ?? ''} />
+        {['submitting', 'loading'].includes(fetcher.state) ? (
+          <Spinner thickness="4px" speed="0.65s" emptyColor="gray.200" color="blue.500" size="xl" />
+        ) : (
+          <PostContent html={postContent as string} />
+        )}
       </Box>
       {commentsOn && (
         <Box>

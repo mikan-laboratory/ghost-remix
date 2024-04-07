@@ -35,9 +35,16 @@ local_resource(
 # Seed and Restart
 load('ext://uibutton', 'cmd_button')
 
-cmd_button('seed', 
+cmd_button('seed',
   argv=['sh', '-c', 'npm run seed:dev && docker-compose -f docker-compose.dev.yml restart ghost'],
   resource='ghost',
   icon_name='downloading',
   text='Seed'
+)
+
+cmd_button('summarize',
+  argv=['sh', '-c', 'npm run summarize'],
+  resource='ghost',
+  icon_name='edit_square',
+  text='Summarize'
 )

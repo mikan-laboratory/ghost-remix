@@ -6,7 +6,6 @@ import {
   FormLabel,
   Input,
   Stack,
-  Heading,
   Image,
   Text,
   useUpdateEffect,
@@ -21,7 +20,6 @@ import { useToast } from '@chakra-ui/react';
 import { env } from '~/env';
 import { setCookie } from '~/setCookie.server';
 import { GhostSignInErrorResponse, GhostSignInResponse, GhostAPIError } from './types';
-import Header from '~/components/Header';
 import Footer from '~/components/Footer';
 
 export const meta: MetaFunction = () => {
@@ -115,27 +113,25 @@ export default function MembersPage() {
   }, [data.error]);
 
   useUpdateEffect(() => {
-    if (!fetcher.data?.success) return;
+    if (fetcher.data?.success) {
+      toast({
+        title: 'Email sent!',
+        description: 'Check your email for the magic link.',
+        status: 'success',
+        duration: 9000,
+        isClosable: true,
+      });
+    }
 
-    toast({
-      title: 'Email sent!',
-      description: 'Check your email for the magic link.',
-      status: 'success',
-      duration: 9000,
-      isClosable: true,
-    });
-  }, [fetcher.data]);
-
-  useUpdateEffect(() => {
-    if (!fetcher.data?.error) return;
-
-    toast({
-      title: 'Error',
-      description: fetcher.data.error,
-      status: 'error',
-      duration: 9000,
-      isClosable: true,
-    });
+    if (fetcher.data?.error) {
+      toast({
+        title: 'Error',
+        description: fetcher.data.error,
+        status: 'error',
+        duration: 9000,
+        isClosable: true,
+      });
+    }
   }, [fetcher.data]);
 
   return (
