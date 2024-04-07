@@ -1,21 +1,13 @@
 import { ActionFunction, TypedResponse } from '@remix-run/node';
 import axios, { AxiosResponse } from 'axios';
 import { json } from 'react-router';
+import { SummarizePostResponse } from '~/components/types';
 import { env } from '~/env';
 
 export const summarizePost: ActionFunction = async ({
   request,
   params,
-}): Promise<
-  TypedResponse<
-    | {
-        result: string;
-      }
-    | {
-        error: string;
-      }
-  >
-> => {
+}): Promise<TypedResponse<SummarizePostResponse>> => {
   try {
     const post = params.post;
 
