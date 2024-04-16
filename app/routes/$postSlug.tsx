@@ -56,6 +56,7 @@ export const action: ActionFunction = async ({ request }): Promise<TypedResponse
       result: string;
     }> = await axios.post(modelURL, {
       command: 'summarize',
+      text: post,
       token,
     });
 
