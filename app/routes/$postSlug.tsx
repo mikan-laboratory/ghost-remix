@@ -1,10 +1,13 @@
 //External Library Imports
 import { useLoaderData } from '@remix-run/react';
-import { json, MetaFunction, LoaderFunctionArgs, TypedResponse } from '@remix-run/node';
+import { json, MetaFunction, LoaderFunctionArgs, TypedResponse, ActionFunction } from '@remix-run/node';
 // Internal Module Imports
 import { PostPage } from '~/components/PostPage';
 import { getPostCommentsAndCommentSettings } from '~/content-api/getPostAndComments';
 import { GetPostAndComments } from '~/components/types';
+import axios, { AxiosResponse } from 'axios';
+import { SummarizePostResponse } from '~/components/types';
+import { env } from '~/env';
 
 export const loader = async ({ params }: LoaderFunctionArgs): Promise<TypedResponse<GetPostAndComments>> => {
   try {
@@ -21,6 +24,53 @@ export const loader = async ({ params }: LoaderFunctionArgs): Promise<TypedRespo
     console.log(error);
 
     throw new Response('Post not found', { status: 404 });
+  }
+};
+
+export const action: ActionFunction = async ({ request }): Promise<TypedResponse<SummarizePostResponse>> => {
+  try {
+    const body = await request.formData();
+    const post = body.get('post');
+
+    if (!post) {
+      throw new Error('Empty post');
+    }
+
+    if (request.method !== 'POST') {
+      throw new Error('Invalid Request');
+    }
+
+    const modelURL = env.LLM_URL;
+
+    if (!modelURL) {
+      throw new Error('Model URL not set');
+    }
+
+    const token = env.LLM_API_KEY;
+
+    if (!token) {
+      throw new Error('Model API key not set');
+    }
+
+    const response: AxiosResponse<{
+      result: string;
+    }> = await axios.post(modelURL, {
+      command: 'summarize',
+      token,
+    });
+
+    return json(response.data);
+  } catch (error) {
+    console.error(error);
+
+    return json(
+      {
+        error: (error as Error).message,
+      },
+      {
+        status: 400,
+      },
+    );
   }
 };
 

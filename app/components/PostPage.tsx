@@ -47,15 +47,15 @@ export const PostPage = ({ post, comments, commentSettings }: JsonifiedPostPageP
       return;
     }
 
-    fetcher.submit(
-      {
-        post: post.html as string,
-      },
-      {
-        method: 'POST',
-        action: '/summarizePost',
-      },
-    );
+    const form = new FormData();
+
+    form.set('post', post.html as string);
+    fetcher.formData = form;
+
+    fetcher.submit(form, {
+      method: 'POST',
+      action: `/${post.slug}`,
+    });
   }, [summary, rapidRead]);
 
   useUpdateEffect(() => {

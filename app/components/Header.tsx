@@ -21,7 +21,6 @@ export default function Header() {
   const pages = loaderData?.pages ?? [];
 
   const [isSmallScreen] = useMediaQuery('(max-width: 768px)');
-  const [isLargeScreen] = useMediaQuery('(min-width: 992px)');
 
   const login = (): void => navigate('/members');
   const logout = async (): Promise<void> => {
