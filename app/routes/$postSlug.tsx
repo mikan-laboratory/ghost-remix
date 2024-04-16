@@ -55,7 +55,7 @@ export const action: ActionFunction = async ({ request }): Promise<TypedResponse
     const response: AxiosResponse<{
       result: string;
     }> = await axios.post(modelURL, {
-      command: 'summarize',
+      command: 'Summarize this post; Reply only with the summary; No other commentary',
       text: post,
       token,
     });

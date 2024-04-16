@@ -22,7 +22,7 @@ export const summarizePosts = async (prisma: PrismaClient): Promise<void> => {
   const settledPosts = await Promise.allSettled(
     posts.map((post) => {
       return axios.post(process.env.LLM_URL as string, {
-        command: 'summarize',
+        command: 'Summarize this post; Reply only with the summary; No other commentary',
         token: process.env.LLM_API_KEY,
         text: post.html,
       });
