@@ -6,6 +6,7 @@ export const summarizePosts = async (prisma: PrismaClient): Promise<void> => {
 
   if (!llmConfigured) {
     console.log('LLM not configured; skipping summarization');
+    return;
   }
 
   const posts = await prisma.posts.findMany({
