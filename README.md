@@ -23,6 +23,7 @@ Check it out live at [Dev Design Daily](https://devdesigndaily.com).
     - [GitHub Actions](#github-actions)
     - [Command Line](#command-line)
     - [Custom Domains and SSL](#custom-domains-and-ssl)
+  - [RapidRead](#rapidread)
 
 ## Dependencies
 
@@ -147,6 +148,8 @@ flyctl secrets set GHOST_CONTENT_API_KEY="my-api-key-value" \
    OWNER_SLUG="admin" \
    BLOG_URL="https://mysite.com" \
    COMMENT_SETTINGS="all"
+   LLM_URL="https://mysite.com"
+   LLM_API_KEY="somekey
 ```
 
 2. Deploy
@@ -169,3 +172,7 @@ flyctl certs create www.mysite.com
 ```
 
 3. Use the ipv4 address to create an A record in your DNS provider, and the ipv6 address to create a AAAA record. Create a CNAME record for `www`.
+
+## RapidRead
+
+- Add `RapidRead` with [GoGemma](https://github.com/mikan-laboratory/go-gemma), a small Golang server with Redis we developed that leverages Google's Gemma 2B for quick summarization on minimal hardware.
