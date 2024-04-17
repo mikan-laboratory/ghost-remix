@@ -17,6 +17,8 @@ MAILGUN_API_KEY ?= somkey
 MAILGUN_BASE_URL ?= https://api.mailgun.net/
 MAILGUN_USER ?= someuser
 MAILGUN_PASSWORD ?= somepassword
+LLM_URL ?= http://localhost:8081
+LLM_API_KEY ?= 68850cc7becba8a8cca282354f
 
 
 # Container name
@@ -51,6 +53,8 @@ run:
 	-e MAILGUN_BASE_URL=$(MAILGUN_BASE_URL) \
 	-e MAILGUN_USER=$(MAILGUN_USER) \
 	-e MAILGUN_PASSWORD=$(MAILGUN_PASSWORD) \
+	-e LLM_URL=$(LLM_URL) \
+	-e LLM_API_KEY=$(LLM_API_KEY) \
 	$(IMAGE_NAME)
 
 clean:
