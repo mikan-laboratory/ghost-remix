@@ -8,22 +8,21 @@ Check it out live at [Dev Design Daily](https://devdesigndaily.com).
 
 ## Table of Contents
 
-- [GhostRemix](#GhostRemix)
-  - [Dependencies](#dependencies)
-  - [Local Development](#local-development)
-    - [Get the code](#get-the-code)
-      - [GitHub UI](#github-ui)
-      - [GitHub CLI](#github-cli)
-    - [Mailgun](#mailgun)
-    - [Basics](#basics)
-    - [Theme](#theme)
-    - [Favicon](#favicon)
-  - [Test Docker Build](#test-docker-build)
-  - [Deploy to Fly.io](#deploy-to-flyio)
-    - [GitHub Actions](#github-actions)
-    - [Command Line](#command-line)
-    - [Custom Domains and SSL](#custom-domains-and-ssl)
-  - [RapidRead](#rapidread)
+- [Dependencies](#dependencies)
+- [Local Development](#local-development)
+  - [Get the code](#get-the-code)
+    - [GitHub UI](#github-ui)
+    - [GitHub CLI](#github-cli)
+  - [Mailgun](#mailgun)
+  - [Basics](#basics)
+  - [Theme](#theme)
+  - [Favicon](#favicon)
+- [Test Docker Build](#test-docker-build)
+- [Deploy to Fly.io](#deploy-to-flyio)
+  - [GitHub Actions](#github-actions)
+  - [Command Line](#command-line)
+  - [Custom Domains and SSL](#custom-domains-and-ssl)
+- [RapidRead](#rapidread)
 
 ## Dependencies
 
