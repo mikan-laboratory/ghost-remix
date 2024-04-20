@@ -8,7 +8,7 @@ ENV NODE_ENV production
 RUN apt-get update && apt-get install -y openssl sqlite3 nginx python3 build-essential procps gettext
 
 # Install Ghost CLI
-RUN npm install ghost-cli@1.25.3 -g
+RUN npm install ghost-cli@1.26.0 -g
 
 # Create the Ghost directory and set appropriate permissions
 RUN mkdir -p /var/www/ghost \
@@ -20,7 +20,7 @@ USER ghostuser
 
 # Set up Ghost
 WORKDIR /var/www/ghost
-RUN ghost install local --no-start
+RUN ghost install v5.82.3 local --no-start
 
 # Switch back to root user for any other root-required operations
 USER root
