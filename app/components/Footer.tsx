@@ -1,5 +1,4 @@
 import { Box, Image } from '@chakra-ui/react';
-import { FaGithub } from 'react-icons/fa';
 
 export default function Footer() {
   return (
