@@ -10,10 +10,7 @@ interface BlogListItemProps {
 }
 
 export default function BlogItem({ post, type }: BlogListItemProps) {
-  if (!post) {
-    return <div>Loading...</div>;
-  }
-  const time = post.published_at ? new Date(post.published_at).toLocaleTimeString() : 'Sometime';
+  if (!post) return null;
 
   return (
     <Box
