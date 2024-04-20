@@ -1,4 +1,4 @@
-import { Grid, GridItem } from '@chakra-ui/react';
+import { Grid } from '@chakra-ui/react';
 import { PostOrPage } from '@tryghost/content-api';
 import BlogItem from './BlogItem';
 
