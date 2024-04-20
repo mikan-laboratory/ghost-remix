@@ -1,4 +1,4 @@
-import { Flex, Button, Box, Text, useToast, useUpdateEffect, Tooltip, Image } from '@chakra-ui/react';
+import { Flex, Button, Box, Text, useToast, useUpdateEffect, Image } from '@chakra-ui/react';
 import { useParams, useFetcher } from '@remix-run/react';
 import { formatDistanceToNow } from 'date-fns';
 import { FaTrash } from 'react-icons/fa';

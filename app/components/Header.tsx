@@ -49,7 +49,6 @@ export default function Header() {
           <Box display={{ base: 'none', md: 'flex' }} gap={2}>
             <Link key="home" to="/">
               <Box
-                fontSize="smaller"
                 textAlign="center"
                 borderBottom={!params.postSlug && location.pathname === '/' ? '3px solid' : 'none'}
                 borderColor="secondary"
@@ -59,7 +58,6 @@ export default function Header() {
             </Link>
             <Link key="blog" to="/blog">
               <Box
-                fontSize="smaller"
                 textAlign="center"
                 borderBottom={!params.postSlug && location.pathname === '/blog' ? '3px solid' : 'none'}
                 borderColor="secondary"
@@ -70,7 +68,6 @@ export default function Header() {
             {pages.map((page) => (
               <Link key={page.slug} to={`/${page.slug}`}>
                 <Box
-                  fontSize="smaller"
                   textAlign="center"
                   borderBottom={params.postSlug === page.slug ? '3px solid' : 'none'}
                   borderColor="secondary"
