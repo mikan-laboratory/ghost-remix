@@ -4,7 +4,7 @@ export default function Footer() {
   return (
     <Box backgroundColor="primary" w="100%" display="flex" flexDirection="column" alignItems="center">
       <Box
-        py={{ base: 5, sm: 12 }}
+        py={{ base: 5 }}
         width="100%"
         alignItems="flex-end"
         justifyContent="flex-start"
