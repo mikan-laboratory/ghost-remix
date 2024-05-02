@@ -10,13 +10,13 @@
     "start": "remix-serve ./build/index.js",
     "typecheck": "tsc",
     "seed:dev": "npx esno prisma/seed.dev.ts",
-    "seed:prod": "npx esno prisma/seed.prod.ts",
-    "summarize": "npx esno prisma/summarize.ts"
+    "seed:prod": "npx esno prisma/seed.prod.ts"
   },
   "prisma": {
     "seed": "npx esno prisma/seed.dev.ts"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.20.8",
     "@chakra-ui/react": "^2.8.2",
     "@emotion/react": "^11.11.1",
     "@emotion/server": "^11.11.0",

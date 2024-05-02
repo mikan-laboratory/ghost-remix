@@ -147,8 +147,7 @@ flyctl secrets set GHOST_CONTENT_API_KEY="my-api-key-value" \
    OWNER_SLUG="admin" \
    BLOG_URL="https://mysite.com" \
    COMMENT_SETTINGS="all"
-   LLM_URL="https://mysite.com"
-   LLM_API_KEY="somekey
+   ANTHROPIC_API_KEY="somekey
 ```
 
 2. Deploy
@@ -174,4 +173,4 @@ flyctl certs create www.mysite.com
 
 ## RapidRead
 
-- Add `RapidRead` with [GoGemma](https://github.com/mikan-laboratory/go-gemma), a small Golang server with Redis we developed that leverages Google's Gemma 2B for quick summarization on minimal hardware.
+- Add `RapidRead` with a [Anthropic API Key](https://docs.anthropic.com/claude/docs/getting-access-to-claude).

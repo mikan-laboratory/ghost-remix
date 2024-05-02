@@ -54,7 +54,7 @@ export const PostPage = ({ post, comments, commentSettings }: JsonifiedPostPageP
 
     fetcher.submit(form, {
       method: 'POST',
-      action: `/${post.slug}`,
+      action: `/summarize`,
     });
   }, [summary, rapidRead]);
 

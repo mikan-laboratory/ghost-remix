@@ -1,7 +1,11 @@
 //External Library Imports
-import { ActionFunction, json } from '@remix-run/node';
+import { ActionFunction, TypedResponse, json } from '@remix-run/node';
 
-export const action: ActionFunction = async () => {
+export const action: ActionFunction = async (): Promise<
+  TypedResponse<{
+    success: boolean;
+  }>
+> => {
   const cookie = 'token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly';
 
   return json(
