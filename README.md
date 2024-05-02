@@ -148,8 +148,8 @@ flyctl secrets set GHOST_CONTENT_API_KEY="my-api-key-value" \
    OWNER_NAME="Admin" \
    OWNER_SLUG="admin" \
    BLOG_URL="https://mysite.com" \
-   COMMENT_SETTINGS="all"
-   ANTHROPIC_API_KEY="somekey
+   COMMENT_SETTINGS="all" \
+   ANTHROPIC_API_KEY="somekey"
 ```
 
 2. Deploy
