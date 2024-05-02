@@ -1,5 +1,7 @@
 # GhostRemix
 
+![Preview](image.png)
+
 Ghost as a headless CMS with Remix and Chakra UI by [Mikan Labs](https://mikanlabs.com). Easy deployment to Fly.io.
 
 Check it out live at [Dev Design Daily](https://devdesigndaily.com).
@@ -173,4 +175,4 @@ flyctl certs create www.mysite.com
 
 ## RapidRead
 
-- Add `RapidRead` with a [Anthropic API Key](https://docs.anthropic.com/claude/docs/getting-access-to-claude).
+- Add `RapidRead` with an [Anthropic API Key](https://docs.anthropic.com/claude/docs/getting-access-to-claude).
