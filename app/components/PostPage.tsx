@@ -138,7 +138,9 @@ export const PostPage = ({ post, comments, commentSettings }: JsonifiedPostPageP
       </Box>
       <Box py={5} px={5} textColor="text1">
         {['submitting', 'loading'].includes(fetcher.state) ? (
-          <Spinner thickness="4px" speed="0.65s" emptyColor="gray.200" color="blue.500" size="xl" />
+          <Box display="flex" justifyContent="center" alignItems="center">
+            <Spinner thickness="4px" speed="0.65s" emptyColor="gray.200" color="blue.500" size="xl" />
+          </Box>
         ) : (
           <PostContent html={postContent as string} />
         )}
