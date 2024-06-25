@@ -13,12 +13,13 @@ Check it out live at [Dev Design Daily](https://devdesigndaily.com).
 - [Dependencies](#dependencies)
 - [Local Development](#local-development)
   - [Get the code](#get-the-code)
-    - [GitHub UI](#github-ui)
-    - [GitHub CLI](#github-cli)
+    - [Using the Template](#using-the-template)
+    - [Forking the Repository](#forking-the-repository)
   - [Mailgun](#mailgun)
   - [Basics](#basics)
   - [Theme](#theme)
   - [Favicon](#favicon)
+- [Pages](#pages)
 - [Test Docker Build](#test-docker-build)
 - [Deploy to Fly.io](#deploy-to-flyio)
   - [GitHub Actions](#github-actions)
@@ -37,35 +38,85 @@ Check it out live at [Dev Design Daily](https://devdesigndaily.com).
 
 ### Get the code
 
-Use the template to create your own repository.
+You have two options to get started with GhostRemix: using the template or forking the repository. Here's when to use each approach:
 
-#### GitHub UI
+#### Using the Template
 
-- Navigate to the [repository](https://github.com/mikan-laboratory/ghost-remix), click `Use this template`, and follow the instructions.
+Use the template when:
 
-#### GitHub CLI
+- You want to create a private repository (GitHub doesn't allow forking directly to a private repo).
+- You don't plan to contribute back to the original project.
+- You want a clean start without the original project's commit history.
 
-- Get the [GitHub CLI](https://cli.github.com/)
+To use the template:
+
+1. Navigate to the [GhostRemix repository](https://github.com/mikan-laboratory/ghost-remix).
+2. Click the "Use this template" button.
+3. Choose a name for your new repository and select whether it should be public or private.
+4. Click "Create repository from template".
+
+Alternatively, you can use the GitHub CLI:
 
 ```bash
-# Step 1: Clone the template repository
-
-git clone https://github.com/mikab-laboratory/ghost-remix.git new-project
-
-cd new-project
-
-# Step 2: Create a new repository on GitHub
-
-gh repo create username/new-project --private --source=.
-
-# Step 3: Push the cloned contents to the new repository
-
+gh repo create your-new-repo --template mikan-laboratory/ghost-remix --private
+cd your-new-repo
 git push --set-upstream origin main
 ```
 
+#### Forking the Repository
+
+Fork the repository when:
+
+- You want to contribute back to the original project.
+- You want to keep up with updates to the original project.
+- You're okay with a public repository (you can make it private later, but it starts as public).
+
+To fork the repository:
+
+1. Navigate to the [GhostRemix repository](https://github.com/mikan-laboratory/ghost-remix).
+2. Click the "Fork" button in the top-right corner.
+3. Choose where to fork the repository (your personal account or an organization).
+4. Optionally, you can change the name of the forked repository.
+5. Click "Create fork".
+
+After forking, clone your forked repository:
+
+```bash
+git clone https://github.com/your-username/ghost-remix.git
+cd ghost-remix
+```
+
+To keep your fork up to date with the original repository:
+
+1. Add the original repository as an upstream remote:
+
+   ```bash
+   git remote add upstream https://github.com/mikan-laboratory/ghost-remix.git
+   ```
+
+2. Fetch the latest changes from the upstream repository:
+
+   ```bash
+   git fetch upstream
+   ```
+
+3. Merge the changes into your local main branch:
+
+   ```bash
+   git checkout main
+   git merge upstream/main
+   ```
+
+4. Push the updated main branch to your fork:
+   ```bash
+   git push origin main
+   ```
+
+Remember, if you make changes you want to contribute back to the original project, create a new branch for your changes and submit a pull request from that branch.
+
 ### Mailgun
 
-You don't need Mailgun to get started, but you'll need for email-based workflows like member sign up.
+You don't need Mailgun to get started, but you'll need it for email-based workflows like member sign up.
 
 Don't worry about the $35 a month price tag, immediately after signing up for the trial, you can downgrade to the flex plan.
 
