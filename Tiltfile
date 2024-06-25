@@ -41,10 +41,3 @@ cmd_button('seed',
   icon_name='downloading',
   text='Seed'
 )
-
-cmd_button('summarize',
-  argv=['sh', '-c', 'npm run summarize'],
-  resource='ghost',
-  icon_name='edit_square',
-  text='Summarize'
-)
