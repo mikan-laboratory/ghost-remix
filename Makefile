@@ -2,7 +2,7 @@ ENVIRONMENT ?= local
 # Default image name
 IMAGE_NAME ?= ghost-remix
 # Default Ghost API key
-GHOST_CONTENT_API_KEY ?= 77a7e9c49a7cc3416ab81eb233
+GHOST_CONTENT_API_KEY ?= 77a7e9c49a7cc3416abeb23322
 BLOG_URL ?= http://localhost:8080
 SITE_TITLE ?= Test
 SITE_DESCRIPTION ?= "A test description"
