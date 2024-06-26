@@ -14,6 +14,7 @@ import {
 import { PageBase } from './PageBase';
 import { FaBolt, FaFileAlt } from 'react-icons/fa';
 import { useFetcher } from '@remix-run/react';
+import dayjs from 'dayjs';
 
 export const PostPage = ({ post, comments, commentSettings, showRapidRead }: JsonifiedPostPageProps): JSX.Element => {
   const authors = post.authors ?? [];
@@ -109,14 +110,21 @@ export const PostPage = ({ post, comments, commentSettings, showRapidRead }: Jso
             />
           </Box>
         )}
-        <Flex justifyContent="space-between" mt={{ base: 2, md: 5 }}>
-          <AuthorsList authors={authors} />
+        <Flex flexDirection={'column'} alignContent={'flex-start'} gap={2}>
+          <Flex flexDirection={'row'} gap={6} mt={{ base: 2, md: 5 }} color="text2" fontSize="sm">
+            {post.published_at ? dayjs(post.published_at).format('MMMM DD, YYYY') : 'Some Date'}
+            <AuthorsList authors={authors} />
+          </Flex>
+          <Heading
+            fontSize={{ base: 40, md: 40, lg: 50 }}
+            textAlign={{ base: 'center', md: 'left' }}
+            textColor="primary"
+          >
+            {post.title}
+          </Heading>
         </Flex>
-        <Heading fontSize={{ base: 40, md: 40, lg: 50 }} textAlign={{ base: 'center', md: 'left' }} textColor="text1">
-          {post.title}
-        </Heading>
         <Flex
-          justifyContent={tags.length > 0 ? 'space-between' : 'right'}
+          justifyContent={'right'}
           alignItems={{ base: 'left', md: 'center' }}
           flexDirection={{ base: 'column', md: 'row' }}
           gap={2}

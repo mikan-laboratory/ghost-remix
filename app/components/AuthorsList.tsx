@@ -32,5 +32,5 @@ const getAuthorNames = (authors: Author[]): string => {
 export default function AuthorsList({ authors }: AuthorsListProps) {
   const authorNames = getAuthorNames(authors);
 
-  return <Text textColor="text1">{`written by: ${authorNames}`}</Text>;
+  return <Text textColor="text1">{`${authorNames}`}</Text>;
 }
