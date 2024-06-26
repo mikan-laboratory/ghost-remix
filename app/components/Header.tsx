@@ -1,5 +1,5 @@
 //External Library Imports
-import { Box, Button, Flex, HStack, useMediaQuery, Image } from '@chakra-ui/react';
+import { Box, Button, Flex, HStack, useMediaQuery, Image, Wrap } from '@chakra-ui/react';
 import { Link, useNavigate, useRouteLoaderData, useParams, useLocation } from '@remix-run/react';
 import { useMemo, useState } from 'react';
 import { FaSignInAlt, FaSignOutAlt } from 'react-icons/fa';
@@ -7,6 +7,8 @@ import { MdMenu } from 'react-icons/md';
 //Internal Module Imports
 import SearchBar from './SearchBar';
 import { RootLoaderData } from '~/types/root';
+import NavItem from './NavItem';
+import NavDropdown from './NavDropdown';
 
 export default function Header() {
   const navigate = useNavigate();
@@ -15,7 +17,7 @@ export default function Header() {
   const location = useLocation();
   const [viewMenu, setViewMenu] = useState(false);
   const [isSmallScreen] = useMediaQuery('(max-width: 768px)');
-
+  const [isMediumScreen] = useMediaQuery('(max-width: 1024px)');
   const member = loaderData?.member;
   const blogTitle = loaderData?.title ?? 'Blog';
   const signupEnabled = loaderData?.signupEnabled ?? false;
@@ -62,53 +64,35 @@ export default function Header() {
   return (
     <Box w="100%" py={{ base: 2, md: 10 }} px="5">
       <Flex flexDirection="row" justifyContent="space-between" alignItems="center" gap={2}>
-        <Link to="/">
-          <Flex display="flex" alignItems="center">
-            <Image src="/logo.png" height={14} width={14} />
-            <Box
-              width={32}
-              fontSize={blogTitle.length > 7 ? 'larger' : 'xx-large'}
-              color="primary"
-              lineHeight="100%"
-              sx={{ _hover: { color: 'text1' } }}
-            >
-              {blogTitle}
-            </Box>
-          </Flex>
-        </Link>
-        {pages.length > 0 && (
-          <Box display={{ base: 'none', md: 'flex' }} gap={2}>
-            <Link key="home" to="/">
+        <Box display="flex" flexDirection="row" alignItems="center" justifyContent="space-between" minWidth="50%">
+          <Link to="/">
+            <Flex display="flex" alignItems="center">
+              <Image src="/logo.png" height={14} width={14} />
               <Box
-                textAlign="center"
-                borderBottom={!params.postSlug && location.pathname === '/' ? '3px solid' : 'none'}
-                borderColor="secondary"
+                width={32}
+                fontSize={blogTitle.length > 7 ? 'larger' : 'xx-large'}
+                color="primary"
+                lineHeight="100%"
+                sx={{ _hover: { color: 'tertiary2' } }}
               >
-                Home
+                {blogTitle}
               </Box>
-            </Link>
-            <Link key="blog" to="/blog">
-              <Box
-                textAlign="center"
-                borderBottom={!params.postSlug && location.pathname === '/blog' ? '3px solid' : 'none'}
-                borderColor="secondary"
-              >
-                Blog
-              </Box>
-            </Link>
-            {pages.map((page) => (
-              <Link key={page.slug} to={`/${page.slug}`}>
-                <Box
-                  textAlign="center"
-                  borderBottom={params.postSlug === page.slug ? '3px solid' : 'none'}
-                  borderColor="secondary"
-                >
-                  {page.title}
-                </Box>
-              </Link>
-            ))}
-          </Box>
-        )}
+            </Flex>
+          </Link>
+          <Wrap>
+            <NavItem destination="" title="Home" pathname={location.pathname} type="main" />
+            <NavItem destination="blog" title="Blog" pathname={location.pathname} type="main" />
+            {!isMediumScreen && pages.length > 0 && (
+              <>
+                {pages.slice(0, 3).map((page) => (
+                  <NavItem destination={page.slug} title={page.title} pathname={location.pathname} type="main" />
+                ))}
+                {pages.length > 3 && <NavDropdown pages={pages.slice(3)} params={params} />}
+              </>
+            )}
+            {!isSmallScreen && isMediumScreen && pages.length > 0 && <NavDropdown pages={pages} params={params} />}
+          </Wrap>
+        </Box>
         {!isSmallScreen && <SearchBar />}
         <HStack>
           {pages.length > 0 && (
