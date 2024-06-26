@@ -1,19 +1,17 @@
 import { Box } from '@chakra-ui/react';
 import Footer from './Footer';
 import Header from './Header';
+import { PropsWithChildren } from 'react';
 
-export const PageBase = ({ children }: { children: React.ReactNode }): JSX.Element => {
+interface PageBaseProps extends PropsWithChildren {
+  hideSignup?: boolean;
+}
+
+export const PageBase = ({ children, hideSignup = false }: PageBaseProps): JSX.Element => {
   return (
-    <Box
-      minHeight="100vh"
-      width="100%"
-      backgroundColor="background"
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-    >
-      <Box py={5} maxWidth="90em" width="100%" alignSelf="center" minHeight="90vh">
-        <Header />
+    <Box minHeight="100vh" width="100%" backgroundColor="background" display="flex" flexDirection="column">
+      <Box flex="1" py={5} maxWidth="90em" width="100%" alignSelf="center">
+        <Header hideSignup={hideSignup} />
         {children}
       </Box>
       <Footer />

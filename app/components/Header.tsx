@@ -10,7 +10,11 @@ import { RootLoaderData } from '~/types/root';
 import NavItem from './NavItem';
 import NavDropdown from './NavDropdown';
 
-export default function Header() {
+interface HeaderProps {
+  hideSignup?: boolean;
+}
+
+export default function Header({ hideSignup = false }: HeaderProps) {
   const navigate = useNavigate();
   const loaderData = useRouteLoaderData<RootLoaderData>('root');
   const params = useParams();
@@ -30,6 +34,8 @@ export default function Header() {
   };
 
   const signInComponent: JSX.Element | undefined = useMemo(() => {
+    if (hideSignup) return undefined;
+
     if (member) {
       return (
         <Button onClick={logout} bg="primary" color="text1">
@@ -59,7 +65,7 @@ export default function Header() {
     }
 
     return undefined;
-  }, [member, signupEnabled, logout, isSmallScreen]);
+  }, [hideSignup, member, signupEnabled, logout, isSmallScreen]);
 
   return (
     <Box w="100%" py={{ base: 2, md: 10 }} px="5">

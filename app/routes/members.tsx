@@ -1,16 +1,5 @@
 //External Library Imports
-import {
-  Box,
-  Button,
-  FormControl,
-  FormLabel,
-  Input,
-  Stack,
-  Image,
-  Text,
-  useUpdateEffect,
-  VStack,
-} from '@chakra-ui/react';
+import { Box, Button, FormControl, FormLabel, Input, Stack, Text, useUpdateEffect, VStack } from '@chakra-ui/react';
 import { json, MetaFunction, ActionFunctionArgs, TypedResponse, LoaderFunctionArgs } from '@remix-run/node';
 import { useFetcher, useLoaderData, Link } from '@remix-run/react';
 import axios from 'axios';
@@ -20,8 +9,8 @@ import { useToast } from '@chakra-ui/react';
 import { env } from '~/env';
 import { setCookie } from '~/setCookie.server';
 import { GhostSignInErrorResponse, GhostSignInResponse, GhostAPIError } from './types';
-import Footer from '~/components/Footer';
 import { getSettingsValue } from '~/content-api/getSettingsValue';
+import { PageBase } from '~/components/PageBase';
 
 export const meta: MetaFunction = () => {
   return [
@@ -111,7 +100,6 @@ export default function MembersPage() {
 
   useEffect(() => {
     if (!data.error) return;
-
     toast({
       title: 'Error',
       description: data.error,
@@ -131,7 +119,6 @@ export default function MembersPage() {
         isClosable: true,
       });
     }
-
     if (fetcher.data?.error) {
       toast({
         title: 'Error',
@@ -144,65 +131,68 @@ export default function MembersPage() {
   }, [fetcher.data]);
 
   return (
-    <VStack minHeight="100vh" justifyContent="space-between" spacing={0} backgroundColor="background">
-      <Box
-        py="5%"
-        px={{ base: 5, sm: 10 }}
-        w="100%"
-        maxWidth="70em"
-        display="flex"
-        flexDirection="column"
-        alignItems={{ base: 'center', sm: 'start' }}
-      >
-        <Link to="/">
-          <Image src="/logo.png" height={14} width={14} />
-        </Link>
-        <Stack w="100%">
-          <fetcher.Form method="post">
+    <PageBase hideSignup={true}>
+      <VStack spacing={8} align="stretch" w="100%" maxW="500px" mx="auto" mt={10} px={4}>
+        <Text fontSize="3xl" fontWeight="bold" color="primary" textAlign="center">
+          {formMode === 'signin' ? 'Sign In' : 'Sign Up'}
+        </Text>
+        <fetcher.Form method="post">
+          <Stack spacing={6}>
             {formMode === 'signup' && (
               <FormControl>
-                <FormLabel color="secondary" fontSize="3xl">
+                <FormLabel color="primary" fontSize="lg">
                   Name
                 </FormLabel>
-                <Input name="name" placeholder="Enter your name" color="text1" />
+                <Input
+                  name="name"
+                  placeholder="Enter your name"
+                  color="text1"
+                  size="lg"
+                  borderColor="text2"
+                  _hover={{ borderColor: 'primary' }}
+                  _focus={{ borderColor: 'primary', boxShadow: '0 0 0 1px #0080a8' }}
+                />
               </FormControl>
             )}
             <FormControl>
-              <FormLabel color="secondary" fontSize="3xl">
+              <FormLabel color="primary" fontSize="lg">
                 Email
               </FormLabel>
-              <Input name="email" placeholder="Enter your email" color="text1" />
+              <Input
+                name="email"
+                placeholder="Enter your email"
+                color="text1"
+                size="lg"
+                borderColor="text2"
+                _hover={{ borderColor: 'primary' }}
+                _focus={{ borderColor: 'primary', boxShadow: '0 0 0 1px #0080a8' }}
+              />
             </FormControl>
             <Input type="hidden" name="emailType" value={formMode} />
-            <Box
-              display="flex"
-              flexDirection={{ base: 'column-reverse', sm: 'row' }}
-              justifyContent="space-between"
-              alignItems="center"
-              py={5}
-              gap={{ base: 5, sm: 'unset' }}
+            <Button
+              type="submit"
+              size="lg"
+              w="100%"
+              bg="primary"
+              color="text3"
+              _hover={{ bg: 'primary2' }}
+              _active={{ bg: 'primary2' }}
             >
-              <Box>
-                <Text
-                  color="text1"
-                  onClick={() => setFormMode(formMode === 'signin' ? 'signup' : 'signin')}
-                  sx={{ _hover: { color: 'primary' } }}
-                  cursor="pointer"
-                  textAlign={{ base: 'center', sm: 'left' }}
-                >
-                  {formMode === 'signin'
-                    ? `Don't have an account? Sign up here!`
-                    : 'Already have an account? Sign in here!'}
-                </Text>
-              </Box>
-              <Button w={{ base: '100%', sm: 'unset' }} type="submit">
-                Sign {formMode === 'signin' ? 'In' : 'Up'}
-              </Button>
-            </Box>
-          </fetcher.Form>
-        </Stack>
-      </Box>
-      <Footer />
-    </VStack>
+              Sign {formMode === 'signin' ? 'In' : 'Up'}
+            </Button>
+          </Stack>
+        </fetcher.Form>
+        <Box textAlign="center">
+          <Text
+            color="text1"
+            onClick={() => setFormMode(formMode === 'signin' ? 'signup' : 'signin')}
+            sx={{ _hover: { color: 'primary' } }}
+            cursor="pointer"
+          >
+            {formMode === 'signin' ? `Don't have an account? Sign up here!` : 'Already have an account? Sign in here!'}
+          </Text>
+        </Box>
+      </VStack>
+    </PageBase>
   );
 }

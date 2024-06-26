@@ -1,37 +1,36 @@
-import { Box, Image } from '@chakra-ui/react';
+import { Box, Image, Flex, Text, Link } from '@chakra-ui/react';
 
 export default function Footer() {
   return (
-    <Box backgroundColor="primary" w="100%" display="flex" flexDirection="column" alignItems="center">
-      <Box
-        py={{ base: 5, sm: 12 }}
-        width="100%"
-        alignItems="flex-end"
-        justifyContent="flex-start"
-        px={{ base: 5, sm: 12 }}
-        color="text3"
-        display="flex"
+    <Box as="footer" backgroundColor="primary" w="100%">
+      <Flex
+        direction={{ base: 'column', sm: 'row' }}
+        alignItems="center"
+        justifyContent="space-between"
+        py={3}
+        px={{ base: 4, sm: 6 }}
       >
-        <Image src="/logo.png" height={14} width={14} />
-        <span>© 2024</span>
-      </Box>
-      <Box
-        textColor="white"
-        fontSize="small"
-        display="flex"
-        w="100%"
-        textAlign="center"
-        justifyContent="center"
-        gap={1}
-        backgroundColor="black"
-      >
-        Powered by
-        <a href="https://ghostremix.com" target="_blank">
-          <Box display="flex" gap={2} alignItems="center" textColor="white" sx={{ _hover: { color: 'secondary' } }}>
+        <Flex alignItems="center" color="text3" mb={{ base: 2, sm: 0 }}>
+          <Image src="/logo.png" height={8} width={8} mr={2} />
+          <Text fontSize="sm">© 2024</Text>
+        </Flex>
+
+        <Flex alignItems="center" fontSize="xs">
+          <Text color="text3" mr={1}>
+            Powered by
+          </Text>
+          <Link
+            href="https://ghostremix.com"
+            target="_blank"
+            color="text3"
+            _hover={{ color: 'secondary' }}
+            display="flex"
+            alignItems="center"
+          >
             GhostRemix
-          </Box>
-        </a>
-      </Box>
+          </Link>
+        </Flex>
+      </Flex>
     </Box>
   );
 }
