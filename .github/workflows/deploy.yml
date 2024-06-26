@@ -28,6 +28,8 @@ jobs:
             OWNER_SLUG="${{ secrets.OWNER_SLUG }}" \
             BLOG_URL="${{ secrets.BLOG_URL }}" \
             COMMENT_SETTINGS="${{ secrets.COMMENT_SETTINGS }}" \
+            MEMBERS_SIGNUP_ACCESS="${{ secrets.MEMBERS_SIGNUP_ACCESS }}" \
+            RAPID_READ="${{ secrets.RAPID_READ }}" \
             JWT_SECRET="${{ secrets.JWT_SECRET }}" \
             ANTHROPIC_API_KEY="${{ secrets.ANTHROPIC_API_KEY }}"
         env:
