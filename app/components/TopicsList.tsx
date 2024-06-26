@@ -10,7 +10,7 @@ export default function TopicsList({ topics }: TopicsListProps) {
   let topicsList;
 
   if (topics.length > 0) {
-    topicsList = topics.map((topic, index) => (
+    topicsList = topics.map((topic) => (
       <Box
         key={topic.id}
         border="2px"
@@ -31,7 +31,7 @@ export default function TopicsList({ topics }: TopicsListProps) {
   }
 
   return (
-    <Box textColor="text1" display="flex" gap={2}>
+    <Box textColor="text1" display="flex" gap={2} pt={4}>
       {topicsList}
     </Box>
   );

@@ -121,7 +121,6 @@ export const PostPage = ({ post, comments, commentSettings, showRapidRead }: Jso
           flexDirection={{ base: 'column', md: 'row' }}
           gap={2}
         >
-          {tags.length > 0 && <TopicsList topics={tags} />}
           {showRapidRead && (
             <Button
               leftIcon={rapidRead ? <FaFileAlt color="white" /> : <FaBolt color="white" />}
@@ -144,6 +143,7 @@ export const PostPage = ({ post, comments, commentSettings, showRapidRead }: Jso
         ) : (
           <PostContent html={postContent as string} />
         )}
+        {tags.length > 0 && <TopicsList topics={tags} />}
       </Box>
       {commentsOn && (
         <Box>
