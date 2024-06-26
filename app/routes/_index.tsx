@@ -56,8 +56,18 @@ export default function Index() {
       {hasBodyPosts && (
         <Box width="100%" display="flex" alignContent="center" justifyContent="center">
           <Link key="blog" to="/blog">
-            <Box border="2px" px="8px" borderStartRadius="full" borderEndRadius="full" padding={3}>
-              See More
+            <Box
+              border="4px solid transparent"
+              width="353px"
+              px="8px"
+              borderRadius="md"
+              textAlign="center"
+              color="text3"
+              backgroundColor="primary"
+              padding={1}
+              sx={{ _hover: { color: 'primary', backgroundColor: 'background', borderColor: 'primary' } }}
+            >
+              Load More
             </Box>
           </Link>
         </Box>

@@ -12,8 +12,13 @@ const theme = extendTheme({
     text1: '#000000',
     text2: '#708090',
     text3: '#FFFFFF',
-    primary: '#75B3C6',
-    secondary: '#FF8551',
+    primary: '#0080a8',
+    secondary: '#5a9b9d',
+    tertiary: '#cb4900',
+    tertiary2: '#faaf5b',
+    primary2: '#01516a',
+    pic: 'rgb(0,134,176)',
+    pic2: 'rgb(227,150,0)',
   },
   styles: {
     global: {
@@ -44,7 +49,7 @@ const theme = extendTheme({
         fontWeight: 'bold',
         color: 'primary',
         _hover: {
-          color: 'secondary',
+          color: 'tertiary2',
         },
       },
       blockquote: {

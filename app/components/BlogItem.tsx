@@ -1,8 +1,8 @@
-//External Library Imports
 import dayjs from 'dayjs';
 import { Box, Text, Image } from '@chakra-ui/react';
 import { Link } from '@remix-run/react';
 import { PostOrPage } from '@tryghost/content-api';
+import TopicsList from './TopicsList';
 
 interface BlogListItemProps {
   post?: PostOrPage;
@@ -12,23 +12,26 @@ interface BlogListItemProps {
 export default function BlogItem({ post, type }: BlogListItemProps) {
   if (!post) return null;
 
+  const hasFeatureImage = !!post.feature_image;
+
   return (
     <Box
       display="flex"
-      flexDirection={{ base: 'column', md: type === 'primary' ? 'row' : 'column' }}
-      gap={4}
+      flexDirection={{ base: 'column', md: type === 'primary' && hasFeatureImage ? 'row' : 'column' }}
+      height={{ base: 'auto', md: type === 'primary' && hasFeatureImage ? '409px' : 'auto' }}
+      gap={{ base: 2, md: type === 'primary' ? 4 : 2 }}
       width="100%"
     >
-      {post.feature_image && (
+      {hasFeatureImage && (
         <Box
           position="relative"
-          minWidth="65%"
-          height={{ base: '220px', md: type === 'primary' ? '375px' : type === 'secondary' ? '300px' : '200px' }}
+          height={{ base: '200px', md: type === 'primary' ? '100%' : '200px' }}
           overflow="hidden"
+          width={{ base: '100%', md: type === 'primary' ? '60%' : '100%' }}
         >
           <Link to={`/${post.slug}`}>
             <Image
-              src={post.feature_image}
+              src={post.feature_image as string}
               alt={post.feature_image_alt || 'image'}
               position="absolute"
               top="50%"
@@ -38,6 +41,18 @@ export default function BlogItem({ post, type }: BlogListItemProps) {
               height="100%"
               objectFit="cover"
             />
+            <Box
+              position="absolute"
+              backgroundColor="primary"
+              color="text3"
+              borderEndRadius="md"
+              py={1}
+              px={3}
+              top="10%"
+              fontSize="md"
+            >
+              {post.title}
+            </Box>
           </Link>
         </Box>
       )}
@@ -45,44 +60,40 @@ export default function BlogItem({ post, type }: BlogListItemProps) {
         display="flex"
         flexDirection="column"
         justifyContent="space-between"
-        minHeight={{ base: 0, md: type === 'list' ? 0 : '220px' }}
+        width={{ base: '100%', md: type === 'primary' && hasFeatureImage ? '40%' : '100%' }}
+        py={2}
       >
         <Box>
-          <div>
-            {post.published_at ? dayjs(post.published_at).format('MM-DD-YY') : 'Some Date'} |{' '}
-            {post.authors?.[0]?.name ?? 'Someone'}
-          </div>
+          <Text color="text2" fontSize="xs">
+            {post.published_at ? dayjs(post.published_at).format('MMMM DD, YYYY') : 'Some Date'}
+          </Text>
+
           <Link to={`/${post.slug}`}>
             <Text
-              fontSize={{ base: '3xl', md: type === 'primary' ? '4xl' : type === 'secondary' ? '3xl' : 'xl' }}
+              fontSize={{ base: '2xl', md: 'xl' }}
               fontWeight="bolder"
               textColor="primary"
-              sx={{ _hover: { color: 'secondary' } }}
+              sx={{ _hover: { color: 'tertiary2' } }}
             >
               {post.title}
             </Text>
           </Link>
+
           {type !== 'list' && (
-            <Text mt={1} textColor="text2">
-              {post.excerpt}...
+            <Text mt={1} textColor="text2" fontSize="sm">
+              {post.excerpt?.slice(0, 150).trim()}
+              {post.excerpt && post.excerpt.length > 150 ? '...' : ''}
+            </Text>
+          )}
+          {type === 'list' && (
+            <Text mt={1} textColor="text2" fontSize="sm">
+              {post.excerpt?.slice(0, 100).trim()}
+              {post.excerpt && post.excerpt.length > 100 ? '...' : ''}
             </Text>
           )}
         </Box>
         <Box display="flex" gap={2} pt="2">
-          {type !== 'list' &&
-            post?.tags?.[0] &&
-            post.tags.map((tag) => (
-              <Box
-                key={tag.id}
-                border="2px"
-                borderColor="primary"
-                px={2}
-                borderLeftRadius="full"
-                borderRightRadius="full"
-              >
-                {tag.name}
-              </Box>
-            ))}
+          {type !== 'list' && post?.tags?.[0] && <TopicsList topics={post.tags} />}
         </Box>
       </Box>
     </Box>
