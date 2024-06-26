@@ -50,7 +50,6 @@ export const seedSettings = async ({ user, prisma }: SecondarySeedParams): Promi
       key: 'comments_enabled',
       value: process.env.COMMENT_SETTINGS as string,
       type: 'string',
-      flags: 'PUBLIC',
       created_at: new Date(),
       updated_at: new Date(),
       created_by: firstUserId,
@@ -63,6 +62,30 @@ export const seedSettings = async ({ user, prisma }: SecondarySeedParams): Promi
       key: 'comments_enabled',
     },
   });
+
+  const rapidRead = process.env.RAPID_READ;
+
+  if (rapidRead) {
+    await prisma.settings.upsert({
+      create: {
+        id: ObjectID().toHexString(),
+        group: 'rapid_read',
+        key: 'rapid_read',
+        value: rapidRead as string,
+        type: 'string',
+        created_at: new Date(),
+        updated_at: new Date(),
+        created_by: firstUserId,
+      },
+      update: {
+        value: rapidRead as string,
+        updated_at: new Date(),
+      },
+      where: {
+        key: 'rapid_read',
+      },
+    });
+  }
 
   const hasMailgun = process.env.MAILGUN_API_KEY && process.env.MAILGUN_DOMAIN && process.env.MAILGUN_BASE_URL;
 
@@ -78,7 +101,6 @@ export const seedSettings = async ({ user, prisma }: SecondarySeedParams): Promi
       key: 'mailgun_api_key',
       value: process.env.MAILGUN_API_KEY as string,
       type: 'string',
-      flags: 'PUBLIC',
       created_at: new Date(),
       updated_at: new Date(),
       created_by: firstUserId,
@@ -99,7 +121,6 @@ export const seedSettings = async ({ user, prisma }: SecondarySeedParams): Promi
       key: 'mailgun_domain',
       value: process.env.MAILGUN_DOMAIN as string,
       type: 'string',
-      flags: 'PUBLIC',
       created_at: new Date(),
       updated_at: new Date(),
       created_by: firstUserId,
@@ -120,7 +141,6 @@ export const seedSettings = async ({ user, prisma }: SecondarySeedParams): Promi
       key: 'mailgun_base_url',
       value: process.env.MAILGUN_BASE_URL as string,
       type: 'string',
-      flags: 'PUBLIC',
       created_at: new Date(),
       updated_at: new Date(),
       created_by: firstUserId,

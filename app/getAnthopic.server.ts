@@ -1,5 +1,5 @@
 import Anthropic from '@anthropic-ai/sdk';
-import { env } from './env';
+import { env } from '~/env';
 
 let anthropic: Anthropic | undefined;
 

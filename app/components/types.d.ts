@@ -5,10 +5,10 @@ import { BasicMember } from '~/types/member';
 export type JsonCompatible<T> = T extends Date
   ? string
   : T extends Array<infer U>
-    ? JsonCompatibleArray<U>
-    : T extends object
-      ? JsonCompatibleObject<T>
-      : T;
+  ? JsonCompatibleArray<U>
+  : T extends object
+  ? JsonCompatibleObject<T>
+  : T;
 
 export interface JsonCompatibleArray<T> extends Array<JsonCompatible<T>> {}
 
@@ -39,6 +39,7 @@ export interface CommentInnerProps {
 export interface GetPostAndCommentsBase {
   comments: CommentWithRelations[];
   commentSettings: string;
+  showRapidRead: boolean;
 }
 
 export interface GetPreviewPostAndComments extends GetPostAndCommentsBase {

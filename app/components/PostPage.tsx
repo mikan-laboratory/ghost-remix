@@ -15,7 +15,7 @@ import { PageBase } from './PageBase';
 import { FaBolt, FaFileAlt } from 'react-icons/fa';
 import { useFetcher } from '@remix-run/react';
 
-export const PostPage = ({ post, comments, commentSettings }: JsonifiedPostPageProps): JSX.Element => {
+export const PostPage = ({ post, comments, commentSettings, showRapidRead }: JsonifiedPostPageProps): JSX.Element => {
   const authors = post.authors ?? [];
   const tags = post.tags ?? [];
 
@@ -122,7 +122,7 @@ export const PostPage = ({ post, comments, commentSettings }: JsonifiedPostPageP
           gap={2}
         >
           {tags.length > 0 && <TopicsList topics={tags} />}
-          {post.type !== 'page' && (
+          {showRapidRead && (
             <Button
               leftIcon={rapidRead ? <FaFileAlt color="white" /> : <FaBolt color="white" />}
               backgroundColor={rapidRead ? 'primary' : 'secondary'}

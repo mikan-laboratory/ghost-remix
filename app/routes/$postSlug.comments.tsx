@@ -1,7 +1,7 @@
 import { ActionFunction, json, redirect } from '@remix-run/node';
 import ObjectID from 'bson-objectid';
 import { authenticateCookie } from '~/authenticateCookie.server';
-import { getCommentSettings } from '~/content-api/getCommentSettings';
+import { getSettingsValue } from '~/content-api/getSettingsValue';
 import { prisma } from '~/db.server';
 
 export const action: ActionFunction = async ({ params, request }) => {
@@ -35,7 +35,7 @@ export const action: ActionFunction = async ({ params, request }) => {
       throw new Error('Unauthorized');
     }
 
-    const commentSettings = await getCommentSettings();
+    const commentSettings = await getSettingsValue({ key: 'comments_enabled', defaultValue: 'off' });
 
     if (commentSettings === 'off') {
       throw new Error('Comments are disabled');

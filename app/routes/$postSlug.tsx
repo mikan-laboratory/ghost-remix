@@ -34,7 +34,15 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 
 export default function Post() {
   const loaderData = useLoaderData<typeof loader>();
-  const { post, comments, commentSettings } = loaderData;
+  const { post, comments, commentSettings, showRapidRead } = loaderData;
 
-  return <PostPage key={post.id} post={post} comments={comments} commentSettings={commentSettings} />;
+  return (
+    <PostPage
+      key={post.id}
+      post={post}
+      comments={comments}
+      commentSettings={commentSettings}
+      showRapidRead={showRapidRead}
+    />
+  );
 }
