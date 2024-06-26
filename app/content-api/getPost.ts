@@ -1,29 +1,39 @@
 //External Library Imports
+import { prisma } from '~/db.server';
 import { ghostContentAPI } from './ghostContentAPI';
 import { GetPostOutput } from './types';
 
 export const getPost = async (slug: string): Promise<GetPostOutput> => {
-  try {
-    const post = await ghostContentAPI.posts.read(
+  const post = await prisma.posts.findFirstOrThrow({
+    where: {
+      slug,
+    },
+    select: {
+      type: true,
+    },
+  });
+
+  if (post.type === 'post') {
+    const apiPost = await ghostContentAPI.posts.read(
       {
-        slug: slug,
+        slug,
       },
       {
         include: ['authors', 'tags', 'count.posts'],
       },
     );
 
-    return { ...post, type: 'post' };
-  } catch (error) {}
+    return { ...apiPost, type: 'post' };
+  }
 
-  const page = await ghostContentAPI.pages.read(
+  const apiPage = await ghostContentAPI.pages.read(
     {
-      slug: slug,
+      slug,
     },
     {
       include: ['authors', 'tags', 'count.posts'],
     },
   );
 
-  return { ...page, type: 'page' };
+  return { ...apiPage, type: 'page' };
 };
