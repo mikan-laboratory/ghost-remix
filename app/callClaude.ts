@@ -1,6 +1,7 @@
-import { anthropic } from './anthropic.server';
+import { getAnthropic } from './getAnthopic.server';
 
 export const callClaude = async (text: string): Promise<string> => {
+  const anthropic = getAnthropic();
   const message = await anthropic.messages.create({
     max_tokens: 1024,
     messages: [
