@@ -21,6 +21,7 @@ import { env } from '~/env';
 import { setCookie } from '~/setCookie.server';
 import { GhostSignInErrorResponse, GhostSignInResponse, GhostAPIError } from './types';
 import Footer from '~/components/Footer';
+import { getSettingsValue } from '~/content-api/getSettingsValue';
 
 export const meta: MetaFunction = () => {
   return [
@@ -48,8 +49,16 @@ export const action = async ({
     const name = body.get('name');
     const emailType = body.get('emailType');
 
-    if (emailType === 'signup' && !name) {
-      return json({ success: true, error: 'Name is required for signup' }, { status: 400 });
+    if (emailType === 'signup') {
+      const memberSignupSetting = await getSettingsValue({ key: 'members_signup_access', defaultValue: 'none' });
+
+      if (memberSignupSetting !== 'all') {
+        return json({ success: false, error: 'Signup disabled' }, { status: 400 });
+      }
+
+      if (!name) {
+        return json({ success: false, error: 'Name is required for signup' }, { status: 400 });
+      }
     }
 
     const response = await axios.post<GhostSignInResponse>(

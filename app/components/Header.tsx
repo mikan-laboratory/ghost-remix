@@ -1,7 +1,7 @@
 //External Library Imports
 import { Box, Button, Flex, HStack, useMediaQuery, Image } from '@chakra-ui/react';
 import { Link, useNavigate, useRouteLoaderData, useParams, useLocation } from '@remix-run/react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { FaSignInAlt, FaSignOutAlt } from 'react-icons/fa';
 import { MdMenu } from 'react-icons/md';
 //Internal Module Imports
@@ -13,20 +13,51 @@ export default function Header() {
   const loaderData = useRouteLoaderData<RootLoaderData>('root');
   const params = useParams();
   const location = useLocation();
-
   const [viewMenu, setViewMenu] = useState(false);
+  const [isSmallScreen] = useMediaQuery('(max-width: 768px)');
 
   const member = loaderData?.member;
   const blogTitle = loaderData?.title ?? 'Blog';
+  const signupEnabled = loaderData?.signupEnabled ?? false;
   const pages = loaderData?.pages ?? [];
-
-  const [isSmallScreen] = useMediaQuery('(max-width: 768px)');
 
   const login = (): void => navigate('/members');
   const logout = async (): Promise<void> => {
     await fetch('/logout', { method: 'POST' });
     navigate('/', { replace: true });
   };
+
+  const signInComponent: JSX.Element | undefined = useMemo(() => {
+    if (member) {
+      return (
+        <Button onClick={logout} bg="primary" color="text1">
+          {isSmallScreen ? <FaSignOutAlt /> : 'Sign Out'}
+        </Button>
+      );
+    }
+
+    if (signupEnabled) {
+      return (
+        <Button
+          onClick={login}
+          bg="secondary"
+          color="background"
+          border="solid"
+          borderColor="secondary"
+          sx={{
+            ':hover': {
+              bg: 'background',
+              color: 'secondary',
+            },
+          }}
+        >
+          {isSmallScreen ? <FaSignInAlt /> : 'Sign In'}
+        </Button>
+      );
+    }
+
+    return undefined;
+  }, [member, signupEnabled, logout, isSmallScreen]);
 
   return (
     <Box w="100%" py={{ base: 2, md: 10 }} px="5">
@@ -90,27 +121,7 @@ export default function Header() {
               <MdMenu />
             </Button>
           )}
-          {member ? (
-            <Button onClick={logout} bg="primary" color="text1">
-              {isSmallScreen ? <FaSignOutAlt /> : 'Sign Out'}
-            </Button>
-          ) : (
-            <Button
-              onClick={login}
-              bg="secondary"
-              color="background"
-              border="solid"
-              borderColor="secondary"
-              sx={{
-                ':hover': {
-                  bg: 'background',
-                  color: 'secondary',
-                },
-              }}
-            >
-              {isSmallScreen ? <FaSignInAlt /> : 'Sign In'}
-            </Button>
-          )}
+          {signInComponent}
         </HStack>
       </Flex>
       <Box

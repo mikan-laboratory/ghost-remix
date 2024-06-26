@@ -7,6 +7,7 @@ export const seedSettings = async ({ user, prisma }: SecondarySeedParams): Promi
   await prisma.settings.upsert({
     create: {
       id: ObjectID().toHexString(),
+      group: 'site',
       key: 'title',
       value: process.env.SITE_TITLE as string,
       type: 'string',
@@ -27,6 +28,7 @@ export const seedSettings = async ({ user, prisma }: SecondarySeedParams): Promi
   await prisma.settings.upsert({
     create: {
       id: ObjectID().toHexString(),
+      group: 'site',
       key: 'description',
       value: process.env.SITE_DESCRIPTION as string,
       type: 'string',
@@ -47,6 +49,7 @@ export const seedSettings = async ({ user, prisma }: SecondarySeedParams): Promi
   await prisma.settings.upsert({
     create: {
       id: ObjectID().toHexString(),
+      group: 'members',
       key: 'comments_enabled',
       value: process.env.COMMENT_SETTINGS as string,
       type: 'string',
@@ -60,6 +63,26 @@ export const seedSettings = async ({ user, prisma }: SecondarySeedParams): Promi
     },
     where: {
       key: 'comments_enabled',
+    },
+  });
+
+  await prisma.settings.upsert({
+    create: {
+      id: ObjectID().toHexString(),
+      group: 'members',
+      key: 'members_signup_access',
+      value: process.env.MEMBERS_SIGNUP_ACCESS as string,
+      type: 'string',
+      created_at: new Date(),
+      updated_at: new Date(),
+      created_by: firstUserId,
+    },
+    update: {
+      value: process.env.MEMBERS_SIGNUP_ACCESS as string,
+      updated_at: new Date(),
+    },
+    where: {
+      key: 'members_signup_access',
     },
   });
 
