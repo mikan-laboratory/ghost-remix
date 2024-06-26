@@ -38,7 +38,16 @@ export default function Header({ hideSignup = false }: HeaderProps) {
 
     if (member) {
       return (
-        <Button onClick={logout} bg="primary" color="text1">
+        <Button
+          onClick={logout}
+          color="white"
+          backgroundColor={'tertiary'}
+          sx={{
+            ':hover': {
+              bg: 'tertiary2',
+            },
+          }}
+        >
           {isSmallScreen ? <FaSignOutAlt /> : 'Sign Out'}
         </Button>
       );
@@ -48,14 +57,11 @@ export default function Header({ hideSignup = false }: HeaderProps) {
       return (
         <Button
           onClick={login}
-          bg="secondary"
-          color="background"
-          border="solid"
-          borderColor="secondary"
+          color="white"
+          backgroundColor={'tertiary'}
           sx={{
             ':hover': {
-              bg: 'background',
-              color: 'secondary',
+              bg: 'tertiary2',
             },
           }}
         >

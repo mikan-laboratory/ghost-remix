@@ -169,29 +169,42 @@ export default function MembersPage() {
               />
             </FormControl>
             <Input type="hidden" name="emailType" value={formMode} />
-            <Button
-              type="submit"
-              size="lg"
-              w="100%"
-              bg="primary"
-              color="text3"
-              _hover={{ bg: 'primary2' }}
-              _active={{ bg: 'primary2' }}
+            <Box
+              display="flex"
+              flexDirection={{ base: 'column-reverse', sm: 'row' }}
+              justifyContent="space-between"
+              alignItems="center"
+              gap={{ base: 5, sm: 'unset' }}
             >
-              Sign {formMode === 'signin' ? 'In' : 'Up'}
-            </Button>
+              <Box>
+                <Text
+                  color="text1"
+                  onClick={() => setFormMode(formMode === 'signin' ? 'signup' : 'signin')}
+                  sx={{ _hover: { color: 'primary' } }}
+                  cursor="pointer"
+                  textAlign={{ base: 'center', sm: 'left' }}
+                >
+                  {formMode === 'signin'
+                    ? `Don't have an account? Sign up here!`
+                    : 'Already have an account? Sign in here!'}
+                </Text>
+              </Box>
+              <Button
+                color="white"
+                backgroundColor={'tertiary'}
+                sx={{
+                  ':hover': {
+                    bg: 'tertiary2',
+                  },
+                }}
+                w={{ base: '100%', sm: 'unset' }}
+                type="submit"
+              >
+                Sign {formMode === 'signin' ? 'In' : 'Up'}
+              </Button>
+            </Box>
           </Stack>
         </fetcher.Form>
-        <Box textAlign="center">
-          <Text
-            color="text1"
-            onClick={() => setFormMode(formMode === 'signin' ? 'signup' : 'signin')}
-            sx={{ _hover: { color: 'primary' } }}
-            cursor="pointer"
-          >
-            {formMode === 'signin' ? `Don't have an account? Sign up here!` : 'Already have an account? Sign in here!'}
-          </Text>
-        </Box>
       </VStack>
     </PageBase>
   );

@@ -65,7 +65,7 @@ export default function Index() {
               color="text3"
               backgroundColor="primary"
               padding={1}
-              sx={{ _hover: { color: 'primary', backgroundColor: 'background', borderColor: 'primary' } }}
+              sx={{ _hover: { backgroundColor: 'secondary' } }}
             >
               Load More
             </Box>

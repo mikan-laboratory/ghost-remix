@@ -132,10 +132,13 @@ export const PostPage = ({ post, comments, commentSettings, showRapidRead }: Jso
           {showRapidRead && (
             <Button
               leftIcon={rapidRead ? <FaFileAlt color="white" /> : <FaBolt color="white" />}
-              backgroundColor={rapidRead ? 'primary' : 'secondary'}
+              backgroundColor={rapidRead ? 'secondary' : 'tertiary2'}
               color="white"
-              _hover={{ bg: `${rapidRead ? 'primary' : 'secondary'}` }}
-              _active={{ bg: `${rapidRead ? 'primary' : 'secondary'}` }}
+              sx={{
+                ':hover': {
+                  bg: rapidRead ? 'primary2' : 'tertiary',
+                },
+              }}
               onClick={handleSummarize}
             >
               {rapidRead ? 'FullRead' : 'RapidRead'}
