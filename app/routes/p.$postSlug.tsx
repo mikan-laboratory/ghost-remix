@@ -33,5 +33,5 @@ export default function PreviewPost() {
   const loaderData = useLoaderData<typeof loader>();
   const { post, comments, commentSettings } = loaderData;
 
-  return <PostPage post={post} comments={comments} commentSettings={commentSettings} />;
+  return <PostPage key={post.id} post={post} comments={comments} commentSettings={commentSettings} />;
 }
