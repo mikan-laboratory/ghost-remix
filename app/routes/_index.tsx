@@ -42,18 +42,24 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 };
 
 export default function Index() {
-  const { heroPosts, bodyPosts } = useLoaderData<typeof loader>();
+  const { heroPosts, bodyPosts, postCount } = useLoaderData<typeof loader>();
 
-  const hasHeroPosts = heroPosts.length > 0;
-  const hasBodyPosts = bodyPosts.length > 0;
+  const heroPostCount = heroPosts.length;
+  const bodyPostCount = bodyPosts.length;
+  const homePostCount = heroPostCount + bodyPostCount;
+
+  const hasHeroPosts = heroPostCount > 0;
+  const hasBodyPosts = bodyPostCount > 0;
   const hasPosts = hasHeroPosts || hasBodyPosts;
+
+  const showLoadMode = postCount > homePostCount;
 
   return (
     <PageBase>
       {!hasPosts && <Box>No posts yet</Box>}
       {hasHeroPosts && <BlogHero posts={heroPosts} />}
       {hasBodyPosts && <BlogList posts={bodyPosts} />}
-      {hasBodyPosts && (
+      {showLoadMode && (
         <Box width="100%" display="flex" alignContent="center" justifyContent="center">
           <Link key="blog" to="/blog">
             <Box

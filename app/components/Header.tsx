@@ -97,7 +97,13 @@ export default function Header({ hideSignup = false }: HeaderProps) {
             {!isMediumScreen && pages.length > 0 && (
               <>
                 {pages.slice(0, 3).map((page) => (
-                  <NavItem destination={page.slug} title={page.title} pathname={location.pathname} type="main" />
+                  <NavItem
+                    key={page.slug}
+                    destination={page.slug}
+                    title={page.title}
+                    pathname={location.pathname}
+                    type="main"
+                  />
                 ))}
                 {pages.length > 3 && <NavDropdown pages={pages.slice(3)} params={params} />}
               </>

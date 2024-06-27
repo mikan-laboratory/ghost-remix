@@ -3,4 +3,5 @@ export type BasicBlogInfo = {
   description: string;
   signupEnabled: boolean;
   pages: { title: string; slug: string }[];
+  postCount: number;
 };
