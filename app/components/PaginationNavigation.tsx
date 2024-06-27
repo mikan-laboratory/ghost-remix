@@ -13,18 +13,15 @@ export default function PaginationNavigation({ currentPage, totalPages, onPageCh
       {currentPage > 1 && (
         <Button
           onClick={() => onPageChange(currentPage - 1)}
+          border="4px solid transparent"
           w={32}
-          bg="background"
-          color="primary"
-          border="solid"
-          borderColor="primary"
-          sx={{
-            ':hover': {
-              bg: 'primary',
-              borderColor: 'primary',
-              color: 'text1',
-            },
-          }}
+          px="8px"
+          borderRadius="md"
+          textAlign="center"
+          color="text3"
+          backgroundColor="primary"
+          padding={1}
+          sx={{ _hover: { backgroundColor: 'secondary' } }}
         >
           Previous
         </Button>
@@ -32,18 +29,15 @@ export default function PaginationNavigation({ currentPage, totalPages, onPageCh
       {currentPage < totalPages && (
         <Button
           onClick={() => onPageChange(currentPage + 1)}
+          border="4px solid transparent"
           w={32}
-          background="background"
-          textColor="secondary"
-          border="solid"
-          borderColor="secondary"
-          sx={{
-            ':hover': {
-              bg: 'secondary',
-              borderColor: 'secondary',
-              color: 'text1',
-            },
-          }}
+          px="8px"
+          borderRadius="md"
+          textAlign="center"
+          color="text3"
+          backgroundColor="primary"
+          padding={1}
+          sx={{ _hover: { backgroundColor: 'secondary' } }}
         >
           Next
         </Button>
