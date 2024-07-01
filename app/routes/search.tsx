@@ -1,13 +1,16 @@
 import { useState } from 'react';
 import { Box, Grid, Text } from '@chakra-ui/react';
-import type { MetaFunction, LoaderFunctionArgs } from '@remix-run/node';
-import { useLoaderData, useNavigate, useSearchParams } from '@remix-run/react';
+import type { MetaFunction, LoaderFunctionArgs, TypedResponse } from '@remix-run/node';
+import { json, useLoaderData, useNavigate, useSearchParams } from '@remix-run/react';
 import { PostOrPage } from '@tryghost/content-api';
 import { getSearchResults } from '~/content-api/getSearchResults';
 import PaginationNavigation from '~/components/PaginationNavigation';
 import BlogItem from '~/components/BlogItem';
 import { PostsAndPagination } from '~/content-api/types';
 import { PageBase } from '~/components/PageBase';
+import cachified from '@epic-web/cachified';
+import { FIVE_MINUTES, ONE_HOUR } from '~/constants';
+import { getCache } from '~/getCache.server';
 
 export const meta: MetaFunction = () => {
   return [
@@ -21,12 +24,23 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-export const loader = async ({ request }: LoaderFunctionArgs): Promise<PostsAndPagination> => {
+export const loader = async ({ request }: LoaderFunctionArgs): Promise<TypedResponse<PostsAndPagination>> => {
   const url = new URL(request.url);
   const page = parseInt(url.searchParams.get('page') || '1', 10);
   const query = url.searchParams.get('query') || '';
 
-  return getSearchResults(query, page, 5);
+  const noCache = request.headers.get('Cache-Control') === 'no-cache';
+
+  const data = await cachified({
+    key: `search:query-${query}:page-${page}`,
+    ttl: FIVE_MINUTES,
+    cache: getCache(),
+    getFreshValue: async () => getSearchResults(query, page, 5),
+    staleWhileRevalidate: ONE_HOUR,
+    forceFresh: noCache,
+  });
+
+  return json(data);
 };
 
 export default function Search() {
