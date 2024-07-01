@@ -39,6 +39,15 @@ if [ ! -f "$GHOST_DB_PATH" ]; then
     # Note: Additional initialization for ghost-local.db might be required here
 fi
 
+echo "Creating Nginx cache"
+mkdir -p /var/www/ghost/content/cache
+
+echo "Ensuring correct ownership for Nginx cache"
+chown -R www-data:www-data /var/www/ghost/content/cache
+
+echo "Ensuring correct permissions for Nginx cache"
+chmod 755 /var/www/ghost/content/cache
+
 # Start Nginx
 nginx &
 
