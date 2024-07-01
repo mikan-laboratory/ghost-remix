@@ -20,6 +20,7 @@ Check it out live at [Dev Design Daily](https://devdesigndaily.com).
   - [Theme](#theme)
   - [Favicon](#favicon)
 - [Pages](#pages)
+- [Caching Strategies](#caching-strategies)
 - [Test Docker Build](#test-docker-build)
 - [Deploy to Fly.io](#deploy-to-flyio)
   - [GitHub Actions](#github-actions)
@@ -154,6 +155,21 @@ You can replace the favicon.ico with your own in the public folder. If you are u
 ### Pages
 
 Published pages are automatically added to the menu in the navigation bar.
+
+## Caching Strategies
+
+GhostRemix employs a two-pronged caching approach to optimize performance:
+
+1. Remix Application Caching:
+
+   - Utilizes an in-memory cache for dynamic content.
+   - Handles its own cache invalidation for up-to-date data.
+
+2. Nginx Static Asset Caching (Production only):
+   - Caches static assets (images, CSS, JS) on disk.
+   - Reduces load on the Remix application for frequently accessed static content.
+
+This dual strategy ensures efficient handling of both dynamic content and static assets, significantly reducing strain on the Remix application server.
 
 ## Test Docker Build
 
