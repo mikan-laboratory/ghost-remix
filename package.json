@@ -37,7 +37,7 @@
     "date-fns": "^3.3.1",
     "dayjs": "^1.11.10",
     "dompurify": "^3.0.8",
-    "dotenv": "^16.4.4",
+    "dotenv": "^16.4.5",
     "esno": "^4.0.0",
     "framer-motion": "^11.2.4",
     "fs-extra": "^11.2.0",
