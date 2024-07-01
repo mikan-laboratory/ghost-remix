@@ -1,4 +1,4 @@
-import { Flex, Button, Box, Text, useToast, useUpdateEffect, Image } from '@chakra-ui/react';
+import { Flex, Box, Text, useToast, useUpdateEffect, Image, IconButton } from '@chakra-ui/react';
 import { useParams, useFetcher } from '@remix-run/react';
 import { formatDistanceToNow } from 'date-fns';
 import { FaTrash } from 'react-icons/fa';
@@ -32,7 +32,7 @@ export const CommentInner = ({ comment, member }: CommentInnerProps): JSX.Elemen
   };
 
   return (
-    <Flex alignItems="start" w="100%" backgroundColor="comment" py="12px" borderRadius="lg">
+    <Flex alignItems="start" w="100%" gap={2} backgroundColor="comment" py="12px" borderRadius="lg">
       <Image
         src="/logo.png"
         height={12}
@@ -62,9 +62,14 @@ export const CommentInner = ({ comment, member }: CommentInnerProps): JSX.Elemen
       </Flex>
       <Flex align="center">
         {comment.member_id === member?.id && (
-          <Button colorScheme="red" onClick={handleDeleteComment}>
-            <FaTrash />
-          </Button>
+          <IconButton
+            isRound={true}
+            size={'sm'}
+            aria-label="Delete"
+            icon={<FaTrash />}
+            colorScheme="red"
+            onClick={handleDeleteComment}
+          />
         )}
       </Flex>
     </Flex>
