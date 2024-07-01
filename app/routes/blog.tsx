@@ -6,21 +6,36 @@ import PaginationNavigation from '~/components/PaginationNavigation';
 import { getBasicBlogInfo } from '~/getBasicBlogInfo.server';
 import { PageBase } from '~/components/PageBase';
 import BlogList from '~/components/BlogList';
+import cachified from '@epic-web/cachified';
+import { FIVE_MINUTES, ONE_HOUR } from '~/constants';
+import { getCache } from '~/getCache.server';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  // Parse the current page from the URL query parameters
   const url = new URL(request.url);
   const page = parseInt(url.searchParams.get('page') || '1', 10);
 
-  // Fetch posts and pagination data for the current page
-  const bodyPosts = await getPostsAndPagination(page, 12);
-  const blogInfo = await getBasicBlogInfo();
+  const getData = async () => {
+    const [bodyPosts, blogInfo] = await Promise.all([getPostsAndPagination(page, 12), getBasicBlogInfo()]);
 
-  return json({
-    bodyPosts: bodyPosts.posts,
-    totalPages: bodyPosts.totalPages,
-    ...blogInfo,
+    return {
+      bodyPosts: bodyPosts.posts,
+      totalPages: bodyPosts.totalPages,
+      ...blogInfo,
+    };
+  };
+
+  const noCache = request.headers.get('Cache-Control') === 'no-cache';
+
+  const data = await cachified({
+    key: `blog:page-${page}`,
+    ttl: FIVE_MINUTES,
+    cache: getCache(),
+    getFreshValue: async () => getData(),
+    staleWhileRevalidate: ONE_HOUR,
+    forceFresh: noCache,
   });
+
+  return json(data);
 };
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {

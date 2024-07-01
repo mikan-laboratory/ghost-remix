@@ -7,24 +7,39 @@ import { getBasicBlogInfo } from '~/getBasicBlogInfo.server';
 import { PageBase } from '~/components/PageBase';
 import BlogHero from '~/components/BlogHero';
 import BlogList from '~/components/BlogList';
+import cachified from '@epic-web/cachified';
+import { FIVE_MINUTES, ONE_HOUR } from '~/constants';
+import { getCache } from '~/getCache.server';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  // Parse the current page from the URL query parameters
-  const url = new URL(request.url);
-  const page = parseInt(url.searchParams.get('page') || '1', 10);
+  const getData = async () => {
+    const [heroPosts, posts1, posts2, blogInfo] = await Promise.all([
+      getPostsAndPagination(1, 3),
+      getPostsAndPagination(2, 3),
+      getPostsAndPagination(2 + 1, 3),
+      getBasicBlogInfo(),
+    ]);
 
-  // Fetch posts and pagination data for the current page
-  const heroPosts = await getPostsAndPagination(1, 3);
-  const posts1 = await getPostsAndPagination(page * 2, 3);
-  const posts2 = await getPostsAndPagination(page * 2 + 1, 3);
-  const blogInfo = await getBasicBlogInfo();
+    return {
+      heroPosts: heroPosts.posts,
+      bodyPosts: [...posts1.posts, ...posts2.posts],
+      totalPages: heroPosts.totalPages,
+      ...blogInfo,
+    };
+  };
 
-  return json({
-    heroPosts: heroPosts.posts,
-    bodyPosts: [...posts1.posts, ...posts2.posts],
-    totalPages: heroPosts.totalPages,
-    ...blogInfo,
+  const noCache = request.headers.get('Cache-Control') === 'no-cache';
+
+  const data = await cachified({
+    key: 'home',
+    ttl: FIVE_MINUTES,
+    cache: getCache(),
+    getFreshValue: async () => getData(),
+    staleWhileRevalidate: ONE_HOUR,
+    forceFresh: noCache,
   });
+
+  return json(data);
 };
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {

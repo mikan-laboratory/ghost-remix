@@ -7,7 +7,7 @@ import { getCache } from '~/getCache.server';
 import { FIVE_MINUTES, ONE_HOUR } from '~/constants';
 import { getPostWithCommentsAndSettings } from '~/content-api/getPostWithCommentsAndSettings';
 
-export const loader = async ({ params }: LoaderFunctionArgs): Promise<TypedResponse<GetPostAndComments>> => {
+export const loader = async ({ request, params }: LoaderFunctionArgs): Promise<TypedResponse<GetPostAndComments>> => {
   try {
     const postSlug = params.postSlug;
 
@@ -15,12 +15,15 @@ export const loader = async ({ params }: LoaderFunctionArgs): Promise<TypedRespo
       throw new Error('Not Found');
     }
 
+    const noCache = request.headers.get('Cache-Control') === 'no-cache';
+
     const postData = await cachified({
       key: `post:${postSlug}`,
       ttl: FIVE_MINUTES,
       cache: getCache(),
       getFreshValue: async () => getPostWithCommentsAndSettings(postSlug),
       staleWhileRevalidate: ONE_HOUR,
+      forceFresh: noCache,
     });
 
     return json(postData);
