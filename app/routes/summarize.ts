@@ -1,6 +1,9 @@
+import cachified from '@epic-web/cachified';
 import { ActionFunction, TypedResponse, json } from '@remix-run/node';
 import { callClaude } from '~/callClaude';
 import { SummarizePostResponse } from '~/components/types';
+import { FIVE_MINUTES, ONE_HOUR } from '~/constants';
+import { getCache } from '~/getCache.server';
 
 export const action: ActionFunction = async ({ request }): Promise<TypedResponse<SummarizePostResponse>> => {
   try {
@@ -15,7 +18,18 @@ export const action: ActionFunction = async ({ request }): Promise<TypedResponse
       throw new Error('Empty post');
     }
 
-    const result = await callClaude(post as string);
+    const cacheKey = `summarize:${Buffer.from(post as string).toString('base64')}`;
+
+    const result = await cachified({
+      key: cacheKey,
+      ttl: FIVE_MINUTES,
+      staleWhileRevalidate: ONE_HOUR,
+      cache: getCache(),
+      getFreshValue: async () => {
+        const claudeResult = await callClaude(post as string);
+        return claudeResult;
+      },
+    });
 
     return json({ result });
   } catch (error) {
