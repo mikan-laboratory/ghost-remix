@@ -3,6 +3,8 @@ import { ActionFunction, TypedResponse, json } from '@remix-run/node';
 import { callClaude } from '~/callClaude';
 import { SummarizePostResponse } from '~/components/types';
 import { FIVE_MINUTES, ONE_HOUR } from '~/constants';
+import { getShowRapidRead } from '~/content-api/getShowRapidRead';
+import { prisma } from '~/db.server';
 import { getCache } from '~/getCache.server';
 
 export const action: ActionFunction = async ({ request }): Promise<TypedResponse<SummarizePostResponse>> => {
@@ -12,13 +14,37 @@ export const action: ActionFunction = async ({ request }): Promise<TypedResponse
     }
 
     const body = await request.formData();
-    const post = body.get('post');
+    const postId = body.get('postId') as string | undefined;
 
-    if (!post) {
+    if (!postId) {
+      throw new Error('Invalid request');
+    }
+
+    const post = await prisma.posts.findFirstOrThrow({
+      where: {
+        id: {
+          equals: postId,
+        },
+      },
+      select: {
+        type: true,
+        html: true,
+      },
+    });
+
+    const shouldShowRapidRead = getShowRapidRead(post.type);
+
+    if (!shouldShowRapidRead) {
+      throw new Error('Invalid request');
+    }
+
+    const postBody = post.html;
+
+    if (!postBody) {
       throw new Error('Empty post');
     }
 
-    const cacheKey = `summarize:${Buffer.from(post as string).toString('base64')}`;
+    const cacheKey = `summarize:${postId}`;
 
     const result = await cachified({
       key: cacheKey,
@@ -26,7 +52,7 @@ export const action: ActionFunction = async ({ request }): Promise<TypedResponse
       staleWhileRevalidate: ONE_HOUR,
       cache: getCache(),
       getFreshValue: async () => {
-        const claudeResult = await callClaude(post as string);
+        const claudeResult = await callClaude(postBody);
         return claudeResult;
       },
     });

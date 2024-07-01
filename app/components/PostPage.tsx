@@ -50,7 +50,7 @@ export const PostPage = ({ post, comments, commentSettings, showRapidRead }: Jso
 
     const form = new FormData();
 
-    form.set('post', post.html as string);
+    form.set('postId', post.id);
     fetcher.formData = form;
 
     fetcher.submit(form, {
