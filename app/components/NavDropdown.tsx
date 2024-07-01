@@ -1,4 +1,3 @@
-//External Library Imports
 import { Box, Menu, MenuButton, MenuList, MenuItem } from '@chakra-ui/react';
 import { FaChevronDown } from 'react-icons/fa';
 import { Link } from '@remix-run/react';

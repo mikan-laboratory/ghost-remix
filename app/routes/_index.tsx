@@ -1,9 +1,7 @@
-// External library imports
 import { Box } from '@chakra-ui/react';
 import { Link } from '@remix-run/react';
 import { MetaFunction, LoaderFunctionArgs, json } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
-// Internal module imports
 import { getPostsAndPagination } from '~/content-api/getPostsAndPagination';
 import { getBasicBlogInfo } from '~/getBasicBlogInfo.server';
 import { PageBase } from '~/components/PageBase';

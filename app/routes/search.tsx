@@ -1,10 +1,8 @@
-// External library imports
 import { useState } from 'react';
 import { Box, Grid, Text } from '@chakra-ui/react';
 import type { MetaFunction, LoaderFunctionArgs } from '@remix-run/node';
 import { useLoaderData, useNavigate, useSearchParams } from '@remix-run/react';
 import { PostOrPage } from '@tryghost/content-api';
-// Internal module imports
 import { getSearchResults } from '~/content-api/getSearchResults';
 import PaginationNavigation from '~/components/PaginationNavigation';
 import BlogItem from '~/components/BlogItem';

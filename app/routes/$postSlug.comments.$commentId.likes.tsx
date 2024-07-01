@@ -2,6 +2,7 @@ import { ActionFunction, redirect, json } from '@remix-run/node';
 import { authenticateCookie } from '~/authenticateCookie.server';
 import { likeComment } from './likeComment';
 import { unlikeComment } from './unlikeComment';
+import { invalidateCache } from '~/invalidateCache.server';
 
 export const action: ActionFunction = async ({ request, params }) => {
   try {
@@ -30,6 +31,8 @@ export const action: ActionFunction = async ({ request, params }) => {
       default:
         throw new Error('Invalid request');
     }
+
+    invalidateCache(`post:${postSlug}`);
 
     return redirect(`/${postSlug}`);
   } catch (error) {

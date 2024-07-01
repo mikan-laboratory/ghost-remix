@@ -1,10 +1,11 @@
-//External Library Imports
 import { useLoaderData } from '@remix-run/react';
 import { json, MetaFunction, LoaderFunctionArgs, TypedResponse } from '@remix-run/node';
-// Internal Module Imports
 import { PostPage } from '~/components/PostPage';
-import { getPostCommentsAndCommentSettings } from '~/content-api/getPostAndComments';
+import { cachified } from '@epic-web/cachified';
 import { GetPostAndComments } from '~/components/types';
+import { getCache } from '~/getCache.server';
+import { FIVE_MINUTES, ONE_HOUR } from '~/constants';
+import { getPostWithCommentsAndSettings } from '~/content-api/getPostWithCommentsAndSettings';
 
 export const loader = async ({ params }: LoaderFunctionArgs): Promise<TypedResponse<GetPostAndComments>> => {
   try {
@@ -14,9 +15,15 @@ export const loader = async ({ params }: LoaderFunctionArgs): Promise<TypedRespo
       throw new Error('Not Found');
     }
 
-    const getPostResult = await getPostCommentsAndCommentSettings(postSlug);
+    const postData = await cachified({
+      key: `post:${postSlug}`,
+      ttl: FIVE_MINUTES,
+      cache: getCache(),
+      getFreshValue: async () => getPostWithCommentsAndSettings(postSlug),
+      staleWhileRevalidate: ONE_HOUR,
+    });
 
-    return json(getPostResult);
+    return json(postData);
   } catch (error) {
     console.log(error);
 

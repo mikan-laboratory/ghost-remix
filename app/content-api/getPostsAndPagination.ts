@@ -1,4 +1,3 @@
-//External Library Imports
 import { ghostContentAPI } from './ghostContentAPI';
 import { PostsAndPagination } from './types';
 

@@ -3,6 +3,7 @@ import ObjectID from 'bson-objectid';
 import { authenticateCookie } from '~/authenticateCookie.server';
 import { getSettingsValue } from '~/content-api/getSettingsValue';
 import { prisma } from '~/db.server';
+import { invalidateCache } from '~/invalidateCache.server';
 
 export const action: ActionFunction = async ({ params, request }) => {
   try {
@@ -62,6 +63,8 @@ export const action: ActionFunction = async ({ params, request }) => {
         ...(typeof parentId === 'string' && { parent_id: parentId }),
       },
     });
+
+    invalidateCache(`post:${postSlug}`);
 
     return redirect(`/${postSlug}`);
   } catch (error) {

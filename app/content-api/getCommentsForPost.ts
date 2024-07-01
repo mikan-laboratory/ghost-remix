@@ -1,4 +1,3 @@
-//External Library Imports
 import { CommentWithRelations } from '~/components/types';
 import { prisma } from '~/db.server';
 

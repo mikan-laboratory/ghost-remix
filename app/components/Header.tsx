@@ -1,10 +1,8 @@
-//External Library Imports
 import { Box, Button, Flex, HStack, useMediaQuery, Image, Wrap } from '@chakra-ui/react';
 import { Link, useNavigate, useRouteLoaderData, useParams, useLocation } from '@remix-run/react';
 import { useMemo, useState } from 'react';
 import { FaSignInAlt, FaSignOutAlt } from 'react-icons/fa';
 import { MdMenu } from 'react-icons/md';
-//Internal Module Imports
 import SearchBar from './SearchBar';
 import { RootLoaderData } from '~/types/root';
 import NavItem from './NavItem';

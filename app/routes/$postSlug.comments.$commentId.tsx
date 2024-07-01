@@ -1,6 +1,7 @@
 import { ActionFunction, json, redirect } from '@remix-run/node';
 import { authenticateCookie } from '~/authenticateCookie.server';
 import { prisma } from '~/db.server';
+import { invalidateCache } from '~/invalidateCache.server';
 
 export const action: ActionFunction = async ({ request, params }) => {
   try {
@@ -24,6 +25,8 @@ export const action: ActionFunction = async ({ request, params }) => {
     await prisma.comments.delete({
       where: { id: commentId, member_id: maybeMember.member.id },
     });
+
+    invalidateCache(`post:${postSlug}`);
 
     return redirect(`/${postSlug}`);
   } catch (error) {

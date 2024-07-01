@@ -1,4 +1,3 @@
-//External Library Imports
 import { prisma } from '~/db.server';
 import { ghostContentAPI } from './ghostContentAPI';
 import { GetPostOutput } from './types';

@@ -1,4 +1,3 @@
-//External Library Imports
 import { ActionFunction, TypedResponse, json } from '@remix-run/node';
 
 export const action: ActionFunction = async (): Promise<

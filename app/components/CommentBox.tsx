@@ -1,6 +1,4 @@
-//External Library Imports
 import { Button, Box, Input, Textarea, useToast, useUpdateEffect, background } from '@chakra-ui/react';
-//Internal Module Imports
 import { BasicMember } from '~/types/member';
 import { useFetcher, useNavigate, useParams } from '@remix-run/react';
 

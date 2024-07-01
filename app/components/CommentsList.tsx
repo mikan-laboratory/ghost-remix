@@ -1,7 +1,5 @@
-//External Library Imports
 import { Box, Text } from '@chakra-ui/react';
 import { useRouteLoaderData } from '@remix-run/react';
-//Internal Module Imports
 import Comment from './Comment';
 import CommentBox from './CommentBox';
 import { BasicMember } from '~/types/member';

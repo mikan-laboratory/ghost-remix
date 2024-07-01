@@ -1,4 +1,3 @@
-//External Library Imports
 import {
   Box,
   Button,
@@ -11,7 +10,6 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { useFetcher, useParams } from '@remix-run/react';
-//Internal Module Imports
 import { BasicMember } from '~/types/member';
 import { JsonifiedPostPageProps } from './types';
 import { useState, useCallback } from 'react';

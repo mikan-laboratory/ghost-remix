@@ -1,8 +1,6 @@
-// External library imports
 import { useState, useEffect } from 'react';
 import { MetaFunction, LoaderFunctionArgs, json } from '@remix-run/node';
 import { useLoaderData, useNavigate } from '@remix-run/react';
-// Internal module imports
 import { getPostsAndPagination } from '~/content-api/getPostsAndPagination';
 import PaginationNavigation from '~/components/PaginationNavigation';
 import { getBasicBlogInfo } from '~/getBasicBlogInfo.server';

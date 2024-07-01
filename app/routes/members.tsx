@@ -1,11 +1,9 @@
-//External Library Imports
 import { Box, Button, FormControl, FormLabel, Input, Stack, Text, useUpdateEffect, VStack } from '@chakra-ui/react';
 import { json, MetaFunction, ActionFunctionArgs, TypedResponse, LoaderFunctionArgs } from '@remix-run/node';
-import { useFetcher, useLoaderData, Link } from '@remix-run/react';
+import { useFetcher, useLoaderData } from '@remix-run/react';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useToast } from '@chakra-ui/react';
-//Internal Module Imports
 import { env } from '~/env';
 import { setCookie } from '~/setCookie.server';
 import { GhostSignInErrorResponse, GhostSignInResponse, GhostAPIError } from './types';

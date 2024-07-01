@@ -1,4 +1,3 @@
-//External Library Imports
 import { Link, Box } from '@chakra-ui/react';
 import { Tag } from '@tryghost/content-api';
 
