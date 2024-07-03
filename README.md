@@ -217,8 +217,8 @@ flyctl secrets set GHOST_CONTENT_API_KEY="my-api-key-value" \
    OWNER_SLUG="admin" \
    BLOG_URL="https://mysite.com" \
    COMMENT_SETTINGS="all" \
-   MEMBERS_SIGNUP_ACCESS="none" \
-   RAPID_READ="all" \
+   MEMBERS_SIGNUP_ACCESS="all" \
+   RAPID_READ="post" \
    ANTHROPIC_API_KEY="somekey"
 ```
 
