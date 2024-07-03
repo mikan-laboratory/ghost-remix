@@ -167,7 +167,7 @@ GhostRemix employs a two-pronged caching approach to optimize performance:
 
 2. Nginx Static Asset Handling:
 
-   - Serves static assets (images, CSS, JS) directly from the filesystem.
+   - Serves static assets directly from the filesystem.
    - Bypasses the Ghost server for serving images, leveraging Nginx's efficiency in handling static files.
 
 This dual strategy ensures efficient handling of both dynamic content and static assets, significantly reducing strain on the Remix application server.
