@@ -1,4 +1,4 @@
-import { Heading, Flex, Box, Image, Button, useToast, useUpdateEffect, Spinner } from '@chakra-ui/react';
+import { Heading, Flex, Box, Image, Button, useToast, useUpdateEffect, Spinner, Container } from '@chakra-ui/react';
 import AuthorsList from './AuthorsList';
 import CommentsList from './CommentsList';
 import PostContent from './PostContent';
@@ -86,81 +86,83 @@ export const PostPage = ({ post, comments, commentSettings, showRapidRead }: Jso
 
   return (
     <PageBase>
-      <Box pb={5} px={5}>
-        {post.feature_image && (
-          <Box
-            position="relative"
-            width="100%"
-            height="0"
-            paddingBottom={{ base: '70%', md: '40%' }}
-            overflow="hidden"
-            mt={5}
-            borderRadius="xl"
-          >
-            <Image
-              src={parseFeatureImage(post.feature_image)}
-              alt={(post as GetPostOutput).feature_image_alt ?? 'image'}
-              position="absolute"
-              top="50%"
-              left="50%"
-              transform="translate(-50%, -50%)"
-              minWidth="100%"
-              minHeight="100%"
-              objectFit="cover"
-            />
-          </Box>
-        )}
-        <Flex flexDirection={'column'} alignContent={'flex-start'} gap={2}>
-          <Flex flexDirection={'row'} gap={6} mt={{ base: 2, md: 5 }} color="text2" fontSize="sm">
-            {post.published_at ? dayjs(post.published_at).format('MMMM DD, YYYY') : 'Some Date'}
-            <AuthorsList authors={authors} />
-          </Flex>
-          <Heading
-            fontSize={{ base: 40, md: 40, lg: 50 }}
-            textAlign={{ base: 'center', md: 'left' }}
-            textColor="primary"
-          >
-            {post.title}
-          </Heading>
-        </Flex>
-        <Flex
-          justifyContent={'right'}
-          alignItems={{ base: 'left', md: 'center' }}
-          flexDirection={{ base: 'column', md: 'row' }}
-          gap={2}
-        >
-          {showRapidRead && (
-            <Button
-              leftIcon={rapidRead ? <FaFileAlt color="white" /> : <FaBolt color="white" />}
-              backgroundColor={rapidRead ? 'secondary' : 'tertiary2'}
-              color="white"
-              sx={{
-                ':hover': {
-                  bg: rapidRead ? 'primary2' : 'tertiary',
-                },
-              }}
-              onClick={handleSummarize}
+      <Container maxW="container.lg" px={{ base: 5, md: 0 }}>
+        <Box pb={5} px={5}>
+          {post.feature_image && (
+            <Box
+              position="relative"
+              width="100%"
+              height="0"
+              paddingBottom={{ base: '70%', md: '40%' }}
+              overflow="hidden"
+              mt={5}
+              borderRadius="xl"
             >
-              {rapidRead ? 'FullRead' : 'RapidRead'}
-            </Button>
+              <Image
+                src={parseFeatureImage(post.feature_image)}
+                alt={(post as GetPostOutput).feature_image_alt ?? 'image'}
+                position="absolute"
+                top="50%"
+                left="50%"
+                transform="translate(-50%, -50%)"
+                minWidth="100%"
+                minHeight="100%"
+                objectFit="cover"
+              />
+            </Box>
           )}
-        </Flex>
-      </Box>
-      <Box py={5} px={5} textColor="text1">
-        {['submitting', 'loading'].includes(fetcher.state) ? (
-          <Box display="flex" justifyContent="center" alignItems="center">
-            <Spinner thickness="4px" speed="0.65s" emptyColor="gray.200" color="blue.500" size="xl" />
-          </Box>
-        ) : (
-          <PostContent html={postContent as string} />
-        )}
-        {tags.length > 0 && <TopicsList topics={tags} />}
-      </Box>
-      {commentsOn && (
-        <Box>
-          <CommentsList comments={comments} />
+          <Flex flexDirection={'column'} alignContent={'flex-start'} gap={2}>
+            <Flex flexDirection={'row'} gap={6} mt={{ base: 2, md: 5 }} color="text2" fontSize="sm">
+              {post.published_at ? dayjs(post.published_at).format('MMMM DD, YYYY') : 'Some Date'}
+              <AuthorsList authors={authors} />
+            </Flex>
+            <Heading
+              fontSize={{ base: 40, md: 40, lg: 50 }}
+              textAlign={{ base: 'center', md: 'left' }}
+              textColor="primary"
+            >
+              {post.title}
+            </Heading>
+          </Flex>
+          <Flex
+            justifyContent={'right'}
+            alignItems={{ base: 'left', md: 'center' }}
+            flexDirection={{ base: 'column', md: 'row' }}
+            gap={2}
+          >
+            {showRapidRead && (
+              <Button
+                leftIcon={rapidRead ? <FaFileAlt color="white" /> : <FaBolt color="white" />}
+                backgroundColor={rapidRead ? 'secondary' : 'tertiary2'}
+                color="white"
+                sx={{
+                  ':hover': {
+                    bg: rapidRead ? 'primary2' : 'tertiary',
+                  },
+                }}
+                onClick={handleSummarize}
+              >
+                {rapidRead ? 'FullRead' : 'RapidRead'}
+              </Button>
+            )}
+          </Flex>
         </Box>
-      )}
+        <Box py={5} textColor="text1">
+          {['submitting', 'loading'].includes(fetcher.state) ? (
+            <Box display="flex" justifyContent="center" alignItems="center">
+              <Spinner thickness="4px" speed="0.65s" emptyColor="gray.200" color="blue.500" size="xl" />
+            </Box>
+          ) : (
+            <PostContent html={postContent as string} />
+          )}
+          {tags.length > 0 && <TopicsList topics={tags} />}
+        </Box>
+        {commentsOn && (
+          <Box>
+            <CommentsList comments={comments} />
+          </Box>
+        )}
+      </Container>
     </PageBase>
   );
 };
