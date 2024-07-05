@@ -114,9 +114,14 @@ export default function Header({ hideSignup = false }: HeaderProps) {
           {pages.length > 0 && (
             <Button
               display={{ base: 'unset', md: 'none' }}
-              color={!viewMenu ? 'white' : 'primary'}
-              backgroundColor={viewMenu ? 'white' : 'primary'}
+              color={viewMenu ? 'primary' : 'white'}
+              backgroundColor={viewMenu ? 'secondary' : 'primary'}
               onClick={() => setViewMenu(!viewMenu)}
+              sx={{
+                ':hover': {
+                  bg: 'secondary',
+                },
+              }}
             >
               <MdMenu />
             </Button>
