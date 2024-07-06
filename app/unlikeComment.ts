@@ -1,5 +1,5 @@
 import { prisma } from '~/db.server';
-import { LikeCommentParams } from './types';
+import { LikeCommentParams } from './routes/types';
 
 export const unlikeComment = async ({ commentId, member }: LikeCommentParams): Promise<void> => {
   await prisma.comment_likes.deleteMany({

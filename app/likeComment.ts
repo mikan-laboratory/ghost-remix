@@ -1,5 +1,5 @@
 import { prisma } from '~/db.server';
-import { LikeCommentParams } from './types';
+import { LikeCommentParams } from './routes/types';
 
 export const likeComment = async ({ commentId, member }: LikeCommentParams): Promise<void> => {
   const like = await prisma.comment_likes.findFirst({
