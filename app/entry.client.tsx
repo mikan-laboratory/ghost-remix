@@ -1,4 +1,3 @@
-// entry.client.tsx
 import React, { useState } from 'react';
 import { CacheProvider } from '@emotion/react';
 import { RemixBrowser } from '@remix-run/react';

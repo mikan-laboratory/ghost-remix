@@ -1,9 +1,8 @@
-// root.tsx
 import React, { useContext, useEffect } from 'react';
 import { withEmotionCache } from '@emotion/react';
 import { ChakraProvider } from '@chakra-ui/react';
-import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
-import { LinksFunction, json } from '@remix-run/node'; // Depends on the runtime you choose
+import { Links, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
+import { LinksFunction, json } from '@remix-run/node';
 import theme from './theme/theme';
 import { LoaderFunction } from '@remix-run/node';
 import { ServerStyleContext, ClientStyleContext } from './context';
@@ -65,7 +64,6 @@ const Document = withEmotionCache(({ children }: DocumentProps, emotionCache) =>
         {children}
         <ScrollRestoration />
         <Scripts />
-        <LiveReload />
       </body>
     </html>
   );
