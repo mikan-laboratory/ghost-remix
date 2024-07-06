@@ -77,7 +77,7 @@ export default function Header({ hideSignup = false }: HeaderProps) {
         <Box display="flex" flexDirection="row" alignItems="center" justifyContent="space-between" minWidth="50%">
           <Link to="/">
             <Flex display="flex" alignItems="center">
-              <Image src="/logo.png" height={14} width={14} />
+              <Image src="/logo.webp" height={14} width={14} />
               <Box
                 width={32}
                 fontSize={blogTitle.length > 7 ? 'larger' : 'xx-large'}

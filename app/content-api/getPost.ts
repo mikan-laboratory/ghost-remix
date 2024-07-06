@@ -1,38 +1,50 @@
 import { prisma } from '~/db.server';
-import { ghostContentAPI } from './ghostContentAPI';
 import { GetPostOutput } from './types';
+import { Prisma } from '@prisma/client';
 
-export const getPost = async (slug: string): Promise<GetPostOutput> => {
+export const getPost = async (where: Prisma.postsWhereInput): Promise<GetPostOutput> => {
   const post = await prisma.posts.findFirstOrThrow({
-    where: {
-      slug,
-    },
-    select: {
-      type: true,
+    where,
+    include: {
+      posts_tags: true,
+      posts_authors: true,
     },
   });
 
-  if (post.type === 'post') {
-    const apiPost = await ghostContentAPI.posts.read(
-      {
-        slug,
-      },
-      {
-        include: ['authors', 'tags', 'count.posts'],
-      },
-    );
-
-    return { ...apiPost, type: 'post' };
+  if (!post) {
+    throw new Error('Post not found');
   }
 
-  const apiPage = await ghostContentAPI.pages.read(
-    {
-      slug,
-    },
-    {
-      include: ['authors', 'tags', 'count.posts'],
-    },
-  );
+  const [authors, tags] = await Promise.all([
+    prisma.users.findMany({
+      where: {
+        id: {
+          in: post.posts_authors.map((author) => author.author_id),
+        },
+      },
+      select: {
+        name: true,
+        slug: true,
+        id: true,
+      },
+    }),
+    prisma.tags.findMany({
+      where: {
+        id: {
+          in: post.posts_tags.map((tag) => tag.tag_id),
+        },
+      },
+      select: {
+        name: true,
+        slug: true,
+        id: true,
+      },
+    }),
+  ]);
 
-  return { ...apiPage, type: 'page' };
+  return {
+    ...post,
+    tags,
+    authors,
+  };
 };

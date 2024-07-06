@@ -13,17 +13,14 @@ import { getCache } from '~/getCache.server';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const getData = async () => {
-    const [heroPosts, posts1, posts2, blogInfo] = await Promise.all([
-      getPostsAndPagination(1, 3),
-      getPostsAndPagination(2, 3),
-      getPostsAndPagination(2 + 1, 3),
-      getBasicBlogInfo(),
-    ]);
+    const [homePosts, blogInfo] = await Promise.all([getPostsAndPagination(1, 9), getBasicBlogInfo()]);
+
+    const allPosts = homePosts.posts;
 
     return {
-      heroPosts: heroPosts.posts,
-      bodyPosts: [...posts1.posts, ...posts2.posts],
-      totalPages: heroPosts.totalPages,
+      heroPosts: allPosts.slice(0, 3),
+      bodyPosts: allPosts.slice(3, 9),
+      totalPages: homePosts.totalPages,
       ...blogInfo,
     };
   };

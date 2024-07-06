@@ -11,7 +11,7 @@ export default function Footer() {
         px={{ base: 4, sm: 6 }}
       >
         <Flex alignItems="center" color="text3" mb={{ base: 2, sm: 0 }}>
-          <Image src="/logo.png" height={8} width={8} mr={2} />
+          <Image src="/logo.webp" height={8} width={8} mr={2} />
           <Text fontSize="sm">© 2024</Text>
         </Flex>
 
