@@ -1,19 +1,40 @@
-import { ghostContentAPI } from './ghostContentAPI';
+import { prisma } from '~/db.server';
 import { PostsAndPagination } from './types';
+import { PostsOrPages } from '@tryghost/content-api';
 
 export const getPostsAndPagination = async (page = 1, limit = 5): Promise<PostsAndPagination> => {
-  const posts = await ghostContentAPI.posts.browse({
-    limit: limit,
-    page: page,
-    include: ['authors', 'tags'],
-    fields: 'published_at,id,feature_image,feature_image_alt,title,excerpt,slug',
-  });
-
-  const { pages: totalPages, total: totalPosts } = posts.meta.pagination;
+  const [posts, totalPosts] = await Promise.all([
+    prisma.posts.findMany({
+      skip: page - 1,
+      take: limit,
+      where: {
+        type: 'post',
+        status: 'published',
+      },
+      select: {
+        title: true,
+        feature_image: true,
+        slug: true,
+        published_at: true,
+      },
+      orderBy: {
+        published_at: 'desc',
+      },
+    }),
+    prisma.posts.aggregate({
+      where: {
+        type: 'post',
+        status: 'published',
+      },
+      _count: {
+        _all: true,
+      },
+    }),
+  ]);
 
   return {
-    posts,
-    totalPages,
-    totalPosts,
+    posts: posts as PostsOrPages,
+    totalPages: Math.ceil(totalPosts._count._all / limit),
+    totalPosts: totalPosts._count._all,
   };
 };

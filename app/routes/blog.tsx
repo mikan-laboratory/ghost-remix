@@ -56,7 +56,6 @@ export default function Blog() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    //Find and set current page of posts based on URL params
     const url = new URL(window.location.href);
     const initialPage = parseInt(url.searchParams.get('page') || '1', 10);
     setCurrentPage(initialPage);

@@ -15,18 +15,11 @@ import { PageBase } from './PageBase';
 import { FaBolt, FaFileAlt } from 'react-icons/fa';
 import { useFetcher } from '@remix-run/react';
 import dayjs from 'dayjs';
+import { parseFeatureImage } from '~/parseFeatureImage';
 
 export const PostPage = ({ post, comments, commentSettings, showRapidRead }: JsonifiedPostPageProps): JSX.Element => {
   const authors = post.authors ?? [];
   const tags = post.tags ?? [];
-
-  const parseFeatureImage = (featureImageURL: string): string => {
-    if (featureImageURL.includes('__GHOST_URL__')) {
-      return featureImageURL.replace('__GHOST_URL__', '');
-    }
-
-    return featureImageURL;
-  };
 
   const fetcher = useFetcher<SummarizePostResponse>();
   const toast = useToast();

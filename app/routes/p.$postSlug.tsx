@@ -1,11 +1,11 @@
 import { json, MetaFunction, LoaderFunctionArgs, TypedResponse } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import { PostPage } from '~/components/PostPage';
-import { GetPreviewPostAndComments } from '~/components/types';
-import { getPreviewPost } from '~/content-api/getPreviewPost';
+import { GetPostAndComments } from '~/components/types';
+import { getPost } from '~/content-api/getPost';
 import { getShowRapidRead } from '~/content-api/getShowRapidRead';
 
-export const loader = async ({ params }: LoaderFunctionArgs): Promise<TypedResponse<GetPreviewPostAndComments>> => {
+export const loader = async ({ params }: LoaderFunctionArgs): Promise<TypedResponse<GetPostAndComments>> => {
   try {
     const postSlug = params.postSlug;
 
@@ -13,7 +13,10 @@ export const loader = async ({ params }: LoaderFunctionArgs): Promise<TypedRespo
       throw new Error('Post not found');
     }
 
-    const post = await getPreviewPost(postSlug);
+    const post = await getPost({
+      uuid: postSlug,
+      status: 'draft',
+    });
     const showRapidRead = await getShowRapidRead(post.type);
 
     return json({ post, comments: [], commentSettings: 'off', showRapidRead });

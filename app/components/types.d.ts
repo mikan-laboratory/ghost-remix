@@ -36,21 +36,14 @@ export interface CommentInnerProps {
   member: BasicMember | null;
 }
 
-export interface GetPostAndCommentsBase {
+export interface GetPostAndComments {
+  post: GetPostOutput;
   comments: CommentWithRelations[];
   commentSettings: string;
   showRapidRead: boolean;
 }
 
-export interface GetPreviewPostAndComments extends GetPostAndCommentsBase {
-  post: GetPreviewPostOutput;
-}
-
-export interface GetPostAndComments extends GetPostAndCommentsBase {
-  post: GetPostOutput;
-}
-
-export type PostPageProps = GetPostAndComments | GetPreviewPostAndComments;
+export type PostPageProps = GetPostAndComments;
 
 export type JsonifiedPostPageProps = JsonCompatible<PostPageProps>;
 
