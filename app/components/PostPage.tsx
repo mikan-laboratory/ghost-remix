@@ -32,7 +32,6 @@ export const PostPage = ({ post, comments, commentSettings, showRapidRead }: Jso
   const toast = useToast();
 
   const [rapidRead, setRapidRead] = useState(false);
-  const [summary, setSummary] = useState<string | undefined>();
   const [postContent, setPostContent] = useState(post.html);
 
   const handleSummarize = useCallback((): void => {
@@ -41,6 +40,8 @@ export const PostPage = ({ post, comments, commentSettings, showRapidRead }: Jso
       setPostContent(post.html);
       return;
     }
+
+    const summary = localStorage.getItem(post.id);
 
     if (!rapidRead && summary) {
       setRapidRead(true);
@@ -57,11 +58,11 @@ export const PostPage = ({ post, comments, commentSettings, showRapidRead }: Jso
       method: 'POST',
       action: `/summarize`,
     });
-  }, [summary, rapidRead]);
+  }, [rapidRead]);
 
   useUpdateEffect(() => {
     if ((fetcher.data as SummarizePostSuccessResponse)?.result) {
-      setSummary((fetcher.data as SummarizePostSuccessResponse).result);
+      localStorage.setItem(post.id, (fetcher.data as SummarizePostSuccessResponse).result);
       setPostContent((fetcher.data as SummarizePostSuccessResponse).result);
       setRapidRead(true);
     }
