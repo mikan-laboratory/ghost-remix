@@ -18,31 +18,18 @@ CONFIG_PATH="/var/www/ghost/config.development.json"
 echo "Configuring Ghost with environment variables..."
 envsubst < "$CONFIG_TEMPLATE_PATH" > "$CONFIG_PATH"
 
-echo "Ensuring correct ownership for /var/www/ghost and subdirectories:"
-chown -R ghostuser:ghostuser /var/www/ghost
-
-echo "Setting correct permissions for /var/www/ghost/content:"
-chmod -R 755 /var/www/ghost/content
-
-# Ensure the directory for ghost-local.db exists
-echo "Ensuring /var/www/ghost/content/data directory exists..."
-mkdir -p /var/www/ghost/content/data
-chown ghostuser:ghostuser /var/www/ghost/content/data
-
 # Check if ghost-local.db exists, create if not
 echo "Checking for ghost-local.db..."
 GHOST_DB_PATH="/var/www/ghost/content/data/ghost-local.db"
 if [ ! -f "$GHOST_DB_PATH" ]; then
     echo "ghost-local.db does not exist, creating..."
-    touch "$GHOST_DB_PATH"
-    chown ghostuser:ghostuser "$GHOST_DB_PATH"
-    # Note: Additional initialization for ghost-local.db might be required here
+    su ghostuser -c "touch $GHOST_DB_PATH"
 fi
 
 # Start Nginx
 nginx &
 
-su ghostuser -c 'cd /var/www/ghost && ghost config url $BLOG_URL && ghost start'
+su ghostuser -c "cd /var/www/ghost && ghost config url $BLOG_URL && ghost start"
 
 # Prisma migrations
 npx prisma migrate resolve --applied 0_init
