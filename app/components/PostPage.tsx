@@ -4,7 +4,6 @@ import CommentsList from './CommentsList';
 import PostContent from './PostContent';
 import TopicsList from './TopicsList';
 import { useCallback, useMemo, useState } from 'react';
-import { GetPostOutput } from '~/content-api/types';
 import {
   JsonifiedPostPageProps,
   SummarizePostFailureResponse,
@@ -94,7 +93,7 @@ export const PostPage = ({ post, comments, commentSettings, showRapidRead }: Jso
             >
               <Image
                 src={parseFeatureImage(post.feature_image)}
-                alt={(post as GetPostOutput).feature_image_alt ?? 'image'}
+                alt={post.posts_meta?.feature_image_alt ?? undefined}
                 position="absolute"
                 top="50%"
                 left="50%"

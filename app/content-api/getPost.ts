@@ -8,6 +8,7 @@ export const getPost = async (where: Prisma.postsWhereInput): Promise<GetPostOut
     include: {
       posts_tags: true,
       posts_authors: true,
+      posts_meta: true,
     },
   });
 
