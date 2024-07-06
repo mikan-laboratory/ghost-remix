@@ -80,7 +80,7 @@ export const PostPage = ({ post, comments, commentSettings, showRapidRead }: Jso
   return (
     <PageBase>
       <Container maxW="container.lg" px={{ base: 5, md: 0 }}>
-        <Box pb={5} px={5}>
+        <Box pb={5}>
           {post.feature_image && (
             <Box
               position="relative"
