@@ -9,6 +9,7 @@ export interface PostsAndPagination {
 
 export type DbPost = Prisma.postsGetPayload<{
   include: {
+    posts_meta: true;
     posts_tags: true;
     posts_authors: true;
   };
