@@ -22,7 +22,7 @@
     "@emotion/server": "^11.11.0",
     "@emotion/styled": "^11.11.0",
     "@epic-web/cachified": "^5.2.0",
-    "@prisma/client": "^5.14.0",
+    "@prisma/client": "^5.16.1",
     "@remix-run/css-bundle": "^2.9.2",
     "@remix-run/node": "^2.10.2",
     "@remix-run/react": "^2.10.2",
@@ -67,7 +67,7 @@
     "eslint-plugin-jsx-a11y": "^6.7.1",
     "eslint-plugin-react": "^7.34.3",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "prisma": "^5.9.1",
+    "prisma": "^5.16.1",
     "typescript": "^5.3.3",
     "vite": "^5.3.3",
     "vite-tsconfig-paths": "^4.3.2"
