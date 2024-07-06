@@ -16,6 +16,8 @@
     "paths": {
       "~/*": ["./app/*"]
     },
-    "noEmit": true
+    "noEmit": true,
+    "skipLibCheck": true,
+    "types": ["@remix-run/node", "vite/client"]
   }
 }

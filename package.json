@@ -4,10 +4,10 @@
   "sideEffects": false,
   "type": "module",
   "scripts": {
-    "build": "remix build",
-    "dev": "remix dev",
+    "build": "remix vite:build",
+    "dev": "remix vite:dev",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
-    "start": "remix-serve ./build/index.js",
+    "start": "remix-serve ./build/server/index.js",
     "typecheck": "tsc",
     "seed:dev": "npx esno prisma/seed.dev.ts",
     "seed:prod": "npx esno prisma/seed.prod.ts"
@@ -24,9 +24,9 @@
     "@epic-web/cachified": "^5.2.0",
     "@prisma/client": "^5.14.0",
     "@remix-run/css-bundle": "^2.9.2",
-    "@remix-run/node": "^2.5.1",
-    "@remix-run/react": "^2.6.0",
-    "@remix-run/serve": "^2.9.2",
+    "@remix-run/node": "^2.10.2",
+    "@remix-run/react": "^2.10.2",
+    "@remix-run/serve": "^2.10.2",
     "@t3-oss/env-core": "^0.9.2",
     "@tryghost/content-api": "^1.11.21",
     "@types/uuid": "^9.0.8",
@@ -51,7 +51,7 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",
-    "@remix-run/dev": "^2.6.0",
+    "@remix-run/dev": "^2.10.2",
     "@types/bcrypt": "^5.0.2",
     "@types/dompurify": "^3.0.5",
     "@types/fs-extra": "^11.0.4",
@@ -68,7 +68,9 @@
     "eslint-plugin-react": "^7.34.3",
     "eslint-plugin-react-hooks": "^4.6.0",
     "prisma": "^5.9.1",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "vite": "^5.3.3",
+    "vite-tsconfig-paths": "^4.3.2"
   },
   "engines": {
     "node": "18.19"
