@@ -18,6 +18,17 @@ CONFIG_PATH="/var/www/ghost/config.development.json"
 echo "Configuring Ghost with environment variables..."
 envsubst < "$CONFIG_TEMPLATE_PATH" > "$CONFIG_PATH"
 
+echo "Ensuring correct ownership for /var/www/ghost and subdirectories:"
+chown -R ghostuser:ghostuser /var/www/ghost
+
+echo "Setting correct permissions for /var/www/ghost/content:"
+chmod -R 755 /var/www/ghost/content
+
+# Ensure the directory for ghost-local.db exists
+echo "Ensuring /var/www/ghost/content/data directory exists..."
+mkdir -p /var/www/ghost/content/data
+chown ghostuser:ghostuser /var/www/ghost/content/data
+
 # Check if ghost-local.db exists, create if not
 echo "Checking for ghost-local.db..."
 GHOST_DB_PATH="/var/www/ghost/content/data/ghost-local.db"
