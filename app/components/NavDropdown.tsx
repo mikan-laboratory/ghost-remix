@@ -1,7 +1,6 @@
 import { Box, Menu, MenuButton, MenuList, MenuItem } from '@chakra-ui/react';
 import { FaChevronDown } from 'react-icons/fa';
-import { Link } from '@remix-run/react';
-import { Params } from '@remix-run/react';
+import { Link , Params } from '@remix-run/react';
 
 interface NavDropdownProps {
   pages?: { title: string; slug: string }[];

@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState , startTransition, StrictMode } from 'react';
 import { CacheProvider } from '@emotion/react';
 import { RemixBrowser } from '@remix-run/react';
 import { ClientStyleContext } from './context';
 import createEmotionCache, { defaultCache } from './createEmotionCache';
-import { startTransition, StrictMode } from 'react';
 import { hydrateRoot } from 'react-dom/client';
 
 interface ClientCacheProviderProps {

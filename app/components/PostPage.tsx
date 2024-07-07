@@ -61,7 +61,7 @@ export const PostPage = ({ post, comments, commentSettings, showRapidRead }: Jso
       method: 'POST',
       action: `/summarize`,
     });
-  }, [rapidRead]);
+  }, [fetcher, post.html, post.id, rapidRead]);
 
   useUpdateEffect(() => {
     if ((fetcher.data as SummarizePostSuccessResponse)?.result) {

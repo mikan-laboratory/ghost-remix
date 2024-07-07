@@ -63,7 +63,7 @@ export default function Search() {
         {posts.length > 0 && posts.map((post: PostOrPage) => <BlogItem key={post.id} post={post} type="list" />)}
         {posts.length === 0 && (
           <Box>
-            <Text textColor="text1">Sorry, we couldn't find anything.</Text>
+            <Text textColor="text1">{`Sorry, we couldn't find anything.`}</Text>
           </Box>
         )}
       </Grid>

@@ -7,5 +7,5 @@ export interface SecondarySeedParams {
 
 export interface WrapSeedParams {
   prisma: PrismaClient;
-  seedFunction: (prisma: PrismaClient) => Promise<any>;
+  seedFunction: (prisma: PrismaClient) => Promise<unknown>;
 }
