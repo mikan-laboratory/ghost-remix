@@ -82,14 +82,14 @@ export default function BlogItem({ post, type }: BlogListItemProps) {
 
           {type !== 'list' && (
             <Text mt={1} textColor="text2" fontSize="sm">
-              {post.excerpt?.slice(0, 150).trim()}
-              {post.excerpt && post.excerpt.length > 150 ? '...' : ''}
+              {post.custom_excerpt?.slice(0, 150).trim()}
+              {post.custom_excerpt && post.custom_excerpt.length > 150 ? '...' : ''}
             </Text>
           )}
           {type === 'list' && (
             <Text mt={1} textColor="text2" fontSize="sm">
-              {post.excerpt?.slice(0, 100).trim()}
-              {post.excerpt && post.excerpt.length > 100 ? '...' : ''}
+              {post.custom_excerpt?.slice(0, 100).trim()}
+              {post.custom_excerpt && post.custom_excerpt.length > 100 ? '...' : ''}
             </Text>
           )}
         </Box>
