@@ -202,8 +202,7 @@ This dual strategy ensures efficient handling of both dynamic content and static
 1. Set secrets
 
 ```
-flyctl secrets set GHOST_CONTENT_API_KEY="my-api-key-value" \
-   OWNER_EMAIL="my-email-value" \
+flyctl secrets set OWNER_EMAIL="my-email-value" \
    OWNER_PASSWORD="my-password-value" \
    MAILGUN_DOMAIN="somedomain" \
    MAILGUN_API_KEY="somekey" \
