@@ -14,7 +14,6 @@ jobs:
       - name: Set secrets in Fly app
         run: |
           flyctl secrets set \
-            GHOST_CONTENT_API_KEY="${{ secrets.GHOST_CONTENT_API_KEY }}" \
             OWNER_EMAIL="${{ secrets.OWNER_EMAIL }}" \
             OWNER_PASSWORD="${{ secrets.OWNER_PASSWORD }}" \
             MAILGUN_DOMAIN="${{ secrets.MAILGUN_DOMAIN }}" \
