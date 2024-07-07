@@ -1,4 +1,15 @@
-import { Heading, Flex, Box, Image, Button, useToast, useUpdateEffect, Spinner, Container } from '@chakra-ui/react';
+import {
+  Heading,
+  Flex,
+  Box,
+  Image,
+  Button,
+  useToast,
+  useUpdateEffect,
+  Spinner,
+  Container,
+  Text,
+} from '@chakra-ui/react';
 import AuthorsList from './AuthorsList';
 import CommentsList from './CommentsList';
 import PostContent from './PostContent';
@@ -105,8 +116,9 @@ export const PostPage = ({ post, comments, commentSettings, showRapidRead }: Jso
             </Box>
           )}
           <Flex flexDirection={'column'} alignContent={'flex-start'} gap={2}>
-            <Flex flexDirection={'row'} gap={6} mt={{ base: 2, md: 5 }} color="text2" fontSize="sm">
-              {post.published_at ? dayjs(post.published_at).format('MMMM DD, YYYY') : 'Some Date'}
+            <Flex flexDirection={'row'} gap={2} mt={{ base: 2, md: 5 }} color="text2" fontSize="sm">
+              <Text>{post.published_at ? dayjs(post.published_at).format('MMMM DD, YYYY') : 'Some Date'}</Text>
+              |
               <AuthorsList authors={authors} />
             </Flex>
             <Heading

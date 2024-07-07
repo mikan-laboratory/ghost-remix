@@ -16,6 +16,7 @@ export const getPostsAndPagination = async (page = 1, limit = 5): Promise<PostsA
         feature_image: true,
         slug: true,
         published_at: true,
+        custom_excerpt: true,
       },
       orderBy: {
         published_at: 'desc',

@@ -21,7 +21,7 @@ export const getSearchResults = async (query = '', page = 1, limit = 5): Promise
     : Prisma.sql``;
 
   const postsQuery = Prisma.sql`
-  SELECT posts.title, posts.feature_image, posts.slug, posts.published_at
+  SELECT posts.title, posts.feature_image, posts.slug, posts.published_at, posts.custom_excerpt
   FROM posts
   LEFT JOIN posts_authors ON posts.id = posts_authors.post_id
   LEFT JOIN users AS author ON posts_authors.author_id = author.id
