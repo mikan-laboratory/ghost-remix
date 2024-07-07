@@ -13,8 +13,7 @@ RUN npm install ghost-cli@1.26.0 -g
 # Create the Ghost directory and set appropriate permissions
 RUN mkdir -p /var/www/ghost \
     && adduser --disabled-password --gecos '' ghostuser \
-    && chown -R ghostuser:ghostuser /var/www/ghost \
-    && chmod -R 755 /var/www/ghost
+    && chown -R ghostuser:ghostuser /var/www/ghost
 
 # Switch to the non-root user
 USER ghostuser
@@ -25,6 +24,8 @@ RUN ghost install v5.82.3 local --no-start
 
 # Switch back to root user for any other root-required operations
 USER root
+
+RUN chmod -R 755 /var/www/ghost/content
 
 # Install all node_modules, including dev dependencies for Remix
 FROM base as deps
