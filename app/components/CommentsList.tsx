@@ -18,11 +18,11 @@ export default function CommentsList({ comments }: Pick<JsonifiedPostPageProps, 
       </Text>
       <Box display="flex" alignItems="center" justifyContent="center" pb={5} px={5}>
         <Text w="100%" color="text1">
-          Welcome to the discussion of this post! Here in the comments section, we value your thoughts and encourage you
+          {`Welcome to the discussion of this post! Here in the comments section, we value your thoughts and encourage you
           to share them with us. We believe in fostering a positive and respectful environment where everyone can feel
           comfortable to express themselves. Remember, your words have the power to inspire and enlighten. Let's make
           this a space where kindness and constructive feedback thrive. Dive in, contribute your insights, and let's
-          grow together in this engaging and supportive community!
+          grow together in this engaging and supportive community!`}
         </Text>
       </Box>
       <CommentBox member={member} />

@@ -2,9 +2,8 @@ import React, { useContext, useEffect } from 'react';
 import { withEmotionCache } from '@emotion/react';
 import { ChakraProvider } from '@chakra-ui/react';
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
-import { LinksFunction, json } from '@remix-run/node';
+import { LinksFunction, json, LoaderFunction } from '@remix-run/node';
 import theme from './theme/theme';
-import { LoaderFunction } from '@remix-run/node';
 import { ServerStyleContext, ClientStyleContext } from './context';
 import { authenticateCookie } from './authenticateCookie.server';
 import { getBasicBlogInfo } from './getBasicBlogInfo.server';
@@ -43,10 +42,12 @@ const Document = withEmotionCache(({ children }: DocumentProps, emotionCache) =>
     const tags = emotionCache.sheet.tags;
     emotionCache.sheet.flush();
     tags.forEach((tag) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (emotionCache.sheet as any)._insertTag(tag);
     });
     // reset cache to reapply global styles
     clientStyleData?.reset();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

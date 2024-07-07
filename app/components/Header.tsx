@@ -25,14 +25,14 @@ export default function Header({ hideSignup = false }: HeaderProps) {
   const signupEnabled = loaderData?.signupEnabled ?? false;
   const pages = loaderData?.pages ?? [];
 
-  const login = (): void => navigate('/members');
-  const logout = async (): Promise<void> => {
-    await fetch('/logout', { method: 'POST' });
-    navigate('/', { replace: true });
-  };
-
   const signInComponent: JSX.Element | undefined = useMemo(() => {
     if (hideSignup) return undefined;
+
+    const login = (): void => navigate('/members');
+    const logout = async (): Promise<void> => {
+      await fetch('/logout', { method: 'POST' });
+      navigate('/', { replace: true });
+    };
 
     if (member) {
       return (
@@ -69,7 +69,7 @@ export default function Header({ hideSignup = false }: HeaderProps) {
     }
 
     return undefined;
-  }, [hideSignup, member, signupEnabled, logout, isSmallScreen]);
+  }, [hideSignup, member, signupEnabled, isSmallScreen, navigate]);
 
   return (
     <Box w="100%" py={{ base: 2, md: 10 }} px="5">

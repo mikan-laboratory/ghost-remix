@@ -1,5 +1,5 @@
 import { Prisma } from '@prisma/client';
-import { GetPostOutput, GetPreviewPostOutput } from '~/content-api/types';
+import { GetPostOutput } from '~/content-api/types';
 import { BasicMember } from '~/types/member';
 
 export type JsonCompatible<T> = T extends Date

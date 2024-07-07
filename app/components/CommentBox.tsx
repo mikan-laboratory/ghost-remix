@@ -1,4 +1,4 @@
-import { Button, Box, Input, Textarea, useToast, useUpdateEffect, background } from '@chakra-ui/react';
+import { Button, Box, Input, Textarea, useToast, useUpdateEffect } from '@chakra-ui/react';
 import { BasicMember } from '~/types/member';
 import { useFetcher, useNavigate, useParams } from '@remix-run/react';
 

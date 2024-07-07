@@ -1,5 +1,5 @@
 import { Prisma } from '@prisma/client';
-import { Author, PostOrPage, PostsOrPages, Tag } from '@tryghost/content-api';
+import { Author, PostsOrPages, Tag } from '@tryghost/content-api';
 
 export interface PostsAndPagination {
   posts: PostsOrPages;
