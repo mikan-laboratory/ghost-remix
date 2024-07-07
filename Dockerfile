@@ -13,7 +13,8 @@ RUN npm install ghost-cli@1.26.0 -g
 # Create the Ghost directory and set appropriate permissions
 RUN mkdir -p /var/www/ghost \
     && adduser --disabled-password --gecos '' ghostuser \
-    && chown -R ghostuser:ghostuser /var/www/ghost
+    && chown -R ghostuser:ghostuser /var/www/ghost \
+    && chmod -R 755 /var/www/ghost
 
 # Switch to the non-root user
 USER ghostuser
