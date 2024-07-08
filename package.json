@@ -18,7 +18,7 @@
     "seed": "npx esno prisma/seed.dev.ts"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.20.8",
+    "@anthropic-ai/sdk": "^0.24.3",
     "@chakra-ui/react": "^2.8.2",
     "@emotion/react": "^11.11.1",
     "@emotion/server": "^11.11.0",
