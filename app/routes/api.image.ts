@@ -39,7 +39,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
       },
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
 
     throw new Response('Something went wrong', {
       status: 500,
