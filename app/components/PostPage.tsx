@@ -25,7 +25,6 @@ import { PageBase } from './PageBase';
 import { FaBolt, FaFileAlt } from 'react-icons/fa';
 import { useFetcher } from '@remix-run/react';
 import dayjs from 'dayjs';
-import { parseFeatureImage } from '~/parseFeatureImage';
 
 export const PostPage = ({ post, comments, commentSettings, showRapidRead }: JsonifiedPostPageProps): JSX.Element => {
   const authors = post.authors ?? [];
@@ -103,8 +102,14 @@ export const PostPage = ({ post, comments, commentSettings, showRapidRead }: Jso
               borderRadius="xl"
             >
               <Image
-                src={parseFeatureImage(post.feature_image)}
+                src={post.feature_image as string}
+                srcSet={`
+                  /api/images?name=${post.feature_image}&w=480 480w,
+                  /api/images?name=${post.feature_image}&w=800 800w,
+                  /api/images?name=${post.feature_image}&w=1200 1200w
+                `}
                 alt={post.posts_meta?.feature_image_alt ?? undefined}
+                sizes="(max-width: 800px) 100vw, 1200px"
                 position="absolute"
                 top="50%"
                 left="50%"
