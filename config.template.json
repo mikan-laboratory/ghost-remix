@@ -29,5 +29,6 @@
   "process": "local",
   "paths": {
     "contentPath": "/var/www/ghost/content"
-  }
+  },
+  "imageOptimization": false
 }

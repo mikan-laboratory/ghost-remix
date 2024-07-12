@@ -1,6 +1,6 @@
 import { LoaderFunctionArgs } from '@remix-run/node';
 import { ImageScaler } from '@mikan-labs/image-scaler';
-import * as path from 'path';
+import { env } from '~/env';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   try {
@@ -25,11 +25,11 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     const imageName = imagePath.substring(0, lastIndexOfPeriod);
 
     const imageBuffer = await imageScaler.scaleOrGetExisting({
-      url: `http://localhost:8080${name}`,
+      url: `${env.BLOG_URL}${name}`,
       width: parseInt(width, 10),
       imageName,
       outputType: 'buffer',
-      outputDir: path.join('ghost-data', 'images'),
+      outputDir: env.IMAGE_OUTPUT_DIRECTORY,
     });
 
     return new Response(imageBuffer, {

@@ -104,9 +104,9 @@ export const PostPage = ({ post, comments, commentSettings, showRapidRead }: Jso
               <Image
                 src={post.feature_image as string}
                 srcSet={`
-                  /api/images?name=${post.feature_image}&w=480 480w,
-                  /api/images?name=${post.feature_image}&w=800 800w,
-                  /api/images?name=${post.feature_image}&w=1200 1200w
+                  /api/image?name=${post.feature_image}&w=480 480w,
+                  /api/image?name=${post.feature_image}&w=800 800w,
+                  /api/image?name=${post.feature_image}&w=1200 1200w
                 `}
                 alt={post.posts_meta?.feature_image_alt ?? undefined}
                 sizes="(max-width: 800px) 100vw, 1200px"

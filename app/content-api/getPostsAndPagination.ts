@@ -13,6 +13,7 @@ export const getPostsAndPagination = async (page = 1, limit = 5): Promise<PostsA
         status: 'published',
       },
       select: {
+        id: true,
         title: true,
         feature_image: true,
         slug: true,
