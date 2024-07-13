@@ -13,6 +13,7 @@ export default function BlogItem({ post, type }: BlogListItemProps) {
   if (!post) return null;
 
   const hasFeatureImage = !!post.feature_image;
+  const featureImageStartsWithSlash = (post.feature_image ?? '').startsWith('/');
 
   return (
     <Box
@@ -32,12 +33,16 @@ export default function BlogItem({ post, type }: BlogListItemProps) {
           <Link to={`/${post.slug}`}>
             <Image
               src={post.feature_image as string}
-              srcSet={`
+              srcSet={
+                featureImageStartsWithSlash
+                  ? `
                 /api/image?name=${post.feature_image}&w=480 480w,
                 /api/image?name=${post.feature_image}&w=800 800w,
                 /api/image?name=${post.feature_image}&w=1200 1200w
-              `}
-              sizes="(max-width: 800px) 100vw, 1200px"
+              `
+                  : undefined
+              }
+              sizes={featureImageStartsWithSlash ? '(max-width: 800px) 100vw, 1200px' : undefined}
               alt={post.feature_image_alt || 'image'}
               position="absolute"
               top="50%"

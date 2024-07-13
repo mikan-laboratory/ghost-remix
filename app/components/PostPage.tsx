@@ -87,6 +87,8 @@ export const PostPage = ({ post, comments, commentSettings, showRapidRead }: Jso
     return true;
   }, [commentSettings, post.type]);
 
+  const featureImageStartsWithSlash = (post.feature_image ?? '').startsWith('/');
+
   return (
     <PageBase>
       <Container maxW="container.lg" px={{ base: 5, md: 0 }}>
@@ -103,13 +105,17 @@ export const PostPage = ({ post, comments, commentSettings, showRapidRead }: Jso
             >
               <Image
                 src={post.feature_image as string}
-                srcSet={`
+                srcSet={
+                  featureImageStartsWithSlash
+                    ? `
                   /api/image?name=${post.feature_image}&w=480 480w,
                   /api/image?name=${post.feature_image}&w=800 800w,
                   /api/image?name=${post.feature_image}&w=1200 1200w
-                `}
+                `
+                    : undefined
+                }
                 alt={post.posts_meta?.feature_image_alt ?? undefined}
-                sizes="(max-width: 800px) 100vw, 1200px"
+                sizes={featureImageStartsWithSlash ? '(max-width: 800px) 100vw, 1200px' : undefined}
                 position="absolute"
                 top="50%"
                 left="50%"
