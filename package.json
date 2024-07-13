@@ -24,6 +24,7 @@
     "@emotion/server": "^11.11.0",
     "@emotion/styled": "^11.11.0",
     "@epic-web/cachified": "^5.2.0",
+    "@mikan-labs/image-scaler": "^0.2.1",
     "@prisma/client": "^5.16.1",
     "@remix-run/css-bundle": "^2.9.2",
     "@remix-run/node": "^2.10.2",
