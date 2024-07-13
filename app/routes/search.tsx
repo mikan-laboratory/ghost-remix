@@ -33,7 +33,6 @@ export const loader = async ({ request }: LoaderFunctionArgs): Promise<TypedResp
 
   const data = await cachified({
     key: `search:query-${query}:page-${page}`,
-
     cache: getCache(),
     getFreshValue: async () => getSearchResults(query, page, 5),
     staleWhileRevalidate: FIVE_MINUTES,

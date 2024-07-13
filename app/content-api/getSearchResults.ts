@@ -2,6 +2,7 @@ import { Prisma } from '@prisma/client';
 import { PostsAndPagination } from './types';
 import { prisma } from '~/db.server';
 import { PostsOrPages } from '@tryghost/content-api';
+import { fixFeatureImages } from '~/fixFeatureImages';
 
 export const getSearchResults = async (query = '', page = 1, limit = 5): Promise<PostsAndPagination> => {
   const baseWhere: Prisma.postsWhereInput = {
@@ -53,7 +54,7 @@ export const getSearchResults = async (query = '', page = 1, limit = 5): Promise
   const totalCount = (totalPosts as { count: bigint }[])[0] ? Number((totalPosts as { count: bigint }[])[0].count) : 0;
 
   return {
-    posts: posts as PostsOrPages,
+    posts: fixFeatureImages(posts as PostsOrPages),
     totalPages: Math.ceil(totalCount / limit),
     totalPosts: totalCount,
   };
