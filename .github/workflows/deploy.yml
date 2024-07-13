@@ -31,7 +31,8 @@ jobs:
             MEMBERS_SIGNUP_ACCESS="${{ secrets.MEMBERS_SIGNUP_ACCESS }}" \
             RAPID_READ="${{ secrets.RAPID_READ }}" \
             JWT_SECRET="${{ secrets.JWT_SECRET }}" \
-            ANTHROPIC_API_KEY="${{ secrets.ANTHROPIC_API_KEY }}"
+            ANTHROPIC_API_KEY="${{ secrets.ANTHROPIC_API_KEY }}" \
+            IMAGE_OUTPUT_DIRECTORY="${{ secrets.IMAGE_OUTPUT_DIRECTORY }}"
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
       - name: Deploy to Fly.io
