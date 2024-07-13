@@ -1,5 +1,5 @@
 import { Box } from '@chakra-ui/react';
-import { Link , useLoaderData } from '@remix-run/react';
+import { Link, useLoaderData } from '@remix-run/react';
 import { MetaFunction, LoaderFunctionArgs, json } from '@remix-run/node';
 import { getPostsAndPagination } from '~/content-api/getPostsAndPagination';
 import { getBasicBlogInfo } from '~/getBasicBlogInfo.server';
@@ -7,7 +7,7 @@ import { PageBase } from '~/components/PageBase';
 import BlogHero from '~/components/BlogHero';
 import BlogList from '~/components/BlogList';
 import cachified from '@epic-web/cachified';
-import { FIVE_MINUTES, ONE_HOUR } from '~/constants';
+import { FIVE_MINUTES } from '~/constants';
 import { getCache } from '~/getCache.server';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
@@ -28,10 +28,9 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
   const data = await cachified({
     key: 'home',
-    ttl: FIVE_MINUTES,
     cache: getCache(),
     getFreshValue: async () => getData(),
-    staleWhileRevalidate: ONE_HOUR,
+    staleWhileRevalidate: FIVE_MINUTES,
     forceFresh: noCache,
   });
 

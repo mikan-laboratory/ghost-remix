@@ -2,7 +2,7 @@ import cachified from '@epic-web/cachified';
 import { ActionFunction, TypedResponse, json } from '@remix-run/node';
 import { callClaude } from '~/callClaude';
 import { SummarizePostResponse } from '~/components/types';
-import { FIVE_MINUTES, ONE_HOUR } from '~/constants';
+import { FIVE_MINUTES } from '~/constants';
 import { getShowRapidRead } from '~/content-api/getShowRapidRead';
 import { prisma } from '~/db.server';
 import { getCache } from '~/getCache.server';
@@ -48,8 +48,7 @@ export const action: ActionFunction = async ({ request }): Promise<TypedResponse
 
     const result = await cachified({
       key: cacheKey,
-      ttl: FIVE_MINUTES,
-      staleWhileRevalidate: ONE_HOUR,
+      staleWhileRevalidate: FIVE_MINUTES,
       cache: getCache(),
       getFreshValue: async () => {
         const claudeResult = await callClaude(postBody);
