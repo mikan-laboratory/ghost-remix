@@ -1,6 +1,7 @@
 import { prisma } from '~/db.server';
 import { GetPostOutput } from './types';
 import { Prisma } from '@prisma/client';
+import { parseFeatureImage } from '~/parseFeatureImage';
 
 export const getPost = async (where: Prisma.postsWhereInput): Promise<GetPostOutput> => {
   const post = await prisma.posts.findFirstOrThrow({
@@ -45,6 +46,9 @@ export const getPost = async (where: Prisma.postsWhereInput): Promise<GetPostOut
 
   return {
     ...post,
+    ...(post.feature_image && {
+      feature_image: parseFeatureImage(post.feature_image),
+    }),
     tags,
     authors,
   };

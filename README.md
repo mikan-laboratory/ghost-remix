@@ -219,7 +219,8 @@ flyctl secrets set GHOST_CONTENT_API_KEY="my-api-key-value" \
    COMMENT_SETTINGS="all" \
    MEMBERS_SIGNUP_ACCESS="all" \
    RAPID_READ="post" \
-   ANTHROPIC_API_KEY="somekey"
+   ANTHROPIC_API_KEY="somekey" \
+   IMAGE_OUTPUT_DIRECTORY="/var/www/ghost/content/images/"
 ```
 
 2. Deploy

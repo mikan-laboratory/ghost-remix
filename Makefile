@@ -18,6 +18,7 @@ MAILGUN_BASE_URL ?= https://api.mailgun.net/
 MAILGUN_USER ?= someuser
 MAILGUN_PASSWORD ?= somepassword
 ANTHROPIC_API_KEY ?= somekey
+IMAGE_OUTPUT_DIRECTORY ?= /var/www/ghost/content/images/
 
 # Container name
 CONTAINER_NAME ?= ghost-remix-container
@@ -54,6 +55,7 @@ run:
 	-e MAILGUN_USER=$(MAILGUN_USER) \
 	-e MAILGUN_PASSWORD=$(MAILGUN_PASSWORD) \
 	-e ANTHROPIC_API_KEY=$(ANTHROPIC_API_KEY) \
+	-e IMAGE_OUTPUT_DIRECTORY=${IMAGE_OUTPUT_DIRECTORY} \
 	$(IMAGE_NAME)
 
 clean:

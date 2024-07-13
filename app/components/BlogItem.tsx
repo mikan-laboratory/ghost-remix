@@ -3,7 +3,6 @@ import { Box, Text, Image } from '@chakra-ui/react';
 import { Link } from '@remix-run/react';
 import { PostOrPage } from '@tryghost/content-api';
 import TopicsList from './TopicsList';
-import { parseFeatureImage } from '~/parseFeatureImage';
 
 interface BlogListItemProps {
   post?: PostOrPage;
@@ -32,7 +31,13 @@ export default function BlogItem({ post, type }: BlogListItemProps) {
         >
           <Link to={`/${post.slug}`}>
             <Image
-              src={parseFeatureImage(post.feature_image as string)}
+              src={post.feature_image as string}
+              srcSet={`
+                /api/image?name=${post.feature_image}&w=480 480w,
+                /api/image?name=${post.feature_image}&w=800 800w,
+                /api/image?name=${post.feature_image}&w=1200 1200w
+              `}
+              sizes="(max-width: 800px) 100vw, 1200px"
               alt={post.feature_image_alt || 'image'}
               position="absolute"
               top="50%"

@@ -1,6 +1,7 @@
 import { prisma } from '~/db.server';
 import { PostsAndPagination } from './types';
 import { PostsOrPages } from '@tryghost/content-api';
+import { fixFeatureImages } from '~/fixFeatureImages';
 
 export const getPostsAndPagination = async (page = 1, limit = 5): Promise<PostsAndPagination> => {
   const [posts, totalPosts] = await Promise.all([
@@ -12,6 +13,7 @@ export const getPostsAndPagination = async (page = 1, limit = 5): Promise<PostsA
         status: 'published',
       },
       select: {
+        id: true,
         title: true,
         feature_image: true,
         slug: true,
@@ -34,7 +36,7 @@ export const getPostsAndPagination = async (page = 1, limit = 5): Promise<PostsA
   ]);
 
   return {
-    posts: posts as PostsOrPages,
+    posts: fixFeatureImages(posts as PostsOrPages),
     totalPages: Math.ceil(totalPosts._count._all / limit),
     totalPosts: totalPosts._count._all,
   };
