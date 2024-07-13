@@ -35,8 +35,9 @@ export const CommentInner = ({ comment, member }: CommentInnerProps): JSX.Elemen
     <Flex alignItems="start" w="100%" gap={2} backgroundColor="comment" py="12px" borderRadius="lg">
       <Image
         src="/logo.webp"
-        height={12}
-        width={12}
+        height="56px"
+        width="56px"
+        objectFit="contain"
         backgroundColor="background"
         borderRadius="100%"
         padding="1px"
