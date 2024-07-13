@@ -109,7 +109,9 @@ export default function Header({ hideSignup = false }: HeaderProps) {
             {!isSmallScreen && isMediumScreen && pages.length > 0 && <NavDropdown pages={pages} params={params} />}
           </Wrap>
         </Box>
-        {!isSmallScreen && <SearchBar />}
+        <Box display={{ base: 'none', md: 'block' }}>
+          <SearchBar />
+        </Box>
         <HStack>
           {pages.length > 0 && (
             <Button
@@ -178,7 +180,9 @@ export default function Header({ hideSignup = false }: HeaderProps) {
               </Link>
             ))}
         </Box>
-        <SearchBar />
+        <Box display={{ base: 'block', md: 'none' }}>
+          <SearchBar />
+        </Box>
       </Box>
     </Box>
   );
