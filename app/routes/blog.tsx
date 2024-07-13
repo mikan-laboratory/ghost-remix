@@ -7,7 +7,7 @@ import { getBasicBlogInfo } from '~/getBasicBlogInfo.server';
 import { PageBase } from '~/components/PageBase';
 import BlogList from '~/components/BlogList';
 import cachified from '@epic-web/cachified';
-import { FIVE_MINUTES, ONE_HOUR } from '~/constants';
+import { FIVE_MINUTES } from '~/constants';
 import { getCache } from '~/getCache.server';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
@@ -28,10 +28,9 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
   const data = await cachified({
     key: `blog:page-${page}`,
-    ttl: FIVE_MINUTES,
     cache: getCache(),
     getFreshValue: async () => getData(),
-    staleWhileRevalidate: ONE_HOUR,
+    staleWhileRevalidate: FIVE_MINUTES,
     forceFresh: noCache,
   });
 

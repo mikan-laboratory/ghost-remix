@@ -9,7 +9,7 @@ import BlogItem from '~/components/BlogItem';
 import { PostsAndPagination } from '~/content-api/types';
 import { PageBase } from '~/components/PageBase';
 import cachified from '@epic-web/cachified';
-import { FIVE_MINUTES, ONE_HOUR } from '~/constants';
+import { FIVE_MINUTES } from '~/constants';
 import { getCache } from '~/getCache.server';
 
 export const meta: MetaFunction = () => {
@@ -33,10 +33,10 @@ export const loader = async ({ request }: LoaderFunctionArgs): Promise<TypedResp
 
   const data = await cachified({
     key: `search:query-${query}:page-${page}`,
-    ttl: FIVE_MINUTES,
+
     cache: getCache(),
     getFreshValue: async () => getSearchResults(query, page, 5),
-    staleWhileRevalidate: ONE_HOUR,
+    staleWhileRevalidate: FIVE_MINUTES,
     forceFresh: noCache,
   });
 
