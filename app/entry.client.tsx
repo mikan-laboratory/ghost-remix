@@ -1,9 +1,9 @@
-import React, { useState , startTransition, StrictMode } from 'react';
+import React, { useState } from 'react';
+import * as ReactDOM from 'react-dom/client';
 import { CacheProvider } from '@emotion/react';
 import { RemixBrowser } from '@remix-run/react';
 import { ClientStyleContext } from './context';
 import createEmotionCache, { defaultCache } from './createEmotionCache';
-import { hydrateRoot } from 'react-dom/client';
 
 interface ClientCacheProviderProps {
   children: React.ReactNode;
@@ -23,13 +23,21 @@ function ClientCacheProvider({ children }: ClientCacheProviderProps) {
   );
 }
 
-startTransition(() => {
-  hydrateRoot(
-    document,
-    <StrictMode>
+const hydrate = () => {
+  React.startTransition(() => {
+    ReactDOM.hydrateRoot(
+      document,
       <ClientCacheProvider>
         <RemixBrowser />
-      </ClientCacheProvider>
-    </StrictMode>,
-  );
-});
+      </ClientCacheProvider>,
+    );
+  });
+};
+
+if (window.requestIdleCallback) {
+  window.requestIdleCallback(hydrate);
+} else {
+  // Safari doesn't support requestIdleCallback
+  // https://caniuse.com/requestidlecallback
+  setTimeout(hydrate, 1);
+}
