@@ -13,5 +13,11 @@ export const callClaude = async (text: string): Promise<string> => {
     model: 'claude-3-haiku-20240307',
   });
 
-  return message.content[0].text;
+  const messageContentFirst = message.content[0];
+
+  if (messageContentFirst.type !== 'text') {
+    throw new Error('Claude returned a non-text answer');
+  }
+
+  return messageContentFirst.text;
 };
