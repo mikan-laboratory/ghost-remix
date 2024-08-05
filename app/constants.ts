@@ -1,2 +1,4 @@
-export const ONE_HOUR = 1000 * 60 * 60;
-export const FIVE_MINUTES = 1000 * 60 * 5;
+export const ONE_HOUR_IN_MILLISECONDS = 1000 * 60 * 60;
+export const FIVE_MINUTES_IN_MILLISECONDS = 1000 * 60 * 5;
+
+export const ONE_MONTH_IN_SECONDS = 60 * 60 * 24 * 30;

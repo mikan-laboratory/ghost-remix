@@ -6,11 +6,12 @@ import { PostOrPage } from '@tryghost/content-api';
 import { getSearchResults } from '~/content-api/getSearchResults';
 import PaginationNavigation from '~/components/PaginationNavigation';
 import BlogItem from '~/components/BlogItem';
-import { PostsAndPagination } from '~/content-api/types';
+import { GetPostOutput, PostsAndPagination } from '~/content-api/types';
 import { PageBase } from '~/components/PageBase';
 import cachified from '@epic-web/cachified';
-import { FIVE_MINUTES } from '~/constants';
+import { FIVE_MINUTES_IN_MILLISECONDS } from '~/constants';
 import { getCache } from '~/getCache.server';
+import { JsonCompatibleObject } from '~/components/types';
 
 export const meta: MetaFunction = () => {
   return [
@@ -35,7 +36,7 @@ export const loader = async ({ request }: LoaderFunctionArgs): Promise<TypedResp
     key: `search:query-${query}:page-${page}`,
     cache: getCache(),
     getFreshValue: async () => getSearchResults(query, page, 5),
-    staleWhileRevalidate: FIVE_MINUTES,
+    staleWhileRevalidate: FIVE_MINUTES_IN_MILLISECONDS,
     forceFresh: noCache,
   });
 
@@ -59,7 +60,10 @@ export default function Search() {
   return (
     <PageBase>
       <Grid templateColumns={{ base: '1fr', md: 'repeat(3, 1fr)' }} gap={6} py={8} px={5}>
-        {posts.length > 0 && posts.map((post: PostOrPage) => <BlogItem key={post.id} post={post} type="list" />)}
+        {posts.length > 0 &&
+          posts.map((post: PostOrPage) => (
+            <BlogItem key={post.id} post={post as JsonCompatibleObject<GetPostOutput>} type="list" />
+          ))}
         {posts.length === 0 && (
           <Box>
             <Text textColor="text1">{`Sorry, we couldn't find anything.`}</Text>

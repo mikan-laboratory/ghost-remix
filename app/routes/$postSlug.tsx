@@ -4,7 +4,7 @@ import { PostPage } from '~/components/PostPage';
 import { cachified } from '@epic-web/cachified';
 import { GetPostAndComments } from '~/components/types';
 import { getCache } from '~/getCache.server';
-import { FIVE_MINUTES } from '~/constants';
+import { FIVE_MINUTES_IN_MILLISECONDS } from '~/constants';
 import { getPostWithCommentsAndSettings } from '~/content-api/getPostWithCommentsAndSettings';
 
 export const loader = async ({ request, params }: LoaderFunctionArgs): Promise<TypedResponse<GetPostAndComments>> => {
@@ -22,7 +22,7 @@ export const loader = async ({ request, params }: LoaderFunctionArgs): Promise<T
 
       cache: getCache(),
       getFreshValue: async () => getPostWithCommentsAndSettings(postSlug),
-      staleWhileRevalidate: FIVE_MINUTES,
+      staleWhileRevalidate: FIVE_MINUTES_IN_MILLISECONDS,
       forceFresh: noCache,
     });
 

@@ -1,6 +1,6 @@
 import { LRUCache } from 'lru-cache';
 import { CacheEntry } from '@epic-web/cachified';
-import { ONE_HOUR } from './constants';
+import { ONE_HOUR_IN_MILLISECONDS } from './constants';
 
 type CacheType = LRUCache<string, CacheEntry>;
 
@@ -10,7 +10,7 @@ export const getCache = (): CacheType => {
   if (!cacheInstance) {
     cacheInstance = new LRUCache({
       max: 1000,
-      ttl: ONE_HOUR,
+      ttl: ONE_HOUR_IN_MILLISECONDS,
     });
   }
 

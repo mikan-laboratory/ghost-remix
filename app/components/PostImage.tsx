@@ -1,6 +1,6 @@
 import { GetPostOutput } from '~/content-api/types';
 import { JsonCompatibleObject } from './types';
-import { Image } from '@chakra-ui/react';
+import { Img } from '@chakra-ui/react';
 
 interface PostImageProps {
   post: JsonCompatibleObject<GetPostOutput>;
@@ -10,7 +10,7 @@ export const PostImage = ({ post }: PostImageProps): JSX.Element => {
   const featureImageStartsWithSlash = (post.feature_image ?? '').startsWith('/');
 
   return (
-    <Image
+    <Img
       src={post.feature_image as string}
       srcSet={
         featureImageStartsWithSlash
