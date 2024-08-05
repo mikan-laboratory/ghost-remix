@@ -1,15 +1,4 @@
-import {
-  Heading,
-  Flex,
-  Box,
-  Image,
-  Button,
-  useToast,
-  useUpdateEffect,
-  Spinner,
-  Container,
-  Text,
-} from '@chakra-ui/react';
+import { Heading, Flex, Box, Button, useToast, useUpdateEffect, Spinner, Container, Text } from '@chakra-ui/react';
 import AuthorsList from './AuthorsList';
 import CommentsList from './CommentsList';
 import PostContent from './PostContent';
@@ -25,6 +14,7 @@ import { PageBase } from './PageBase';
 import { FaBolt, FaFileAlt } from 'react-icons/fa';
 import { useFetcher } from '@remix-run/react';
 import dayjs from 'dayjs';
+import { PostImage } from './PostImage';
 
 export const PostPage = ({ post, comments, commentSettings, showRapidRead }: JsonifiedPostPageProps): JSX.Element => {
   const authors = post.authors ?? [];
@@ -87,8 +77,6 @@ export const PostPage = ({ post, comments, commentSettings, showRapidRead }: Jso
     return true;
   }, [commentSettings, post.type]);
 
-  const featureImageStartsWithSlash = (post.feature_image ?? '').startsWith('/');
-
   return (
     <PageBase>
       <Container maxW="container.lg" px={{ base: 5, md: 0 }}>
@@ -103,27 +91,7 @@ export const PostPage = ({ post, comments, commentSettings, showRapidRead }: Jso
               mt={5}
               borderRadius="xl"
             >
-              <Image
-                src={post.feature_image as string}
-                srcSet={
-                  featureImageStartsWithSlash
-                    ? `
-                  /api/image?name=${post.feature_image}&w=480 480w,
-                  /api/image?name=${post.feature_image}&w=800 800w,
-                  /api/image?name=${post.feature_image}&w=1200 1200w
-                `
-                    : undefined
-                }
-                alt={post.posts_meta?.feature_image_alt ?? undefined}
-                sizes={featureImageStartsWithSlash ? '(max-width: 800px) 100vw, 1200px' : undefined}
-                position="absolute"
-                top="50%"
-                left="50%"
-                transform="translate(-50%, -50%)"
-                minWidth="100%"
-                minHeight="100%"
-                objectFit="cover"
-              />
+              <PostImage post={post} />
             </Box>
           )}
           <Flex flexDirection={'column'} alignContent={'flex-start'} gap={2}>
