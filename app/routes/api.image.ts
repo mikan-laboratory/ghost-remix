@@ -1,6 +1,7 @@
 import { LoaderFunctionArgs } from '@remix-run/node';
 import { ImageScaler } from '@mikan-labs/image-scaler';
 import { env } from '~/env';
+import { ONE_MONTH_IN_SECONDS } from '~/constants';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   try {
@@ -36,6 +37,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
       headers: {
         'Content-Type': 'image/webp',
         'Content-Length': imageBuffer.byteLength.toString(),
+        'Cache-Control': `public, max-age=${ONE_MONTH_IN_SECONDS}`,
       },
     });
   } catch (error) {
