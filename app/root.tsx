@@ -1,18 +1,20 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useMemo } from 'react';
 import { withEmotionCache } from '@emotion/react';
-import { ChakraProvider } from '@chakra-ui/react';
-import { Links, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
-import { LinksFunction, json, LoaderFunction } from '@remix-run/node';
+import { ChakraProvider, cookieStorageManagerSSR } from '@chakra-ui/react';
+import { Links, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData } from '@remix-run/react';
+import { LinksFunction, json, TypedResponse, LoaderFunctionArgs } from '@remix-run/node';
 import theme from './theme/theme';
 import { ServerStyleContext, ClientStyleContext } from './context';
 import { authenticateCookie } from './authenticateCookie.server';
 import { getBasicBlogInfo } from './getBasicBlogInfo.server';
+import { RootLoaderData } from './types/root';
 
-export const loader: LoaderFunction = async ({ request }) => {
+export const loader = async ({ request }: LoaderFunctionArgs): Promise<TypedResponse<RootLoaderData>> => {
   const authCookie = await authenticateCookie(request);
   const blogInfo = await getBasicBlogInfo();
+  const cookies = request.headers.get('cookie') ?? '';
 
-  return json({ ...authCookie, ...blogInfo });
+  return json({ ...authCookie, ...blogInfo, cookies });
 };
 
 export const links: LinksFunction = () => {
@@ -34,6 +36,39 @@ const Document = withEmotionCache(({ children }: DocumentProps, emotionCache) =>
   const serverStyleData = useContext(ServerStyleContext);
   const clientStyleData = useContext(ClientStyleContext);
 
+  // here we can set the default color mode. If we set it to null,
+  // there's no way for us to know what is the the user's preferred theme
+  // so the client will have to figure out and maybe there'll be a flash the first time the user visits us.
+  const DEFAULT_COLOR_MODE: 'dark' | 'light' | null = 'dark';
+  const CHAKRA_COOKIE_COLOR_KEY = 'chakra-ui-color-mode';
+
+  function getColorMode(cookies: string) {
+    const match = cookies.match(new RegExp(`(^| )${CHAKRA_COOKIE_COLOR_KEY}=([^;]+)`));
+    return match == null ? void 0 : match[2];
+  }
+
+  let { cookies } = useLoaderData<typeof loader>();
+
+  // the client get the cookies from the document
+  // because when we do a client routing, the loader can have stored an outdated value
+  if (typeof document !== 'undefined') {
+    cookies = document.cookie;
+  }
+
+  // get and store the color mode from the cookies.
+  // It'll update the cookies if there isn't any and we have set a default value
+  const colorMode = useMemo(() => {
+    let color = getColorMode(cookies);
+
+    if (!color && DEFAULT_COLOR_MODE) {
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      cookies += ` ${CHAKRA_COOKIE_COLOR_KEY}=${DEFAULT_COLOR_MODE}`;
+      color = DEFAULT_COLOR_MODE;
+    }
+
+    return color;
+  }, [cookies]);
+
   // Only executed on client
   useEffect(() => {
     // re-link sheet container
@@ -51,7 +86,13 @@ const Document = withEmotionCache(({ children }: DocumentProps, emotionCache) =>
   }, []);
 
   return (
-    <html lang="en">
+    <html
+      lang="en"
+      {...(colorMode && {
+        'data-theme': colorMode,
+        style: { colorScheme: colorMode },
+      })}
+    >
       <head>
         <meta httpEquiv="Content-Type" content="text/html;charset=utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -61,8 +102,14 @@ const Document = withEmotionCache(({ children }: DocumentProps, emotionCache) =>
           <style key={key} data-emotion={`${key} ${ids.join(' ')}`} dangerouslySetInnerHTML={{ __html: css }} />
         ))}
       </head>
-      <body>
-        {children}
+      <body
+        {...(colorMode && {
+          className: `chakra-ui-${colorMode}`,
+        })}
+      >
+        <ChakraProvider colorModeManager={cookieStorageManagerSSR(cookies)} theme={theme}>
+          {children}
+        </ChakraProvider>
         <ScrollRestoration />
         <Scripts />
       </body>
@@ -73,9 +120,7 @@ const Document = withEmotionCache(({ children }: DocumentProps, emotionCache) =>
 export default function App() {
   return (
     <Document>
-      <ChakraProvider theme={theme}>
-        <Outlet />
-      </ChakraProvider>
+      <Outlet />
     </Document>
   );
 }
