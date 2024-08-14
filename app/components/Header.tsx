@@ -18,8 +18,14 @@ export default function Header({ hideSignup = false }: HeaderProps) {
   const params = useParams();
   const location = useLocation();
   const [viewMenu, setViewMenu] = useState(false);
-  const [isSmallScreen] = useMediaQuery('(max-width: 768px)');
-  const [isMediumScreen] = useMediaQuery('(max-width: 1024px)');
+  const [isSmallScreen] = useMediaQuery('(max-width: 768px)', {
+    ssr: true,
+    fallback: true,
+  });
+  const [isMediumScreen] = useMediaQuery('(max-width: 1024px)', {
+    ssr: true,
+    fallback: false,
+  });
   const member = loaderData?.member;
   const blogTitle = loaderData?.title ?? 'Blog';
   const signupEnabled = loaderData?.signupEnabled ?? false;
