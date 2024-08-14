@@ -1,6 +1,8 @@
 import { Box, Text } from '@chakra-ui/react';
 import { PostOrPage } from '@tryghost/content-api';
 import BlogItem from './BlogItem';
+import { GetPostOutput } from '~/content-api/types';
+import { JsonCompatibleObject } from './types';
 
 interface BlogHeroProps {
   posts: PostOrPage[];
@@ -12,7 +14,7 @@ export default function BlogHero({ posts }: BlogHeroProps) {
       <Text color="primary" fontWeight="bold">
         Featured Articles
       </Text>
-      <BlogItem post={posts[0]} type="primary" />
+      <BlogItem post={posts[0] as JsonCompatibleObject<GetPostOutput>} type="primary" />
       <Box
         display="flex"
         flexDirection={{ base: 'column', md: 'row' }}
@@ -20,8 +22,8 @@ export default function BlogHero({ posts }: BlogHeroProps) {
         pt={4}
         min-width="100%"
       >
-        <BlogItem post={posts[1]} type="secondary" />
-        <BlogItem post={posts[2]} type="secondary" />
+        <BlogItem post={posts[1] as JsonCompatibleObject<GetPostOutput>} type="secondary" />
+        <BlogItem post={posts[2] as JsonCompatibleObject<GetPostOutput>} type="secondary" />
       </Box>
     </Box>
   );
