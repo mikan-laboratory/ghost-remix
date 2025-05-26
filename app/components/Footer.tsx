@@ -12,7 +12,7 @@ export default function Footer() {
       >
         <Flex alignItems="center" color="text3" mb={{ base: 2, sm: 0 }}>
           <Image src="/logo.webp" height="56px" width="56px" objectFit="contain" mr={2} />
-          <Text fontSize="sm">© 2024</Text>
+          <Text fontSize="sm">© {new Date().getFullYear()}</Text>
         </Flex>
 
         <Flex alignItems="center" fontSize="xs">
