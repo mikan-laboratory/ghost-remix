@@ -42,18 +42,20 @@ nginx &
 
 su ghostuser -c "cd /var/www/ghost && ghost config url $BLOG_URL && ghost start"
 
-# Prisma migrations
-npx prisma migrate resolve --applied 0_init
+if [ "$RUN_DB_SEED" = "true" ]; then
+  # Prisma migrations
+  npx prisma migrate resolve --applied 0_init
 
-# Seed Content API Key
-npm run seed:prod
+  # Seed Content API Key
+  npm run seed:prod
 
-# Unlock the migrations lock in the Ghost SQLite database
-echo "Unlocking the Ghost migrations lock..."
-sqlite3 "$GHOST_DB_PATH" "UPDATE migrations_lock SET locked=0 WHERE lock_key='km01';"
+  # Unlock the migrations lock in the Ghost SQLite database
+  echo "Unlocking the Ghost migrations lock..."
+  sqlite3 "$GHOST_DB_PATH" "UPDATE migrations_lock SET locked=0 WHERE lock_key='km01';"
 
-# Restart to apply url and theme config
-su ghostuser -c 'cd /var/www/ghost && ghost restart'
+  # Restart to apply url and theme config
+  su ghostuser -c 'cd /var/www/ghost && ghost restart'
+fi
 
 # Start Remix app
 cd /myapp

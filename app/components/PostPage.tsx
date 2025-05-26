@@ -131,7 +131,7 @@ export const PostPage = ({ post, comments, commentSettings, showRapidRead }: Jso
             )}
           </Flex>
         </Box>
-        <Box py={5} textColor="text1">
+        <Box pt={rapidRead ? 5 : undefined} pb={5} textColor="text1">
           {['submitting', 'loading'].includes(fetcher.state) ? (
             <Box display="flex" justifyContent="center" alignItems="center">
               <Spinner thickness="4px" speed="0.65s" emptyColor="gray.200" color="blue.500" size="xl" />
