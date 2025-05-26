@@ -220,8 +220,8 @@ flyctl secrets set GHOST_CONTENT_API_KEY="my-api-key-value" \
    MEMBERS_SIGNUP_ACCESS="all" \
    RAPID_READ="post" \
    ANTHROPIC_API_KEY="somekey" \
-   IMAGE_OUTPUT_DIRECTORY="/var/www/ghost/content/images/"
-   RUN_DB_SEED=true
+   IMAGE_OUTPUT_DIRECTORY="/var/www/ghost/content/images/" \
+   RUN_DB_SEED="true"
 ```
 
 2. Deploy
