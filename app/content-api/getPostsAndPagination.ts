@@ -6,7 +6,7 @@ import { fixFeatureImages } from '~/fixFeatureImages';
 export const getPostsAndPagination = async (page = 1, limit = 5): Promise<PostsAndPagination> => {
   const [posts, totalPosts] = await Promise.all([
     prisma.posts.findMany({
-      skip: page - 1,
+      skip: (page - 1) * limit,
       take: limit,
       where: {
         type: 'post',

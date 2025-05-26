@@ -36,7 +36,7 @@ local_resource(
 load('ext://uibutton', 'cmd_button')
 
 cmd_button('seed',
-  argv=['sh', '-c', 'npm run seed:dev && docker-compose -f docker-compose.dev.yml restart ghost'],
+  argv=['sh', '-c', 'npm run seed:dev && docker compose -f docker-compose.dev.yml restart ghost'],
   resource='ghost',
   icon_name='downloading',
   text='Seed'
